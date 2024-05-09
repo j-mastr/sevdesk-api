@@ -9069,17 +9069,17 @@ components:
           nullable: true
         deliveryTerms:
           description: Delivery terms of the creditNote
-          type: string
           nullable: true
+          type: string
         paymentTerms:
           description: Payment terms of the creditNote
-          type: string
           nullable: true
+          type: string
         version:
           description: "Version of the creditNote.<br>\r\n    Can be used if you have multiple drafts for the same creditNote.<br>\r\n    Should start with 0"
-          type: string
           example: '0'
           nullable: true
+          type: string
       type: object
     Model_creditNote:
       title: creditNote model
@@ -9398,17 +9398,17 @@ components:
           nullable: true
         deliveryTerms:
           description: Delivery terms of the creditNote
-          type: string
           nullable: true
+          type: string
         paymentTerms:
           description: Payment terms of the creditNote
-          type: string
           nullable: true
+          type: string
         version:
           description: "Version of the creditNote.<br>\r\n    Can be used if you have multiple drafts for the same creditNote.<br>\r\n    Should start with 0"
-          type: integer
           example: 0
           nullable: true
+          type: integer
       type: object
     Model_creditNotePos:
       title: creditNote position model
@@ -10141,17 +10141,17 @@ components:
           nullable: true
         deliveryTerms:
           description: Delivery terms of the creditNote
-          type: string
           nullable: true
+          type: string
         paymentTerms:
           description: Payment terms of the creditNote
-          type: string
           nullable: true
+          type: string
         version:
           description: "Version of the creditNote.<br>\r\n    Can be used if you have multiple drafts for the same creditNote.<br>\r\n    Should start with 0"
-          type: integer
           example: 0
           nullable: true
+          type: integer
       type: object
     Model_CreditNote_sendByWithRender:
       type: object
@@ -14892,51 +14892,51 @@ x-tagGroups:
       - CheckAccount
       - CheckAccountTransaction
     description: Title
-  - name: contact
+  - description: Title
+    name: contact
     tags:
       - AccountingContact
       - CommunicationWay
-      - ContactAddress
       - Contact
-    description: Title
-  - name: contactCustomFieldSetting
+      - ContactAddress
+  - description: Title
+    name: contactCustomFieldSetting
     tags:
       - ContactField
-    description: Title
-  - name: creditNote
+  - description: Title
+    name: creditNote
     tags:
       - CreditNote
       - CreditNotePos
-    description: Title
   - name: export
     tags:
       - Export
   - name: inventory
     tags:
       - Part
-  - name: invoice
+  - description: Title
+    name: invoice
     tags:
       - Invoice
       - InvoicePos
-    description: Title
-  - name: layout
+  - description: Title
+    name: layout
     tags:
       - Layout
-    description: Title
-  - name: order
+  - description: Title
+    name: order
     tags:
       - Order
       - OrderPos
-    description: Title
-  - name: receipt
+  - description: Title
+    name: receipt
     tags:
       - Voucher
       - VoucherPos
-    description: Title
   - name: report
     tags:
       - Report
-  - name: tag
+  - description: Title
+    name: tag
     tags:
       - Tag
-    description: Title
