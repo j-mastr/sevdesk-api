@@ -44,7 +44,9 @@ if [ $status -ne 0 ]; then
     echo "3. commit manually."
     echo -e "\t\033[1m git add openapi.yaml && git commit -m \"build(external)\\!: Update openapi.yaml\" \033[0m"
 
-    code openapi.yaml
+    if [ -z ${CI+x} ]; then
+        code openapi.yaml
+    fi
 
     exit 1
 fi
