@@ -1,8 +1,18 @@
-name: Merge main into release branch
+name: Check for updated OpenAPI specs
 on:
   schedule:
     - cron: "27 3 * * 1-5"
-    - cron: "* * * * *"
+  workflow_dispatch:
+    inputs:
+      updateBranchName:
+        description: "Branch to update OpenAPI specs"
+        required: true
+        default: "update-openapi"
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   build:
@@ -21,28 +31,29 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - name: Checkout update branch
         run: |
-          git checkout main
-          git pull
-          git checkout -b update-openapi 2>/dev/null | git checkout update-openapi
-          git rebase main
+          git fetch
+          git switch ${{inputs.updateBranchName}} 2>/dev/null || git switch -c ${{inputs.updateBranchName}}
+          git rebase "${{ github.ref_name}}"
       - name: Update OpenAPI
         id: update_openapi
         run: ./scripts/update.sh
+        continue-on-error: true
       - name: create pull request
-        if: always()
+        if: steps.update_openapi.outcome == 'success' || steps.update_openapi.outcome == 'failure'
         id: create_pr
         run: |
-          git push --set-upstream origin update-openapi
-          gh pr create --base ${{ github.event.repository.default_branch }} --head update-openapi --label "update:openapi" --title "[Automated] Merge update-openapi into ${{ github.event.repository.default_branch }}" --body 'Created by GitHub action to update most recent OpenAPI specs.'
+          git push --set-upstream origin ${{inputs.updateBranchName}}
+          gh pr create --base ${{ github.ref_name}} --head ${{inputs.updateBranchName}} --label "update:openapi" --title "[Automated] Merge ${{inputs.updateBranchName}} into ${{ github.ref_name}}" --body 'Created by GitHub action to update most recent OpenAPI specs.' --fill-verbose
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
       - name: Auto-merge update
-        if: steps.update_openapi.outcome == 'success'
+        if: steps.update_openapi.outcome == 'success' && steps.create_pr.outcome == 'success'
         run: gh pr merge --auto --squash "${{ github.ref_name }}"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Comment on failed update
-        if: steps.update_openapi.outcome == 'failure'
-        run: gh pr comment "update-openapi" --body "Failed to merge updated OpenAPI automatically. Please `git checkout update-openapi` and `./scripts/update.sh` manually."
+        if: steps.update_openapi.outcome == 'failure' && steps.create_pr.outcome == 'success'
+        run: gh pr comment "${{inputs.updateBranchName}}" --body "Failed to merge updated OpenAPI automatically. Please \`git checkout ${{inputs.updateBranchName}}\` and \`./scripts/update.sh\` manually."
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
