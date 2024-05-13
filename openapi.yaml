@@ -239,8 +239,8 @@ tags:
       # Tag relation
        With the tag relations you can display all invoices, receipts, orders and credit notes that have a tag<br> The tag relation does not have to be created separately, as this is automatically created when a tag is created.<br> <br>
     x-displayName: Tag
-  - description: Everything about the TextTemplate model
-    name: TextTemplate
+  - name: TextTemplate
+    description: Everything about the TextTemplate model
 paths:
   /CheckAccount:
     get:
@@ -8075,13 +8075,6 @@ components:
             - '300'
             - '400'
             - '350'
-        enshrined:
-          description: >-
-            Defines if the transaction has been enshrined and can not be changed
-            any more.
-          type: string
-          format: date-time
-          readOnly: true
         sourceTransaction:
           description: The check account transaction serving as the source of the rebooking
           required:
@@ -8118,6 +8111,13 @@ components:
                 - CheckAccountTransaction
               example: CheckAccountTransaction
           type: object
+          readOnly: true
+        enshrined:
+          description: >-
+            Defines if the transaction has been enshrined and can not be changed
+            any more.
+          type: string
+          format: date-time
           readOnly: true
       type: object
     Model_CheckAccountTransaction:
@@ -8229,13 +8229,6 @@ components:
             - 200
             - 300
             - 400
-        enshrined:
-          description: >-
-            Defines if the transaction has been enshrined and can not be changed
-            any more.
-          type: string
-          format: date-time
-          nullable: true
         sourceTransaction:
           description: The check account transaction serving as the source of the rebooking
           required:
@@ -8272,6 +8265,13 @@ components:
               example: CheckAccountTransaction
           type: object
           nullable: true
+        enshrined:
+          description: >-
+            Defines if the transaction has been enshrined and can not be changed
+            any more.
+          format: date-time
+          nullable: true
+          type: string
     Model_CheckAccountTransactionUpdate:
       title: CheckAccountTransaction model
       description: >-
@@ -8328,13 +8328,6 @@ components:
             - 200
             - 300
             - 400
-        enshrined:
-          description: >-
-            Defines if the transaction has been enshrined and can not be changed
-            any more.
-          type: string
-          format: date-time
-          nullable: true
         sourceTransaction:
           description: The check account transaction serving as the source of the rebooking
           required:
@@ -8371,7 +8364,27 @@ components:
               example: CheckAccountTransaction
           type: object
           nullable: true
+        enshrined:
+          description: >-
+            Defines if the transaction has been enshrined and can not be changed
+            any more.
+          format: date-time
+          nullable: true
+          type: string
       type: object
+    validationError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+            exceptionUUID:
+              type: string
+              description: >-
+                An identifier of this exact problem that can be given to the
+                support team.
     Model_ContactResponse:
       title: Contact model
       description: Contact model
@@ -8578,34 +8591,6 @@ components:
           type: string
           example: 'false'
           readOnly: true
-        taxType:
-          description: Defines which tax regulation the contact is using.
-          type: string
-          enum:
-            - default
-            - eu
-            - noteu
-            - custom
-            - ss
-          readOnly: true
-        taxSet:
-          description: Tax set which is used in every invoice of the contact.
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the tax set
-              type: string
-              example: '0'
-            objectName:
-              description: Model name, which is 'TaxSet'
-              type: string
-              example: TaxSet
-              enum:
-                - TaxSet
-          type: object
-          readOnly: true
         defaultDiscountAmount:
           description: >-
             The default discount the contact gets for every invoice.<br>
@@ -8641,6 +8626,34 @@ components:
           example: string
           readOnly: true
           deprecated: true
+        taxSet:
+          description: Tax set which is used in every invoice of the contact.
+          properties:
+            id:
+              description: Unique identifier of the tax set
+              example: '0'
+              type: string
+            objectName:
+              description: Model name, which is 'TaxSet'
+              enum:
+                - TaxSet
+              example: TaxSet
+              type: string
+          readOnly: true
+          required:
+            - id
+            - objectName
+          type: object
+        taxType:
+          description: Defines which tax regulation the contact is using.
+          enum:
+            - custom
+            - default
+            - eu
+            - noteu
+            - ss
+          readOnly: true
+          type: string
       type: object
     Model_Contact:
       title: Contact model
@@ -8805,34 +8818,6 @@ components:
           description: Defines if the contact is freed from paying vat.
           type: boolean
           nullable: true
-        taxType:
-          description: Defines which tax regulation the contact is using.
-          type: string
-          enum:
-            - default
-            - eu
-            - noteu
-            - custom
-            - ss
-          nullable: true
-        taxSet:
-          description: Tax set which is used in every invoice of the contact.
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the tax set
-              type: integer
-            objectName:
-              description: Model name, which is 'TaxSet'
-              type: string
-              default: TaxSet
-              enum:
-                - TaxSet
-              example: TaxSet
-          type: object
-          nullable: true
         defaultDiscountAmount:
           description: >-
             The default discount the contact gets for every invoice.<br>
@@ -8858,6 +8843,34 @@ components:
             (false).
           type: boolean
           nullable: true
+        taxSet:
+          description: Tax set which is used in every invoice of the contact.
+          nullable: true
+          properties:
+            id:
+              description: Unique identifier of the tax set
+              type: integer
+            objectName:
+              default: TaxSet
+              description: Model name, which is 'TaxSet'
+              enum:
+                - TaxSet
+              example: TaxSet
+              type: string
+          required:
+            - id
+            - objectName
+          type: object
+        taxType:
+          description: Defines which tax regulation the contact is using.
+          enum:
+            - custom
+            - default
+            - eu
+            - noteu
+            - ss
+          nullable: true
+          type: string
       type: object
     Model_ContactUpdate:
       title: Contact model
@@ -9020,34 +9033,6 @@ components:
           description: Defines if the contact is freed from paying vat.
           type: boolean
           nullable: true
-        taxType:
-          description: Defines which tax regulation the contact is using.
-          type: string
-          enum:
-            - default
-            - eu
-            - noteu
-            - custom
-            - ss
-          nullable: true
-        taxSet:
-          description: Tax set which is used in every invoice of the contact.
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the tax set
-              type: integer
-            objectName:
-              description: Model name, which is 'TaxSet'
-              type: string
-              default: TaxSet
-              enum:
-                - TaxSet
-              example: TaxSet
-          type: object
-          nullable: true
         defaultDiscountAmount:
           description: >-
             The default discount the contact gets for every invoice.<br>
@@ -9073,6 +9058,34 @@ components:
             (false).
           type: boolean
           nullable: true
+        taxSet:
+          description: Tax set which is used in every invoice of the contact.
+          nullable: true
+          properties:
+            id:
+              description: Unique identifier of the tax set
+              type: integer
+            objectName:
+              default: TaxSet
+              description: Model name, which is 'TaxSet'
+              enum:
+                - TaxSet
+              example: TaxSet
+              type: string
+          required:
+            - id
+            - objectName
+          type: object
+        taxType:
+          description: Defines which tax regulation the contact is using.
+          enum:
+            - custom
+            - default
+            - eu
+            - noteu
+            - ss
+          nullable: true
+          type: string
       type: object
     Model_ContactAddressResponse:
       title: Contact address
@@ -11015,10 +11028,6 @@ components:
                 - CreditNotePos
               example: CreditNotePos
           default: null
-        filename:
-          description: Filename of a previously upload file which should be attached.
-          type: string
-          format: binary
         discountSave:
           required:
             - discount
@@ -11069,6 +11078,10 @@ components:
               enum:
                 - Discounts
           default: null
+        filename:
+          description: Filename of a previously upload file which should be attached.
+          format: binary
+          type: string
     Model_creditNotePosResponse:
       title: creditNote position model
       description: creditNote position model
@@ -11246,16 +11259,16 @@ components:
     saveCreditNoteResponse:
       type: object
       properties:
+        filename:
+          description: Filename of a previously upload file which should be attached.
+          format: binary
+          type: string
         voucher:
           $ref: '#/components/schemas/Model_creditNoteResponse'
         voucherPos:
-          type: array
           items:
             $ref: '#/components/schemas/Model_creditNotePosResponse'
-        filename:
-          description: Filename of a previously upload file which should be attached.
-          type: string
-          format: binary
+          type: array
     Model_discountsResponse:
       properties:
         id:
@@ -11709,19 +11722,6 @@ components:
               default: SevClient
               enum:
                 - SevClient
-    validationError:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            message:
-              type: string
-            exceptionUUID:
-              type: string
-              description: >-
-                An identifier of this exact problem that can be given to the
-                support team.
     Model_Part:
       title: Part model
       description: Part model
@@ -15584,8 +15584,8 @@ components:
           type: string
           format: date-time
           example: 01.01.2020
-          nullable: true
           readOnly: true
+          nullable: true
         taxSet:
           description: >-
             Tax set of the voucher. Needs to be added if you chose the tax type
