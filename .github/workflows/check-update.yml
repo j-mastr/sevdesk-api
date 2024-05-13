@@ -29,6 +29,7 @@ jobs:
       - name: Update OpenAPI
         id: update_openapi
         run: ./scripts/update.sh
+      - run: echo "${{ steps.update_openapi.outcome }}"
       - name: create pull request
         if: steps.update_openapi.outcome == 'success' || steps.update_openapi.outcome == 'failure'
         id: create_pr
