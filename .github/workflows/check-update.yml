@@ -23,8 +23,6 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - name: Checkout update branch
         run: |
-          git status
-          git branch
           git fetch
           git switch update-openapi 2>/dev/null || git switch -c update-openapi
           git rebase main
