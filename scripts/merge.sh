@@ -38,9 +38,9 @@ if [ $status -ne 0 ]; then
     echo "Conflicts detected! Please"
     echo "1. resolve them,"
     echo "2. sort the file,"
-    echo "\t\033[1myarn dlx patch-utils sort-yaml openapi.yaml -t \"external/openapi.yaml\" -o\033[0m"
+    echo -e "\t\033[1myarn dlx patch-utils sort-yaml openapi.yaml -t \"external/openapi.yaml\" -o\033[0m"
     echo "3. commit manually."
-    echo "\t\033[1m git add openapi.yaml && git commit -m \"build(external)\\!: Update openapi.yaml\" \033[0m"
+    echo -e "\t\033[1m git add openapi.yaml && git commit -m \"build(external)\\!: Update openapi.yaml\" \033[0m"
 
     code openapi.yaml
 
