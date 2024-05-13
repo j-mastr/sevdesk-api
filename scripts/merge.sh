@@ -6,11 +6,13 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-MergeFile="$1"
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+MERGE_FILE="$1"
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-npx patch-utils sort-yaml openapi.yaml -t "$MergeFile" -o > /dev/null
-npx patch-utils sort-yaml external/openapi.yaml -t "$MergeFile" -o > /dev/null
+npx --yes patch-utils > /dev/null 2>&1
+
+npx patch-utils sort-yaml openapi.yaml -t "$MERGE_FILE" -o > /dev/null
+npx patch-utils sort-yaml external/openapi.yaml -t "$MERGE_FILE" -o > /dev/null
 
 git diff --exit-code > /dev/null 2>&1
 if [ $? -ne 0 ]; then
@@ -20,15 +22,15 @@ fi
 
 npx patch-utils sort-yaml openapi.yaml "openapi.yaml~" > /dev/null
 npx patch-utils sort-yaml external/openapi.yaml "external/openapi.yaml~" > /dev/null
-npx patch-utils sort-yaml "$MergeFile" "$MergeFile~" > /dev/null
+npx patch-utils sort-yaml "$MERGE_FILE" "$MERGE_FILE~" > /dev/null
 
-git merge-file -p --zdiff3 -L "openapi.yaml" -L "previous external/openapi.yaml" -L "external/openapi.yaml" "openapi.yaml~" "external/openapi.yaml~" "$MergeFile~" > openapi.yaml
+git merge-file -p --zdiff3 -L "openapi.yaml" -L "previous external/openapi.yaml" -L "external/openapi.yaml" "openapi.yaml~" "external/openapi.yaml~" "$MERGE_FILE~" > openapi.yaml
 status=$?
 
-mv "$MergeFile" external/openapi.yaml
+mv "$MERGE_FILE" external/openapi.yaml
 
 rm "external/openapi.yaml~"
-rm "$MergeFile~"
+rm "$MERGE_FILE~"
 rm "openapi.yaml~"
 
 if [ $status -ne 0 ]; then
