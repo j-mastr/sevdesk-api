@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: update-openapi
       - name: Prepare git
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -21,6 +19,10 @@ jobs:
         with:
           node-version: "20.x"
           registry-url: "https://registry.npmjs.org"
+      - name: Checkout update branch
+        run: |
+          git checkout -b update-openapi 2>/dev/null || git checkout update-openapi
+          git rebase main
       - name: Update OpenAPI
         id: update_openapi
         run: ./scripts/update.sh
@@ -33,12 +35,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Auto-merge update
-        if: steps.update_openapi.outcome == 'success'
+        if: steps.update_openapi.outcome == 'success' && steps.create_pr.outcome == 'success'
         run: gh pr merge --auto --squash "${{ github.ref_name }}"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Comment on failed update
-        if: steps.update_openapi.outcome == 'failure'
+        if: steps.update_openapi.outcome == 'failure' && steps.create_pr.outcome == 'success'
         run: gh pr comment "update-openapi" --body "Failed to merge updated OpenAPI automatically. Please `git checkout update-openapi` and `./scripts/update.sh` manually."
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
