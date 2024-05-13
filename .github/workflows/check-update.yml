@@ -1,8 +1,8 @@
 name: Check for updated OpenAPI specs
 on:
-  schedule:
-    - cron: "*/5 * * * *"
-    #- cron: "27 3 * * 1-5"
+  #schedule:
+  #- cron: "27 3 * * 1-5"
+  workflow_dispatch:
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
         run: |
           git checkout main
           git pull
-          git checkout -b update-openapi 2>/dev/null | git checkout update-openapi
+          git checkout -b update-openapi 2>/dev/null || git checkout update-openapi
           git rebase main
       - name: Update OpenAPI
         id: update_openapi
