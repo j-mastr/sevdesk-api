@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 git diff --exit-code > /dev/null 2>&1
 if [ $? -ne 0 ]; then
@@ -6,8 +6,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 curl -s https://api.sevdesk.de/openapi.yaml -o external/openapi-updated.yaml
 
-"$parent_path/merge.sh" "external/openapi-updated.yaml"
+"$SCRIPT_DIR/merge.sh" "external/openapi-updated.yaml"
