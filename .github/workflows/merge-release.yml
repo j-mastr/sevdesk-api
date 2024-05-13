@@ -1,0 +1,18 @@
+name: Merge main into release branch
+on:
+  release:
+    types: [published]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: create pull request
+        id: create_pr
+        run: gh pr create --base release --head ${{ github.ref_name }} --title "[Automated] Merge ${{ github.ref_name }} into release" --body 'Created by Github action for release ${{ github.ref }}.'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Auto-merge release
+        run: gh pr merge --auto --squash "${{ github.ref_name }}"
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
