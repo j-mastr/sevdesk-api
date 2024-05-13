@@ -6,7 +6,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-parent_path=$( cd "$(dirname "$0")" ; pwd -P )
+parent_path=$( cd $(dirname "$0") ; pwd -P )
 
 curl -s https://api.sevdesk.de/openapi.yaml -o external/openapi-updated.yaml
 
