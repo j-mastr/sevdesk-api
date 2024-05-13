@@ -1,4 +1,4 @@
-name: Merge main into release branch
+name: Check for updated OpenAPI specs
 on:
   schedule:
     - cron: "27 3 * * 1-5"
