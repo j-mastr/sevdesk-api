@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Prepare git
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -23,7 +25,8 @@ jobs:
         run: |
           git status
           git branch
-          git checkout -b update-openapi 2>/dev/null || git checkout update-openapi
+          git fetch
+          git switch update-openapi 2>/dev/null || git switch -c update-openapi
           git rebase main
       - name: Update OpenAPI
         id: update_openapi
