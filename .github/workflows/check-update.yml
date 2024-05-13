@@ -43,17 +43,20 @@ jobs:
         id: create_pr
         run: |
           git push --set-upstream origin ${{inputs.updateBranchName}}
-          gh pr create --base ${{ github.ref_name}} --head ${{inputs.updateBranchName}} --label "update:openapi" --title "[Automated] Merge ${{inputs.updateBranchName}} into ${{ github.ref_name}}" --body 'Created by GitHub action to update most recent OpenAPI specs.' --fill-verbose
+          gh pr create --base ${{ github.ref_name}} --head ${{inputs.updateBranchName}} --label "update: openapi" --title "Update OpenAPI specs" --body 'Merge ${{inputs.updateBranchName}} into ${{ github.ref_name}}' --fill-verbose
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
       - name: Auto-merge update
         if: steps.update_openapi.outcome == 'success' && steps.create_pr.outcome == 'success'
-        run: gh pr merge --auto --squash "${{ github.ref_name }}"
+        run: |
+          gh pr merge --auto --squash --subject "feat!: update openapi.yaml" "${{ github.ref_name }}"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Comment on failed update
         if: steps.update_openapi.outcome == 'failure' && steps.create_pr.outcome == 'success'
-        run: gh pr comment "${{inputs.updateBranchName}}" --body "Failed to merge updated OpenAPI automatically. Please \`git checkout ${{inputs.updateBranchName}}\` and \`./scripts/update.sh\` manually."
+        run: |
+          gh pr comment "${{inputs.updateBranchName}}" --body "Failed to merge updated OpenAPI automatically. Please \`git checkout ${{inputs.updateBranchName}}\` and \`./scripts/update.sh\` manually."
+          gh pr edit "${{inputs.updateBranchName}}" --add-label "update: failed"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
