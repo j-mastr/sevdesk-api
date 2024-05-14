@@ -1,4 +1,4 @@
-name: Merge main into release branch
+name: Merge current release into release branch
 on:
   release:
     types: [published]
@@ -6,19 +6,25 @@ on:
     inputs:
       releaseBranchName:
         description: "Branch to follow releases"
-        required: true
-        default: "release"
         type: string
 
+permissions:
+  contents: write
+
 jobs:
-  build:
+  merge:
+    name: Merge "${{ github.ref_name}}" into "${{ inputs.releaseBranchName || vars.RELEASE_BRANCH_NAME || 'release' }}"
     runs-on: ubuntu-latest
+    env:
+      RELEASE_BRANCH_NAME: ${{ inputs.releaseBranchName || vars.RELEASE_BRANCH_NAME || 'release' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Merge release into release branch
         run: |
           git fetch
-          git checkout "${{inputs.releaseBranchName}}"
+          git checkout "${{env.RELEASE_BRANCH_NAME}}"
           git status
           git merge --ff-only "${{ github.ref_name}}"
           git push -f
