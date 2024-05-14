@@ -6,8 +6,6 @@ on:
     inputs:
       updateBranchName:
         description: "Branch to update OpenAPI specs"
-        required: true
-        default: "update-openapi"
         type: string
 
 permissions:
@@ -15,8 +13,10 @@ permissions:
   pull-requests: write
 
 jobs:
-  build:
+  update:
     runs-on: ubuntu-latest
+    env:
+      UPDATE_BRANCH_NAME: ${{ inputs.updateBranchName || vars.UPDATE_BRANCH_NAME || 'update-openapi' }}
     steps:
       - uses: actions/checkout@v4
       - name: Prepare git
@@ -32,7 +32,7 @@ jobs:
       - name: Checkout update branch
         run: |
           git fetch
-          git switch ${{inputs.updateBranchName}} 2>/dev/null || git switch -c ${{inputs.updateBranchName}}
+          git switch ${{env.UPDATE_BRANCH_NAME}} 2>/dev/null || git switch -c ${{env.UPDATE_BRANCH_NAME}}
           git rebase "${{ github.ref_name}}"
       - name: Update OpenAPI
         id: update_openapi
@@ -42,8 +42,8 @@ jobs:
         if: steps.update_openapi.outcome == 'success' || steps.update_openapi.outcome == 'failure'
         id: create_pr
         run: |
-          git push --set-upstream origin ${{inputs.updateBranchName}}
-          gh pr create --base ${{ github.ref_name}} --head ${{inputs.updateBranchName}} --label "update: openapi" --title "Update OpenAPI specs" --body 'Merge ${{inputs.updateBranchName}} into ${{ github.ref_name}}' --fill-verbose
+          git push --set-upstream origin ${{env.UPDATE_BRANCH_NAME}}
+          gh pr create --base ${{ github.ref_name}} --head ${{env.UPDATE_BRANCH_NAME}} --label "update: openapi" --title "Update OpenAPI specs" --body 'Merge ${{env.UPDATE_BRANCH_NAME}} into ${{ github.ref_name}}' --fill-verbose
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
@@ -56,7 +56,7 @@ jobs:
       - name: Comment on failed update
         if: steps.update_openapi.outcome == 'failure' && steps.create_pr.outcome == 'success'
         run: |
-          gh pr comment "${{inputs.updateBranchName}}" --body "Failed to merge updated OpenAPI automatically. Please \`git checkout ${{inputs.updateBranchName}}\` and \`./scripts/update.sh\` manually."
-          gh pr edit "${{inputs.updateBranchName}}" --add-label "update: failed"
+          gh pr comment "${{env.UPDATE_BRANCH_NAME}}" --body "Failed to merge updated OpenAPI automatically. Please \`git checkout ${{env.UPDATE_BRANCH_NAME}}\` and \`./scripts/update.sh\` manually."
+          gh pr edit "${{env.UPDATE_BRANCH_NAME}}" --add-label "update: failed"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
