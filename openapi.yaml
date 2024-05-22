@@ -4839,7 +4839,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_InvoiceResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_InvoiceResponse'
+                type: object
         '400':
           description: Bad Request
         '401':
