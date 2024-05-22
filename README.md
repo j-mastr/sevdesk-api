@@ -21,7 +21,7 @@ Feel free to open a pull request to add your SDK to the list.
 
 | SDK / Language | Maintainer                      | Repository                                                       |
 | -------------- | ------------------------------- | ---------------------------------------------------------------- |
-| PHP SDK        | it's mind <support@itsmind.com> | [sevdesk-php-sdk](https://github.com/itsmindcom/sevdesk-php-sdk) |
+| PHP SDK        | it's mind <support@itsmind.com> | [sevdesk-php-client](https://github.com/itsmindcom/sevdesk-php-client) |
 
 ## Contributing
 
