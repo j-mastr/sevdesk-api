@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.0.0](https://github.com/j-mastr/sevdesk-api/compare/v1.0.0...v2.0.0) (2024-05-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* update openapi.yaml ([#8](https://github.com/j-mastr/sevdesk-api/issues/8))
+
+### Features
+
+* update openapi.yaml ([#8](https://github.com/j-mastr/sevdesk-api/issues/8)) ([13c3ff2](https://github.com/j-mastr/sevdesk-api/commit/13c3ff254c37c97cf2ff3eb441202de402b862f9))
+* wrap createInvoiceReminder in objects ([#12](https://github.com/j-mastr/sevdesk-api/issues/12)) ([49c2cfc](https://github.com/j-mastr/sevdesk-api/commit/49c2cfc2ed648bcf4582d2169703aec7cdcc0316))
+
+
+### Bug Fixes
+
+* checkout repository for update ([#17](https://github.com/j-mastr/sevdesk-api/issues/17)) ([c949549](https://github.com/j-mastr/sevdesk-api/commit/c94954973c4a7fffde985b8cd70eddce083888ff))
+* link j-mastr/sevdesk-php-sdk in README ([#15](https://github.com/j-mastr/sevdesk-api/issues/15)) ([3e16d55](https://github.com/j-mastr/sevdesk-api/commit/3e16d5591aa0d4689dc6397f48c23fcf57490df0))
+* rebase update branch ([#14](https://github.com/j-mastr/sevdesk-api/issues/14)) ([5703759](https://github.com/j-mastr/sevdesk-api/commit/5703759932973079d5d2dc5f6a653be385524851))
+
 ## 1.0.0 (2024-05-09)
 
 
