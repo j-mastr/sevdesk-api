@@ -10,8 +10,6 @@ info:
 servers:
   - url: https://my.sevdesk.de/api/v1
     description: Our main application instance which most of our customers work with
-  - url: https://my.pebesmart.ch/api/v1
-    description: Our swiss application instance, hosted and maintained by smart seven AG
   - url: http://sevdesk.local/api/v1
     description: sevDesk internal local instance
 tags:
@@ -175,7 +173,7 @@ tags:
       # Purpose of Layout in sevDesk
        Each invoice, order and credit note has a generated document.<br> In this chapter we will show you how the layout queries and use them to change the look of your document<br> Please keep in mind that every invoice, order and credit note must be rendered beforehand so that a document is also available. 
       # Attributes of a Layout
-       In the layouts there are only two different attributes, <b>key</b> and <b>value</b>. For key you can pass one of the following values: <ul> <li>template</li> <li>letterpaper</li> <li>language</li> <li>payPal</li> </ul> The value depends on which key you have chosen. In the following the standard values ​​of the respective keys.<br><br> <b>template</b> <table> <tr> <td>Premium 1</td> <td>5bedce4eeebf6f56c5f1d893</td> </tr> <tr> <td>Premium 2</td> <td>5bedce4eeebf6f56c5f1d898</td> </tr> <tr> <td>Premium 3</td> <td>5bedce4eeebf6f56c5f1d89d</td> </tr> <tr> <td>Premium 4</td> <td>61fbb0058317af2b8e77d106</td> </tr> <tr> <td>Premium 5</td> <td>61fbb0058317af2b8e77d10e</td> </tr> <tr> <td>Premium 6</td> <td>61fbb0058317af2b8e77d10a</td> </tr> <tr> <td>Simple</td> <td>573f03ad6bd2d516c63070f1</td> </tr> <tr> <td>Black</td> <td>573ef2706bd2d50366786471</td> </tr> <tr> <td>Blue</td> <td>573f25c56bd2d51c2100cce1</td> </tr> <tr> <td>without contact person and customer number</td> <td>573ed07e6bd2d547d21e89e1</td> </tr> <tr> <td>Swiss</td> <td>573efc416bd2d5065546eb11</td> </tr> <tr> <td>Standard</td> <td>57986aee6bd2d53306068da1</td> </tr> </table><br> <b>letterpaper</b> <table> <tr> <td>Black</td> <td>57d7ff34f23ada297d265f21</td> </tr> </table><br> <b>language</b> <table> <tr> <td>German</td> <td>de_DE</td> </tr> <tr> <td>German(Autria)</td> <td>de_AT</td> </tr> <tr> <td>German(Swiss)</td> <td>de_CH</td> </tr> <tr> <td>English</td> <td>en_US</td> </tr> <tr> <td>Spanish</td> <td>es_ES</td> </tr> <tr> <td>French</td> <td>fr_FR</td> </tr> <tr> <td>Italian</td> <td>id_IT</td> </tr> <tr> <td>Greek</td> <td>el_GR</td> </tr> </table><br> <b>payPal</b> <table> <tr> <td>Show PayPal icon</td> <td>A</td> </tr> <tr> <td>Show link</td> <td>B</td> </tr> <tr> <td>Disable Paypal</td> <td>C</td> </tr> <tr> <td>PayPal as Strig</td> <td>D</td> </tr> </table>
+       In the layouts there are only two different attributes, <b>key</b> and <b>value</b>. For key you can pass one of the following values: <ul> <li>template</li> <li>letterpaper</li> <li>language</li> <li>payPal</li> </ul> The value depends on which key you have chosen. In the following the standard values ​​of the respective keys.<br><br> <b>language</b> <table> <tr> <td>German</td> <td>de_DE</td> </tr> <tr> <td>German(Autria)</td> <td>de_AT</td> </tr> <tr> <td>German(Swiss)</td> <td>de_CH</td> </tr> <tr> <td>English</td> <td>en_US</td> </tr> <tr> <td>Spanish</td> <td>es_ES</td> </tr> <tr> <td>French</td> <td>fr_FR</td> </tr> <tr> <td>Italian</td> <td>id_IT</td> </tr> <tr> <td>Greek</td> <td>el_GR</td> </tr> </table><br> <b>payPal</b> <table> <tr> <td>Show PayPal icon</td> <td>A</td> </tr> <tr> <td>Show link</td> <td>B</td> </tr> <tr> <td>Disable Paypal</td> <td>C</td> </tr> <tr> <td>PayPal as Strig</td> <td>D</td> </tr> </table>
     x-displayName: Layout
   - name: Order
     description: |-
@@ -249,7 +247,7 @@ tags:
   - description: Everything about the TextTemplate model
     name: TextTemplate
 paths:
-  /api/v1/Tools/bookkeepingSystemVersion:
+  /Tools/bookkeepingSystemVersion:
     get:
       tags:
         - Basics
@@ -9957,6 +9955,7 @@ components:
       required:
         - contact
         - country
+        - category
       properties:
         id:
           description: The contact address id
