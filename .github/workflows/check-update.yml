@@ -19,6 +19,8 @@ jobs:
       UPDATE_BRANCH_NAME: ${{ inputs.updateBranchName || vars.UPDATE_BRANCH_NAME || 'update-openapi' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Prepare git
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
