@@ -17,7 +17,7 @@ npx patch-utils sort-yaml external/openapi.yaml -t "$MERGE_FILE" -o > /dev/null
 git diff --exit-code > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     git add openapi.yaml external/openapi.yaml
-    git commit -m "refactor!: Sort for update"
+    git commit -m "refactor: Sort for update"
 fi
 
 npx patch-utils sort-yaml openapi.yaml "openapi.yaml~" > /dev/null
@@ -42,7 +42,7 @@ if [ $status -ne 0 ]; then
     echo "2. sort the file,"
     echo -e "\t\033[1mnpx patch-utils sort-yaml openapi.yaml -t \"external/openapi.yaml\" -o\033[0m"
     echo "3. commit manually."
-    echo -e "\t\033[1m git add openapi.yaml && git commit -m \"build(external)\\!: Update openapi.yaml\" \033[0m"
+    echo -e "\t\033[1m git add openapi.yaml && git commit -m \"build(external)\\: Update openapi.yaml\" \033[0m"
 
     if [ -z ${CI+x} ]; then
         code openapi.yaml
@@ -56,7 +56,7 @@ npx patch-utils sort-yaml openapi.yaml -t "external/openapi.yaml" -o > /dev/null
 git diff --exit-code > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     git add openapi.yaml external/openapi.yaml
-    git commit -m "build(external)!: Update openapi.yaml"
+    git commit -m "build(external): Update openapi.yaml"
     echo ""
     echo "Merge finished."
 else
