@@ -33,7 +33,7 @@ jobs:
         run: |
           git fetch
           git switch ${{env.UPDATE_BRANCH_NAME}} 2>/dev/null || git switch -c ${{env.UPDATE_BRANCH_NAME}}
-          git rebase "${{ github.ref_name}}"
+          git rebase "${{ github.ref_name}}" "${{env.UPDATE_BRANCH_NAME}}"
       - name: Update OpenAPI
         id: update_openapi
         run: ./scripts/update.sh
