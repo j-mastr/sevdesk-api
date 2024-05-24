@@ -9,10 +9,10 @@ info:
 servers:
   - url: https://my.sevdesk.de/api/v1
     description: Our main application instance which most of our customers work with
-  - url: https://my.pebesmart.ch/api/v1
-    description: Our swiss application instance, hosted and maintained by smart seven AG
   - url: http://sevdesk.local/api/v1
     description: sevDesk internal local instance
+  - description: Our swiss application instance, hosted and maintained by smart seven AG
+    url: https://my.pebesmart.ch/api/v1
 tags:
   - name: Basics
     description: >-
@@ -246,39 +246,6 @@ tags:
        With the tag relations you can display all invoices, receipts, orders and credit notes that have a tag<br> The tag relation does not have to be created separately, as this is automatically created when a tag is created.<br> <br>
     x-displayName: Tag
 paths:
-  /api/v1/Tools/bookkeepingSystemVersion:
-    get:
-      tags:
-        - Basics
-      summary: Retrieve bookkeeping system version
-      description: >-
-        To check if you already received the update to version 2.0 you can use
-        this endpoint.
-      operationId: bookkeepingSystemVersion
-      responses:
-        '200':
-          description: Successful Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  objects:
-                    type: object
-                    properties:
-                      version:
-                        type: string
-                        enum:
-                          - '1.0'
-                          - '2.0'
-              example:
-                objects:
-                  version: '2.0'
-        '401':
-          description: Authentication required
-      deprecated: false
-      security:
-        - api_key: []
   /CheckAccount:
     get:
       tags:
@@ -7540,6 +7507,39 @@ paths:
           description: Server Error
       security:
         - api_key: []
+  /api/v1/Tools/bookkeepingSystemVersion:
+    get:
+      deprecated: false
+      description: >-
+        To check if you already received the update to version 2.0 you can use
+        this endpoint.
+      operationId: bookkeepingSystemVersion
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                objects:
+                  version: '2.0'
+              schema:
+                properties:
+                  objects:
+                    properties:
+                      version:
+                        enum:
+                          - '1.0'
+                          - '2.0'
+                        type: string
+                    type: object
+                type: object
+          description: Successful Request
+        '401':
+          description: Authentication required
+      security:
+        - api_key: []
+      summary: Retrieve bookkeeping system version
+      tags:
+        - Basics
 components:
   schemas:
     Model_CheckAccountResponse:
