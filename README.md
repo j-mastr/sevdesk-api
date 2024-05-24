@@ -19,9 +19,9 @@ One of the primary use cases for this repository is generating SDKs (Software De
 
 Feel free to open a pull request to add your SDK to the list.
 
-| SDK / Language | Maintainer                      | Repository                                                       |
-| -------------- | ------------------------------- | ---------------------------------------------------------------- |
-| PHP SDK        | it's mind <support@itsmind.com> | [sevdesk-php-sdk](https://github.com/itsmindcom/sevdesk-php-sdk) |
+| SDK / Language | Maintainer                  | Repository                                                    |
+| -------------- | --------------------------- | ------------------------------------------------------------- |
+| PHP SDK        | Janik <support@itsmind.com> | [sevdesk-php-sdk](https://github.com/j-mastr/sevdesk-php-sdk) |
 
 ## Contributing
 
