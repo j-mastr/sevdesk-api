@@ -9589,25 +9589,27 @@ components:
           example: Customer-1337
           nullable: true
         parent:
-          description: >-
-            The parent contact to which this contact belongs. Must be an
-            organization.
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the parent contact
-              type: integer
-            objectName:
-              description: Model name, which is 'Contact'
-              type: string
-              example: Contact
-              default: Contact
-              enum:
-                - Contact
-          type: object
-          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/Model_Contact'
+            - description: >-
+                The parent contact to which this contact belongs. Must be an
+                organization.
+              nullable: true
+              properties:
+                id:
+                  description: Unique identifier of the parent contact
+                  type: integer
+                objectName:
+                  default: Contact
+                  description: Model name, which is 'Contact'
+                  enum:
+                    - Contact
+                  example: Contact
+                  type: string
+              required:
+                - id
+                - objectName
+              type: object
         surename:
           description: |-
             The <b>first</b> name of the contact.<br>
@@ -10388,24 +10390,26 @@ components:
           format: date-time
           readOnly: true
         contact:
-          description: The contact to which this communication way belongs.
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the contact
-              type: string
-              example: '0'
-            objectName:
-              description: Model name, which is 'Contact'
-              type: string
-              example: Contact
-              default: Contact
-              enum:
-                - Contact
-          type: object
-          readOnly: true
+          anyOf:
+            - $ref: '#/components/schemas/Model_Contact'
+            - description: The contact to which this communication way belongs.
+              properties:
+                id:
+                  description: Unique identifier of the contact
+                  example: '0'
+                  type: string
+                objectName:
+                  default: Contact
+                  description: Model name, which is 'Contact'
+                  enum:
+                    - Contact
+                  example: Contact
+                  type: string
+              readOnly: true
+              required:
+                - id
+                - objectName
+              type: object
         type:
           description: Type of the communication way
           type: string
