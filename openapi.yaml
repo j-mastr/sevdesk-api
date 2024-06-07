@@ -298,7 +298,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_CheckAccountResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -308,6 +312,11 @@ paths:
       deprecated: false
       security:
         - api_key: []
+      parameters:
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
     post:
       tags:
         - CheckAccount
@@ -609,6 +618,7 @@ paths:
           required: false
           schema:
             type: string
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -624,6 +634,8 @@ paths:
                   total:
                     type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -982,6 +994,7 @@ paths:
           required: false
           schema:
             type: integer
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -1232,7 +1245,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_ContactAddressResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -1242,6 +1259,11 @@ paths:
       deprecated: false
       security:
         - api_key: []
+      parameters:
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
   /ContactAddress/{contactAddressId}:
     get:
       tags:
@@ -1355,24 +1377,6 @@ paths:
         Filters can be added.
       operationId: getCommunicationWays
       parameters:
-        - name: contact[id]
-          in: query
-          description: ID of contact for which you want the communication ways.
-          required: false
-          explode: true
-          schema:
-            type: string
-        - name: contact[objectName]
-          in: query
-          description: Object name. Only needed if you also defined the ID of a contact.
-          required: false
-          explode: true
-          schema:
-            type: string
-            example: Contact
-            default: Contact
-            enum:
-              - Contact
         - name: type
           in: query
           description: Type of the communication ways you want to get.
@@ -1381,10 +1385,10 @@ paths:
           schema:
             type: string
             enum:
-              - PHONE
               - EMAIL
-              - WEB
               - MOBILE
+              - PHONE
+              - WEB
         - name: main
           in: query
           description: Define if you only want the main communication way.
@@ -1395,6 +1399,36 @@ paths:
             enum:
               - '0'
               - '1'
+        - name: contact
+          in: query
+          description: >-
+            Retrieve all communication ways with this contact. The value of
+            contact[objectName] must be 'Contact'.
+          required: false
+          explode: true
+          schema:
+            type: object
+            properties:
+              id:
+                description: ID of contact for which you want the communication ways.
+                type: string
+              objectName:
+                default: Contact
+                description: >-
+                  Object name. Only needed if you also defined the ID of a
+                  contact. Is always 'Contact'
+                enum:
+                  - Contact
+                example: Contact
+                type: string
+            required:
+              - id
+              - objectName
+          style: deepObject
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -1406,7 +1440,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_CommunicationWayResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -1607,6 +1645,11 @@ paths:
                         translationCode:
                           type: string
                           example: COMM_WAY_KEY_WORK
+                  total:
+                    type: integer
+                required:
+                  - objects
+                type: object
         '400':
           description: Bad request
         '401':
@@ -1616,6 +1659,11 @@ paths:
       deprecated: false
       security:
         - api_key: []
+      parameters:
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
   /AccountingContact:
     get:
       tags:
@@ -1644,6 +1692,10 @@ paths:
             default: Contact
             enum:
               - Contact
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -1655,7 +1707,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_AccountingContactResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -1874,12 +1930,22 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_ContactCustomFieldResponse'
+                  total:
+                    type: integer
+                required:
+                  - objects
+                type: object
         '401':
           description: Authentication required
         '500':
           description: Server Error
       security:
         - api_key: []
+      parameters:
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
     post:
       tags:
         - ContactField
@@ -2018,12 +2084,22 @@ paths:
                     items:
                       $ref: >-
                         #/components/schemas/Model_ContactCustomFieldSettingResponse
+                  total:
+                    type: integer
+                required:
+                  - objects
+                type: object
         '401':
           description: Authentication required
         '500':
           description: Server Error
       security:
         - api_key: []
+      parameters:
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
     post:
       tags:
         - ContactField
@@ -2249,6 +2325,10 @@ paths:
           explode: false
           schema:
             type: string
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -2260,7 +2340,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_creditNoteResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -3141,6 +3225,10 @@ paths:
           explode: false
           schema:
             type: string
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -3152,7 +3240,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_creditNotePosResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -4134,6 +4226,10 @@ paths:
           explode: false
           schema:
             type: string
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -4145,7 +4241,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_Part'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -4717,6 +4817,9 @@ paths:
             type: array
             items:
               type: string
+          explode: false
+          style: form
+        - $ref: '#/components/parameters/countAll'
       responses:
         '200':
           description: Successful operation
@@ -4728,7 +4831,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_InvoicePosResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request. Invoice was not found
         '401':
@@ -5551,6 +5658,10 @@ paths:
           required: false
           schema:
             type: string
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -5562,7 +5673,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_InvoicePosResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -5843,6 +5958,10 @@ paths:
           explode: false
           schema:
             type: string
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -5854,7 +5973,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_OrderResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -6030,6 +6153,9 @@ paths:
             type: array
             items:
               type: string
+          explode: false
+          style: form
+        - $ref: '#/components/parameters/countAll'
       responses:
         '200':
           description: Successful operation
@@ -6041,7 +6167,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_OrderPosResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request. order was not found
         '401':
@@ -6086,6 +6216,9 @@ paths:
             type: array
             items:
               type: string
+          explode: false
+          style: form
+        - $ref: '#/components/parameters/countAll'
       responses:
         '200':
           description: Successful operation
@@ -6097,7 +6230,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_Discount'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request. order was not found
         '401':
@@ -6142,6 +6279,11 @@ paths:
             type: array
             items:
               type: string
+          explode: false
+          style: form
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
       responses:
         '200':
           description: Successful operation
@@ -6153,7 +6295,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_OrderPosResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request. order was not found
         '401':
@@ -6458,6 +6604,10 @@ paths:
           explode: false
           schema:
             type: string
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -6469,7 +6619,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_OrderPosResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -6779,6 +6933,10 @@ paths:
           explode: false
           schema:
             type: string
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -6790,7 +6948,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_VoucherResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -7899,6 +8061,10 @@ paths:
           required: false
           schema:
             type: string
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -7910,6 +8076,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_TagResponse'
+                  total:
+                    type: integer
+                required:
+                  - objects
+                type: object
         '401':
           description: Authentication required
         '500':
@@ -8083,12 +8254,22 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_TagCreateResponse'
+                  total:
+                    type: integer
+                required:
+                  - objects
+                type: object
         '401':
           description: Authentication required
         '500':
           description: Server Error
       security:
         - api_key: []
+      parameters:
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
   /Document:
     get:
       deprecated: false
@@ -8118,12 +8299,15 @@ paths:
               - objectName
             type: object
           style: deepObject
-        - description: If all contacts should be counted
+        - description: If all documents should be counted
           in: query
           name: countAll
           required: false
           schema:
             type: boolean
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           content:
@@ -8285,6 +8469,7 @@ paths:
         - description: >-
             Get some additional information. Embed can handle multiple values,
             they must be separated by comma. Default ``.
+          explode: false
           in: query
           name: embed
           required: false
@@ -8292,6 +8477,7 @@ paths:
             items:
               type: string
             type: array
+          style: form
         - description: The category of the new Text Template.
           in: query
           name: category
@@ -8329,6 +8515,7 @@ paths:
               - SUBJECT
               - TEXT
             type: string
+        - $ref: '#/components/parameters/countAll'
       responses:
         '200':
           content:
@@ -8339,6 +8526,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/Model_TextTemplateResponse'
                     type: array
+                  total:
+                    type: integer
                 required:
                   - objects
                 type: object
@@ -9408,25 +9597,27 @@ components:
           example: Customer-1337
           nullable: true
         parent:
-          description: >-
-            The parent contact to which this contact belongs. Must be an
-            organization.
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the parent contact
-              type: integer
-            objectName:
-              description: Model name, which is 'Contact'
-              type: string
-              example: Contact
-              default: Contact
-              enum:
-                - Contact
-          type: object
-          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/Model_Contact'
+            - description: >-
+                The parent contact to which this contact belongs. Must be an
+                organization.
+              nullable: true
+              properties:
+                id:
+                  description: Unique identifier of the parent contact
+                  type: integer
+                objectName:
+                  default: Contact
+                  description: Model name, which is 'Contact'
+                  enum:
+                    - Contact
+                  example: Contact
+                  type: string
+              required:
+                - id
+                - objectName
+              type: object
         surename:
           description: |-
             The <b>first</b> name of the contact.<br>
@@ -10207,24 +10398,26 @@ components:
           format: date-time
           readOnly: true
         contact:
-          description: The contact to which this communication way belongs.
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the contact
-              type: string
-              example: '0'
-            objectName:
-              description: Model name, which is 'Contact'
-              type: string
-              example: Contact
-              default: Contact
-              enum:
-                - Contact
-          type: object
-          readOnly: true
+          anyOf:
+            - $ref: '#/components/schemas/Model_Contact'
+            - description: The contact to which this communication way belongs.
+              properties:
+                id:
+                  description: Unique identifier of the contact
+                  example: '0'
+                  type: string
+                objectName:
+                  default: Contact
+                  description: Model name, which is 'Contact'
+                  enum:
+                    - Contact
+                  example: Contact
+                  type: string
+              readOnly: true
+              required:
+                - id
+                - objectName
+              type: object
         type:
           description: Type of the communication way
           type: string
@@ -19150,6 +19343,41 @@ components:
       type: apiKey
       name: Authorization
       in: header
+  parameters:
+    countAll:
+      description: If all objects should be counted
+      in: query
+      name: countAll
+      required: false
+      schema:
+        type: boolean
+    embed:
+      description: >-
+        Get some additional information. Embed can handle multiple values, they
+        must be separated by comma.
+      explode: false
+      in: query
+      name: embed
+      required: false
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
+    limit:
+      description: The max number of objects to return
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+    offset:
+      description: Which offset to start with
+      in: query
+      name: offset
+      required: false
+      schema:
+        type: integer
 x-tagGroups:
   - name: sevDesk API
     tags:
