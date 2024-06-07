@@ -308,6 +308,19 @@ paths:
       deprecated: false
       security:
         - api_key: []
+      parameters:
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
     post:
       tags:
         - CheckAccount
@@ -609,6 +622,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -982,6 +1007,18 @@ paths:
           required: false
           schema:
             type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -1242,6 +1279,37 @@ paths:
       deprecated: false
       security:
         - api_key: []
+      parameters:
+        - description: If all contact addresses should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of contact addresses
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
   /ContactAddress/{contactAddressId}:
     get:
       tags:
@@ -1395,6 +1463,36 @@ paths:
             enum:
               - '0'
               - '1'
+        - description: If all communication ways should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of communication ways
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -1616,6 +1714,37 @@ paths:
       deprecated: false
       security:
         - api_key: []
+      parameters:
+        - description: If all communication way keys should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of communication way keys
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
   /AccountingContact:
     get:
       tags:
@@ -1644,6 +1773,36 @@ paths:
             default: Contact
             enum:
               - Contact
+        - description: If all accounting contacts should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of accounting contacts
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -1880,6 +2039,37 @@ paths:
           description: Server Error
       security:
         - api_key: []
+      parameters:
+        - description: If all contact custom fields should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of contact custom fields
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
     post:
       tags:
         - ContactField
@@ -2024,6 +2214,37 @@ paths:
           description: Server Error
       security:
         - api_key: []
+      parameters:
+        - description: If all contact custom field settings should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of contact custom field settings
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
     post:
       tags:
         - ContactField
@@ -2249,6 +2470,36 @@ paths:
           explode: false
           schema:
             type: string
+        - description: If all credit notes should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of credit notes
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -3141,6 +3392,36 @@ paths:
           explode: false
           schema:
             type: string
+        - description: If all credit note pos should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of credit note pos
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -4134,6 +4415,36 @@ paths:
           explode: false
           schema:
             type: string
+        - description: If all parts should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of parts
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -4717,6 +5028,8 @@ paths:
             type: array
             items:
               type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -5551,6 +5864,36 @@ paths:
           required: false
           schema:
             type: string
+        - description: If all invoice pos should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of invoice pos
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -5843,6 +6186,36 @@ paths:
           explode: false
           schema:
             type: string
+        - description: If all orders should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of orders
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -6030,6 +6403,8 @@ paths:
             type: array
             items:
               type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -6086,6 +6461,8 @@ paths:
             type: array
             items:
               type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -6142,6 +6519,8 @@ paths:
             type: array
             items:
               type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -6458,6 +6837,36 @@ paths:
           explode: false
           schema:
             type: string
+        - description: If all order pos should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of order pos
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -6779,6 +7188,36 @@ paths:
           explode: false
           schema:
             type: string
+        - description: If all vouchers should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of vouchers
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -7899,6 +8338,36 @@ paths:
           required: false
           schema:
             type: string
+        - description: If all tags should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of tags
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           description: Successful operation
@@ -8089,6 +8558,37 @@ paths:
           description: Server Error
       security:
         - api_key: []
+      parameters:
+        - description: If all tag relations should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
+        - description: The max number of tag relations
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
   /Document:
     get:
       deprecated: false
@@ -8118,12 +8618,36 @@ paths:
               - objectName
             type: object
           style: deepObject
-        - description: If all contacts should be counted
+        - description: If all documents should be counted
           in: query
           name: countAll
           required: false
           schema:
             type: boolean
+        - description: The max number of documents
+          in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+        - description: Which offset to start with
+          in: query
+          name: offset
+          required: false
+          schema:
+            type: integer
+        - name: embed
+          in: query
+          description: >-
+            Get some additional information. Embed can handle multiple values,
+            they must be separated by comma.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          explode: false
+          style: form
       responses:
         '200':
           content:
@@ -8292,6 +8816,8 @@ paths:
             items:
               type: string
             type: array
+          explode: false
+          style: form
         - description: The category of the new Text Template.
           in: query
           name: category
@@ -8329,6 +8855,12 @@ paths:
               - SUBJECT
               - TEXT
             type: string
+        - description: If all text templates should be counted
+          in: query
+          name: countAll
+          required: false
+          schema:
+            type: boolean
       responses:
         '200':
           content:
