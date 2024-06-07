@@ -1377,24 +1377,6 @@ paths:
         Filters can be added.
       operationId: getCommunicationWays
       parameters:
-        - name: contact[id]
-          in: query
-          description: ID of contact for which you want the communication ways.
-          required: false
-          explode: true
-          schema:
-            type: string
-        - name: contact[objectName]
-          in: query
-          description: Object name. Only needed if you also defined the ID of a contact.
-          required: false
-          explode: true
-          schema:
-            type: string
-            example: Contact
-            default: Contact
-            enum:
-              - Contact
         - name: type
           in: query
           description: Type of the communication ways you want to get.
@@ -1403,10 +1385,10 @@ paths:
           schema:
             type: string
             enum:
-              - PHONE
               - EMAIL
-              - WEB
               - MOBILE
+              - PHONE
+              - WEB
         - name: main
           in: query
           description: Define if you only want the main communication way.
@@ -1417,6 +1399,32 @@ paths:
             enum:
               - '0'
               - '1'
+        - name: contact
+          in: query
+          description: >-
+            Retrieve all communication ways with this contact. The value of
+            contact[objectName] must be 'Contact'.
+          required: false
+          explode: true
+          schema:
+            type: object
+            properties:
+              id:
+                description: ID of contact for which you want the communication ways.
+                type: string
+              objectName:
+                default: Contact
+                description: >-
+                  Object name. Only needed if you also defined the ID of a
+                  contact. Is always 'Contact'
+                enum:
+                  - Contact
+                example: Contact
+                type: string
+            required:
+              - id
+              - objectName
+          style: deepObject
         - $ref: '#/components/parameters/countAll'
         - $ref: '#/components/parameters/offset'
         - $ref: '#/components/parameters/limit'
