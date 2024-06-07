@@ -649,6 +649,8 @@ paths:
                   total:
                     type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -1269,7 +1271,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_ContactAddressResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -1510,7 +1516,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_CommunicationWayResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -1711,6 +1721,11 @@ paths:
                         translationCode:
                           type: string
                           example: COMM_WAY_KEY_WORK
+                  total:
+                    type: integer
+                type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -1820,7 +1835,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_AccountingContactResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -2039,6 +2058,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_ContactCustomFieldResponse'
+                  total:
+                    type: integer
+                type: object
+                required:
+                  - objects
         '401':
           description: Authentication required
         '500':
@@ -2214,6 +2238,11 @@ paths:
                     items:
                       $ref: >-
                         #/components/schemas/Model_ContactCustomFieldSettingResponse
+                  total:
+                    type: integer
+                type: object
+                required:
+                  - objects
         '401':
           description: Authentication required
         '500':
@@ -2517,7 +2546,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_creditNoteResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -3439,7 +3472,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_creditNotePosResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -4462,7 +4499,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_Part'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -5911,7 +5952,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_InvoicePosResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -6233,7 +6278,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_OrderResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -6884,7 +6933,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_OrderPosResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -7235,7 +7288,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_VoucherResponse'
+                  total:
+                    type: integer
                 type: object
+                required:
+                  - objects
         '400':
           description: Bad request
         '401':
@@ -8385,6 +8442,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_TagResponse'
+                  total:
+                    type: integer
+                type: object
+                required:
+                  - objects
         '401':
           description: Authentication required
         '500':
@@ -8558,6 +8620,11 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Model_TagCreateResponse'
+                  total:
+                    type: integer
+                type: object
+                required:
+                  - objects
         '401':
           description: Authentication required
         '500':
@@ -8877,6 +8944,8 @@ paths:
                     items:
                       $ref: '#/components/schemas/Model_TextTemplateResponse'
                     type: array
+                  total:
+                    type: integer
                 required:
                   - objects
                 type: object
