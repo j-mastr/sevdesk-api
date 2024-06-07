@@ -1423,24 +1423,30 @@ paths:
         Filters can be added.
       operationId: getCommunicationWays
       parameters:
-        - name: contact[id]
-          in: query
-          description: ID of contact for which you want the communication ways.
-          required: false
+        - description: >-
+            Retrieve all communication ways with this contact. The value of
+            contact[objectName] must be 'Contact'.
           explode: true
-          schema:
-            type: string
-        - name: contact[objectName]
           in: query
-          description: Object name. Only needed if you also defined the ID of a contact.
+          name: contact
           required: false
-          explode: true
           schema:
-            type: string
-            example: Contact
-            default: Contact
-            enum:
-              - Contact
+            properties:
+              id:
+                type: string
+                description: ID of contact for which you want the communication ways.
+              objectName:
+                default: Contact
+                description: Object name. Only needed if you also defined the ID of a contact. Is always 'Contact'
+                enum:
+                  - Contact
+                example: Contact
+                type: string
+            required:
+              - id
+              - objectName
+            type: object
+          style: deepObject
         - name: type
           in: query
           description: Type of the communication ways you want to get.
