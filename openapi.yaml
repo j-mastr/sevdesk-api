@@ -1062,6 +1062,7 @@ paths:
           required: true
           schema:
             type: integer
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -1496,6 +1497,7 @@ paths:
           required: true
           schema:
             type: integer
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -9597,7 +9599,7 @@ components:
           example: Customer-1337
           nullable: true
         parent:
-          allOf:
+          anyOf:
             - $ref: '#/components/schemas/Model_Contact'
             - description: >-
                 The parent contact to which this contact belongs. Must be an
@@ -9786,6 +9788,27 @@ components:
             - ss
           nullable: true
           type: string
+        communicationWays:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/Model_CommunicationWay'
+              - nullable: true
+                properties:
+                  id:
+                    description: Unique identifier of the communication way
+                    type: string
+                  objectName:
+                    default: CommunicationWay
+                    description: Model name, which is 'CommunicationWay'
+                    enum:
+                      - CommunicationWay
+                    example: CommunicationWay
+                    type: string
+                required:
+                  - id
+                  - objectName
+                type: object
       type: object
     Model_ContactUpdate:
       title: Contact model
