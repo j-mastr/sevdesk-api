@@ -1271,7 +1271,7 @@ paths:
         - ContactAddress
       summary: Find contact address by ID
       description: Returns a single contact address
-      operationId: contactAddressId
+      operationId: getContactAddressById
       parameters:
         - name: contactAddressId
           in: path
@@ -9569,6 +9569,50 @@ components:
             - ss
           readOnly: true
           type: string
+        addresses:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/Model_ContactAddress'
+              - nullable: true
+                properties:
+                  id:
+                    description: The contact address id
+                    type: integer
+                  objectName:
+                    default: ContactAddress
+                    description: Model name, which is 'ContactAddress'
+                    enum:
+                      - ContactAddress
+                    example: ContactAddress
+                    type: string
+                required:
+                  - id
+                  - objectName
+                type: object
+        communicationWays:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/Model_CommunicationWay'
+              - nullable: true
+                properties:
+                  id:
+                    description: Unique identifier of the communication way
+                    type: string
+                  objectName:
+                    default: CommunicationWay
+                    description: Model name, which is 'CommunicationWay'
+                    enum:
+                      - CommunicationWay
+                    example: CommunicationWay
+                    type: string
+                required:
+                  - id
+                  - objectName
+                type: object
+        mainAddress:
+          $ref: '#/components/schemas/Model_ContactAddress'
       type: object
     Model_Contact:
       title: Contact model
@@ -9788,6 +9832,27 @@ components:
             - ss
           nullable: true
           type: string
+        addresses:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/Model_ContactAddress'
+              - nullable: true
+                properties:
+                  id:
+                    description: The contact address id
+                    type: integer
+                  objectName:
+                    default: ContactAddress
+                    description: Model name, which is 'ContactAddress'
+                    enum:
+                      - ContactAddress
+                    example: ContactAddress
+                    type: string
+                required:
+                  - id
+                  - objectName
+                type: object
         communicationWays:
           type: array
           items:
@@ -9809,6 +9874,8 @@ components:
                   - id
                   - objectName
                 type: object
+        mainAddress:
+          $ref: '#/components/schemas/Model_ContactAddress'
       type: object
     Model_ContactUpdate:
       title: Contact model
@@ -10057,23 +10124,25 @@ components:
           format: date-time
           readOnly: true
         contact:
-          description: The contact to which this contact address belongs.
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the contact
-              type: integer
-            objectName:
-              description: Model name, which is 'Contact'
-              type: string
-              example: Contact
-              default: Contact
-              enum:
-                - Contact
-          type: object
-          nullable: false
+          anyOf:
+            - $ref: '#/components/schemas/Model_Contact'
+            - description: The contact to which this contact address belongs.
+              required:
+                - id
+                - objectName
+              properties:
+                id:
+                  description: Unique identifier of the contact
+                  type: integer
+                objectName:
+                  description: Model name, which is 'Contact'
+                  type: string
+                  example: Contact
+                  default: Contact
+                  enum:
+                    - Contact
+              type: object
+              nullable: false
         street:
           description: Street name
           type: string
@@ -10090,23 +10159,25 @@ components:
           example: The North
           nullable: true
         country:
-          description: "Country of the contact address.<br>\r\n    For all countries, send a GET to /StaticCountry"
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the country
-              type: integer
-            objectName:
-              description: Model name, which is 'StaticCountry'
-              type: string
-              example: StaticCountry
-              default: StaticCountry
-              enum:
-                - StaticCountry
-          type: object
-          nullable: false
+          anyOf:
+            - $ref: '#/components/schemas/Model_StaticCountryResponse'
+            - description: "Country of the contact address.<br>\r\n    For all countries, send a GET to /StaticCountry"
+              required:
+                - id
+                - objectName
+              properties:
+                id:
+                  description: Unique identifier of the country
+                  type: integer
+                objectName:
+                  description: Model name, which is 'StaticCountry'
+                  type: string
+                  example: StaticCountry
+                  default: StaticCountry
+                  enum:
+                    - StaticCountry
+              type: object
+              nullable: false
         category:
           description: "Category of the contact address.<br>\r\n     For all categories, send a GET to /Category?objectType=ContactAddress."
           required:
@@ -10196,23 +10267,25 @@ components:
           format: date-time
           readOnly: true
         contact:
-          description: The contact to which this contact address belongs.
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the contact
-              type: integer
-            objectName:
-              description: Model name, which is 'Contact'
-              type: string
-              example: Contact
-              default: Contact
-              enum:
-                - Contact
-          type: object
-          nullable: false
+          anyOf:
+            - $ref: '#/components/schemas/Model_Contact'
+            - description: The contact to which this contact address belongs.
+              required:
+                - id
+                - objectName
+              properties:
+                id:
+                  description: Unique identifier of the contact
+                  type: integer
+                objectName:
+                  description: Model name, which is 'Contact'
+                  type: string
+                  example: Contact
+                  default: Contact
+                  enum:
+                    - Contact
+              type: object
+              nullable: false
         street:
           description: Street name
           type: string
@@ -10229,23 +10302,25 @@ components:
           example: The North
           nullable: true
         country:
-          description: "Country of the contact address.<br>\r\n    For all countries, send a GET to /StaticCountry"
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the country
-              type: integer
-            objectName:
-              description: Model name, which is 'StaticCountry'
-              type: string
-              example: StaticCountry
-              default: StaticCountry
-              enum:
-                - StaticCountry
-          type: object
-          nullable: false
+          anyOf:
+            - $ref: '#/components/schemas/Model_StaticCountryResponse'
+            - description: "Country of the contact address.<br>\r\n    For all countries, send a GET to /StaticCountry"
+              required:
+                - id
+                - objectName
+              properties:
+                id:
+                  description: Unique identifier of the country
+                  type: integer
+                objectName:
+                  description: Model name, which is 'StaticCountry'
+                  type: string
+                  example: StaticCountry
+                  default: StaticCountry
+                  enum:
+                    - StaticCountry
+              type: object
+              nullable: false
         category:
           description: "Category of the contact address.<br>\r\n     For all categories, send a GET to /Category?objectType=ContactAddress."
           required:
