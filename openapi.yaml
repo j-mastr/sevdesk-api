@@ -6784,7 +6784,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/saveVoucherResponse'
+                type: object
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/saveVoucherResponse'
         '400':
           description: Bad request
         '401':
