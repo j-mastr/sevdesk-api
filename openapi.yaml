@@ -246,6 +246,7 @@ tags:
     x-displayName: Tag
   - description: Everything about the TextTemplate model
     name: TextTemplate
+  - name: SevUser
 paths:
   /Tools/bookkeepingSystemVersion:
     get:
@@ -8633,6 +8634,89 @@ paths:
       summary: Update an existing text template
       tags:
         - TextTemplate
+  /SevUser:
+    get:
+      operationId: getSevUsers
+      parameters:
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
+        - name: ignoreRoles
+          in: query
+          style: deepObject
+          explode: true
+          schema:
+            type: object
+            properties:
+              0:
+                type: string
+              1:
+                type: string
+              2:
+                type: string
+              3:
+                type: string
+              4:
+                type: string
+              5:
+                type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      $ref: '#/components/schemas/Model_SevUserResponse'
+                    type: array
+                  total:
+                    type: integer
+                required:
+                  - objects
+                type: object
+          description: successful operation
+        '400':
+          description: invalid request
+        '401':
+          description: authentication required
+      security:
+        - api_key: []
+      tags:
+        - SevUser
+  /SevUser/{sevUserId}:
+    get:
+      tags:
+        - SevUser
+      operationId: getSevUserById
+      parameters:
+        - name: sevUserId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - $ref: '#/components/parameters/embed'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Model_SevUserResponse'
+                type: object
+        '400':
+          description: Bad request. SevUser was not found
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
 components:
   schemas:
     Model_CheckAccountResponse:
@@ -19440,6 +19524,92 @@ components:
           format: date-time
           type: string
       title: Text Template Model
+    Model_SevUserResponse:
+      properties:
+        id:
+          type: number
+        objectName:
+          type: string
+          default: SevUser
+          enum:
+            - SevUser
+        additionalInformation:
+          type: string
+        create:
+          type: string
+          format: date-time
+        update:
+          type: string
+          format: date-time
+        fullname:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        username:
+          type: string
+        status:
+          type: string
+        email:
+          type: string
+        gender:
+          type: string
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+            - Accountant
+            - accountant-light
+            - checker
+        memberCode:
+          type: string
+        lastLogin:
+          type: string
+          format: date-time
+        lastLoginIp:
+          type: string
+        welcomeScreenSeen:
+          type: boolean
+        smtpName:
+          type: string
+        smtpMail:
+          type: string
+        smtpUser:
+          type: string
+        smtpPort:
+          type: string
+        smtpSsl:
+          type: string
+        smtpHost:
+          type: string
+        languageCode:
+          type: string
+        twoFactorAuth:
+          type: boolean
+        forcePasswordChange:
+          type: boolean
+        clientOwner:
+          type: boolean
+        defaultReceiveMailCopy:
+          type: boolean
+        hideMapsDirections:
+          type: boolean
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        lastPasswordChange:
+          type: string
+          format: date-time
+        sevClient:
+          description: >-
+            sevClient is the unique id every customer has and is used in nearly
+            all operations
+          type: object
   securitySchemes:
     api_key:
       type: apiKey
