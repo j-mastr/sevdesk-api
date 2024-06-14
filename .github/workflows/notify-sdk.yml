@@ -1,0 +1,37 @@
+# Inspired by https://stackoverflow.com/a/67059629/9969672
+name: "Submodule Notify SDKs"
+
+on:
+  push:
+    branches:
+      - main
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  notify:
+    name: "Submodule Notify SDKs"
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - repository: j-mastr/sevdesk-php-sdk
+            branch: main
+            workflow: submodule-sync
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Github REST API Call
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          PARENT_REPOSITORY: ${{ matrix.repository }}
+          PARENT_BRANCH: ${{ matrix.branch || 'main' }}
+          WORKFLOW_ID: ${{ matrix.workflow || 'submodule-sync' }}
+        run: |
+          gh workflow run ${{ env.WORKFLOW_ID }} --repo ${{ env.PARENT_REPOSITORY }} --ref ${{ env.PARENT_BRANCH }}
