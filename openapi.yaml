@@ -6785,10 +6785,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
                 properties:
                   objects:
                     $ref: '#/components/schemas/saveVoucherResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -8454,6 +8454,89 @@ paths:
       summary: Get the oben reminder debit for an invoice
       tags:
         - Invoice
+  /SevUser:
+    get:
+      operationId: getSevUsers
+      parameters:
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
+        - explode: true
+          in: query
+          name: ignoreRoles
+          schema:
+            properties:
+              '0':
+                type: string
+              '1':
+                type: string
+              '2':
+                type: string
+              '3':
+                type: string
+              '4':
+                type: string
+              '5':
+                type: string
+            type: object
+          style: deepObject
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      $ref: '#/components/schemas/Model_SevUserResponse'
+                    type: array
+                  total:
+                    type: integer
+                required:
+                  - objects
+                type: object
+          description: successful operation
+        '400':
+          description: invalid request
+        '401':
+          description: authentication required
+      security:
+        - api_key: []
+      tags:
+        - SevUser
+  /SevUser/{sevUserId}:
+    get:
+      operationId: getSevUserById
+      parameters:
+        - in: path
+          name: sevUserId
+          required: true
+          schema:
+            type: integer
+        - $ref: '#/components/parameters/embed'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      $ref: '#/components/schemas/Model_SevUserResponse'
+                    type: array
+                type: object
+          description: Successful operation
+        '400':
+          description: Bad request. SevUser was not found
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      tags:
+        - SevUser
   /TextTemplate:
     get:
       description: Calls TextTemplate.php to get necessary variables.
@@ -8634,89 +8717,6 @@ paths:
       summary: Update an existing text template
       tags:
         - TextTemplate
-  /SevUser:
-    get:
-      operationId: getSevUsers
-      parameters:
-        - $ref: '#/components/parameters/countAll'
-        - $ref: '#/components/parameters/offset'
-        - $ref: '#/components/parameters/limit'
-        - $ref: '#/components/parameters/embed'
-        - name: ignoreRoles
-          in: query
-          style: deepObject
-          explode: true
-          schema:
-            type: object
-            properties:
-              0:
-                type: string
-              1:
-                type: string
-              2:
-                type: string
-              3:
-                type: string
-              4:
-                type: string
-              5:
-                type: string
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                properties:
-                  objects:
-                    items:
-                      $ref: '#/components/schemas/Model_SevUserResponse'
-                    type: array
-                  total:
-                    type: integer
-                required:
-                  - objects
-                type: object
-          description: successful operation
-        '400':
-          description: invalid request
-        '401':
-          description: authentication required
-      security:
-        - api_key: []
-      tags:
-        - SevUser
-  /SevUser/{sevUserId}:
-    get:
-      tags:
-        - SevUser
-      operationId: getSevUserById
-      parameters:
-        - name: sevUserId
-          in: path
-          required: true
-          schema:
-            type: integer
-        - $ref: '#/components/parameters/embed'
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                properties:
-                  objects:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Model_SevUserResponse'
-                type: object
-        '400':
-          description: Bad request. SevUser was not found
-        '401':
-          description: Authentication required
-        '500':
-          description: Server Error
-      security:
-        - api_key: []
 components:
   schemas:
     Model_CheckAccountResponse:
@@ -9629,6 +9629,50 @@ components:
           example: string
           readOnly: true
           deprecated: true
+        addresses:
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/Model_ContactAddress'
+              - nullable: true
+                properties:
+                  id:
+                    description: The contact address id
+                    type: integer
+                  objectName:
+                    default: ContactAddress
+                    description: Model name, which is 'ContactAddress'
+                    enum:
+                      - ContactAddress
+                    example: ContactAddress
+                    type: string
+                required:
+                  - id
+                  - objectName
+                type: object
+          type: array
+        communicationWays:
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/Model_CommunicationWay'
+              - nullable: true
+                properties:
+                  id:
+                    description: Unique identifier of the communication way
+                    type: string
+                  objectName:
+                    default: CommunicationWay
+                    description: Model name, which is 'CommunicationWay'
+                    enum:
+                      - CommunicationWay
+                    example: CommunicationWay
+                    type: string
+                required:
+                  - id
+                  - objectName
+                type: object
+          type: array
+        mainAddress:
+          $ref: '#/components/schemas/Model_ContactAddress'
         taxSet:
           description: Tax set which is used in every invoice of the contact.
           properties:
@@ -9657,50 +9701,6 @@ components:
             - ss
           readOnly: true
           type: string
-        addresses:
-          type: array
-          items:
-            anyOf:
-              - $ref: '#/components/schemas/Model_ContactAddress'
-              - nullable: true
-                properties:
-                  id:
-                    description: The contact address id
-                    type: integer
-                  objectName:
-                    default: ContactAddress
-                    description: Model name, which is 'ContactAddress'
-                    enum:
-                      - ContactAddress
-                    example: ContactAddress
-                    type: string
-                required:
-                  - id
-                  - objectName
-                type: object
-        communicationWays:
-          type: array
-          items:
-            anyOf:
-              - $ref: '#/components/schemas/Model_CommunicationWay'
-              - nullable: true
-                properties:
-                  id:
-                    description: Unique identifier of the communication way
-                    type: string
-                  objectName:
-                    default: CommunicationWay
-                    description: Model name, which is 'CommunicationWay'
-                    enum:
-                      - CommunicationWay
-                    example: CommunicationWay
-                    type: string
-                required:
-                  - id
-                  - objectName
-                type: object
-        mainAddress:
-          $ref: '#/components/schemas/Model_ContactAddress'
       type: object
     Model_Contact:
       title: Contact model
@@ -9892,6 +9892,50 @@ components:
             (false).
           type: boolean
           nullable: true
+        addresses:
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/Model_ContactAddress'
+              - nullable: true
+                properties:
+                  id:
+                    description: The contact address id
+                    type: integer
+                  objectName:
+                    default: ContactAddress
+                    description: Model name, which is 'ContactAddress'
+                    enum:
+                      - ContactAddress
+                    example: ContactAddress
+                    type: string
+                required:
+                  - id
+                  - objectName
+                type: object
+          type: array
+        communicationWays:
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/Model_CommunicationWay'
+              - nullable: true
+                properties:
+                  id:
+                    description: Unique identifier of the communication way
+                    type: string
+                  objectName:
+                    default: CommunicationWay
+                    description: Model name, which is 'CommunicationWay'
+                    enum:
+                      - CommunicationWay
+                    example: CommunicationWay
+                    type: string
+                required:
+                  - id
+                  - objectName
+                type: object
+          type: array
+        mainAddress:
+          $ref: '#/components/schemas/Model_ContactAddress'
         taxSet:
           description: Tax set which is used in every invoice of the contact.
           nullable: true
@@ -9920,50 +9964,6 @@ components:
             - ss
           nullable: true
           type: string
-        addresses:
-          type: array
-          items:
-            anyOf:
-              - $ref: '#/components/schemas/Model_ContactAddress'
-              - nullable: true
-                properties:
-                  id:
-                    description: The contact address id
-                    type: integer
-                  objectName:
-                    default: ContactAddress
-                    description: Model name, which is 'ContactAddress'
-                    enum:
-                      - ContactAddress
-                    example: ContactAddress
-                    type: string
-                required:
-                  - id
-                  - objectName
-                type: object
-        communicationWays:
-          type: array
-          items:
-            anyOf:
-              - $ref: '#/components/schemas/Model_CommunicationWay'
-              - nullable: true
-                properties:
-                  id:
-                    description: Unique identifier of the communication way
-                    type: string
-                  objectName:
-                    default: CommunicationWay
-                    description: Model name, which is 'CommunicationWay'
-                    enum:
-                      - CommunicationWay
-                    example: CommunicationWay
-                    type: string
-                required:
-                  - id
-                  - objectName
-                type: object
-        mainAddress:
-          $ref: '#/components/schemas/Model_ContactAddress'
       type: object
     Model_ContactUpdate:
       title: Contact model
@@ -10215,22 +10215,22 @@ components:
           anyOf:
             - $ref: '#/components/schemas/Model_Contact'
             - description: The contact to which this contact address belongs.
-              required:
-                - id
-                - objectName
+              nullable: false
               properties:
                 id:
                   description: Unique identifier of the contact
                   type: integer
                 objectName:
-                  description: Model name, which is 'Contact'
-                  type: string
-                  example: Contact
                   default: Contact
+                  description: Model name, which is 'Contact'
                   enum:
                     - Contact
+                  example: Contact
+                  type: string
+              required:
+                - id
+                - objectName
               type: object
-              nullable: false
         street:
           description: Street name
           type: string
@@ -10250,22 +10250,22 @@ components:
           anyOf:
             - $ref: '#/components/schemas/Model_StaticCountryResponse'
             - description: "Country of the contact address.<br>\r\n    For all countries, send a GET to /StaticCountry"
-              required:
-                - id
-                - objectName
+              nullable: false
               properties:
                 id:
                   description: Unique identifier of the country
                   type: integer
                 objectName:
-                  description: Model name, which is 'StaticCountry'
-                  type: string
-                  example: StaticCountry
                   default: StaticCountry
+                  description: Model name, which is 'StaticCountry'
                   enum:
                     - StaticCountry
+                  example: StaticCountry
+                  type: string
+              required:
+                - id
+                - objectName
               type: object
-              nullable: false
         category:
           description: "Category of the contact address.<br>\r\n     For all categories, send a GET to /Category?objectType=ContactAddress."
           required:
@@ -10358,22 +10358,22 @@ components:
           anyOf:
             - $ref: '#/components/schemas/Model_Contact'
             - description: The contact to which this contact address belongs.
-              required:
-                - id
-                - objectName
+              nullable: false
               properties:
                 id:
                   description: Unique identifier of the contact
                   type: integer
                 objectName:
-                  description: Model name, which is 'Contact'
-                  type: string
-                  example: Contact
                   default: Contact
+                  description: Model name, which is 'Contact'
                   enum:
                     - Contact
+                  example: Contact
+                  type: string
+              required:
+                - id
+                - objectName
               type: object
-              nullable: false
         street:
           description: Street name
           type: string
@@ -10393,22 +10393,22 @@ components:
           anyOf:
             - $ref: '#/components/schemas/Model_StaticCountryResponse'
             - description: "Country of the contact address.<br>\r\n    For all countries, send a GET to /StaticCountry"
-              required:
-                - id
-                - objectName
+              nullable: false
               properties:
                 id:
                   description: Unique identifier of the country
                   type: integer
                 objectName:
-                  description: Model name, which is 'StaticCountry'
-                  type: string
-                  example: StaticCountry
                   default: StaticCountry
+                  description: Model name, which is 'StaticCountry'
                   enum:
                     - StaticCountry
+                  example: StaticCountry
+                  type: string
+              required:
+                - id
+                - objectName
               type: object
-              nullable: false
         category:
           description: "Category of the contact address.<br>\r\n     For all categories, send a GET to /Category?objectType=ContactAddress."
           required:
@@ -19382,6 +19382,92 @@ components:
         - id
         - objectName
       type: object
+    Model_SevUserResponse:
+      properties:
+        additionalInformation:
+          type: string
+        clientOwner:
+          type: boolean
+        create:
+          format: date-time
+          type: string
+        defaultReceiveMailCopy:
+          type: boolean
+        email:
+          type: string
+        endDate:
+          format: date-time
+          type: string
+        firstName:
+          type: string
+        forcePasswordChange:
+          type: boolean
+        fullname:
+          type: string
+        gender:
+          type: string
+        hideMapsDirections:
+          type: boolean
+        id:
+          type: number
+        languageCode:
+          type: string
+        lastLogin:
+          format: date-time
+          type: string
+        lastLoginIp:
+          type: string
+        lastName:
+          type: string
+        lastPasswordChange:
+          format: date-time
+          type: string
+        memberCode:
+          type: string
+        objectName:
+          default: SevUser
+          enum:
+            - SevUser
+          type: string
+        role:
+          enum:
+            - Accountant
+            - accountant-light
+            - admin
+            - checker
+            - user
+          type: string
+        sevClient:
+          description: >-
+            sevClient is the unique id every customer has and is used in nearly
+            all operations
+          type: object
+        smtpHost:
+          type: string
+        smtpMail:
+          type: string
+        smtpName:
+          type: string
+        smtpPort:
+          type: string
+        smtpSsl:
+          type: string
+        smtpUser:
+          type: string
+        startDate:
+          format: date-time
+          type: string
+        status:
+          type: string
+        twoFactorAuth:
+          type: boolean
+        update:
+          format: date-time
+          type: string
+        username:
+          type: string
+        welcomeScreenSeen:
+          type: boolean
     Model_StaticCountryResponse:
       description: Information on the country
       properties:
@@ -19524,92 +19610,6 @@ components:
           format: date-time
           type: string
       title: Text Template Model
-    Model_SevUserResponse:
-      properties:
-        id:
-          type: number
-        objectName:
-          type: string
-          default: SevUser
-          enum:
-            - SevUser
-        additionalInformation:
-          type: string
-        create:
-          type: string
-          format: date-time
-        update:
-          type: string
-          format: date-time
-        fullname:
-          type: string
-        firstName:
-          type: string
-        lastName:
-          type: string
-        username:
-          type: string
-        status:
-          type: string
-        email:
-          type: string
-        gender:
-          type: string
-        role:
-          type: string
-          enum:
-            - user
-            - admin
-            - Accountant
-            - accountant-light
-            - checker
-        memberCode:
-          type: string
-        lastLogin:
-          type: string
-          format: date-time
-        lastLoginIp:
-          type: string
-        welcomeScreenSeen:
-          type: boolean
-        smtpName:
-          type: string
-        smtpMail:
-          type: string
-        smtpUser:
-          type: string
-        smtpPort:
-          type: string
-        smtpSsl:
-          type: string
-        smtpHost:
-          type: string
-        languageCode:
-          type: string
-        twoFactorAuth:
-          type: boolean
-        forcePasswordChange:
-          type: boolean
-        clientOwner:
-          type: boolean
-        defaultReceiveMailCopy:
-          type: boolean
-        hideMapsDirections:
-          type: boolean
-        startDate:
-          type: string
-          format: date-time
-        endDate:
-          type: string
-          format: date-time
-        lastPasswordChange:
-          type: string
-          format: date-time
-        sevClient:
-          description: >-
-            sevClient is the unique id every customer has and is used in nearly
-            all operations
-          type: object
   securitySchemes:
     api_key:
       type: apiKey
