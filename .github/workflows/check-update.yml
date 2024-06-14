@@ -7,6 +7,7 @@ on:
       updateBranchName:
         description: "Branch to update OpenAPI specs"
         type: string
+        default: update-openapi
 
 permissions:
   contents: write
@@ -44,7 +45,7 @@ jobs:
         if: steps.update_openapi.outcome == 'success' || steps.update_openapi.outcome == 'failure'
         id: create_pr
         run: |
-          git push --set-upstream origin ${{env.UPDATE_BRANCH_NAME}}
+          git push --set-upstream -f origin ${{env.UPDATE_BRANCH_NAME}}
           gh pr create --base ${{ github.ref_name}} --head ${{env.UPDATE_BRANCH_NAME}} --label "update: openapi" --title "Update OpenAPI specs" --body 'Merge ${{env.UPDATE_BRANCH_NAME}} into ${{ github.ref_name}}' --fill-verbose
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
