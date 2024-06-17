@@ -39,8 +39,14 @@ jobs:
         id: update_openapi
         run: ./scripts/update.sh
         continue-on-error: true
+      - name: Count commits
+        id: count_commits
+        run: |
+          COMMITS=$(git rev-list --count ${{ github.ref_name}}..${{env.UPDATE_BRANCH_NAME}})
+          echo "count=$COMMITS" >> "$GITHUB_OUTPUT"
+          echo "$COMMITS commits to merge"
       - name: create pull request
-        if: steps.update_openapi.outcome == 'success' || steps.update_openapi.outcome == 'failure'
+        if: steps.count_commits.outputs.count > 0 && (steps.update_openapi.outcome == 'success' || steps.update_openapi.outcome == 'failure')
         id: create_pr
         run: |
           git push --set-upstream -f origin ${{env.UPDATE_BRANCH_NAME}}
@@ -60,3 +66,7 @@ jobs:
           gh pr edit "${{env.UPDATE_BRANCH_NAME}}" --add-label "update: failed"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Cleanup
+        run: |
+          git switch "${{ github.ref_name}}"
+          git branch -D ${{env.UPDATE_BRANCH_NAME}}
