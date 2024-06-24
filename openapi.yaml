@@ -5,8 +5,8 @@ info:
   version: 2.0.0
   x-logo:
     url: https://my.sevdesk.de/img/logos/1_100.png
-    backgroundColor: '#263241'
     altText: sevDesk Logo
+    backgroundColor: '#263241'
 servers:
   - url: https://my.sevdesk.de/api/v1
     description: Our main application instance which most of our customers work with
@@ -13397,9 +13397,9 @@ components:
             - '50'
             - '100'
             - '200'
+            - '750'
             - '1000'
             - '500'
-            - '750'
           example: '100'
           readOnly: true
         smallSettlement:
@@ -13948,9 +13948,9 @@ components:
             - '50'
             - '100'
             - '200'
+            - '750'
             - '1000'
             - '500'
-            - '750'
           example: '100'
           nullable: false
         smallSettlement:
