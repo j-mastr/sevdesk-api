@@ -68,5 +68,5 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Cleanup
         run: |
-          git switch "${{ github.ref_name}}"
+          git switch --discard-changes "${{ github.ref_name}}"
           git branch -D ${{env.UPDATE_BRANCH_NAME}}
