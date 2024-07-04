@@ -16,6 +16,8 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    outputs:
+      update_merged: ${{ steps.update_openapi.outcome == 'success' && steps.create_pr.outcome == 'success' }}
     env:
       UPDATE_BRANCH_NAME: ${{ inputs.updateBranchName || vars.UPDATE_BRANCH_NAME || 'update-openapi' }}
     steps:
@@ -70,3 +72,8 @@ jobs:
         run: |
           git switch --discard-changes "${{ github.ref_name}}"
           git branch -D ${{env.UPDATE_BRANCH_NAME}}
+  notify_sdk:
+    name: Notify SDK
+    needs: update
+    if: needs.update.outputs.update_merged
+    uses: ./.github/workflows/notify-sdk.yml
