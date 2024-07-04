@@ -346,6 +346,71 @@ paths:
           description: Authentication required
         '500':
           description: Server error
+      deprecated: true
+      security:
+        - api_key: []
+  /CheckAccount/Factory/fileImportAccount:
+    post:
+      tags:
+        - CheckAccount
+      summary: Create a new file import account
+      description: Creates a new banking account for file imports (CSV, MT940).
+      operationId: createFileImportAccount
+      requestBody:
+        description: Data to create a file import account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createFileImportAccount'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/createFileImportAccountResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '422':
+          description: Invalid value given
+        '500':
+          description: Server error
+      security:
+        - api_key: []
+  /CheckAccount/Factory/clearingAccount:
+    post:
+      tags:
+        - CheckAccount
+      summary: Create a new clearing account
+      description: Creates a new clearing account.
+      operationId: createClearingAccount
+      requestBody:
+        description: Data to create a clearning account
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createClearingAccount'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/createClearingAccountResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '422':
+          description: Invalid value given
+        '500':
+          description: Server error
       security:
         - api_key: []
   /CheckAccount/{checkAccountId}:
@@ -8725,7 +8790,7 @@ components:
           description: The check account id
           type: string
           readOnly: true
-          example: '0'
+          example: '2'
         objectName:
           description: The check account object name
           type: string
@@ -8737,11 +8802,13 @@ components:
           description: Date of check account creation
           type: string
           format: date-time
+          example: '2024-06-28T14:42:58+02:00'
           readOnly: true
         update:
           description: Date of last check account update
           type: string
           format: date-time
+          example: '2024-06-28T14:42:58+02:00'
           readOnly: true
         sevClient:
           description: Client to which check account belongs. Will be filled automatically
@@ -8765,6 +8832,11 @@ components:
           description: Name of the check account
           type: string
           example: Iron Bank
+        iban:
+          description: The IBAN of the account
+          type: string
+          nullable: true
+          example: DE02100500000054540402
         type:
           description: "The type of the check account. Account with a CSV or MT940 import are regarded as online.<br>\r\n     Apart from that, created check accounts over the API need to be offline, as online accounts with an active connection\r\n     to a bank application can not be managed over the API."
           type: string
@@ -8774,8 +8846,9 @@ components:
           example: online
         importType:
           description: >-
-            Import type. Transactions can be imported by this method on the
-            check account.
+            Import type, for accounts that are type "online" but not connected
+            to a data provider. Transactions can be imported by this method on
+            the check account.
           type: string
           enum:
             - CSV
@@ -8798,10 +8871,14 @@ components:
           enum:
             - '0'
             - '100'
+          example: '100'
         bankServer:
-          description: Bank server of check account
+          description: >-
+            Bank server of check account, only set if the account is connected
+            to a data provider
           type: string
-          readOnly: true
+          nullable: true
+          example: FINAPI
         autoMapTransactions:
           description: >-
             Defines if transactions on this account are automatically mapped to
@@ -8815,6 +8892,7 @@ components:
             and 1200 in SKR03. Must be unique among all your CheckAccounts.
             Ignore to use a sensible default.
           type: string
+          example: '1800'
       type: object
     Model_CheckAccount:
       title: CheckAccount model
@@ -8929,6 +9007,230 @@ components:
             Ignore to use a sensible default.
           type: string
       type: object
+    createFileImportAccount:
+      title: Data to create a file import account
+      type: object
+      properties:
+        name:
+          description: Name of the check account
+          type: string
+          example: Iron Bank
+        importType:
+          description: >-
+            Import type. Transactions can be imported by this method on the
+            check account.
+          type: string
+          enum:
+            - CSV
+            - MT940
+          example: CSV
+        accountingNumber:
+          description: >-
+            The booking account used for this bank account, e.g. 1800 in SKR04
+            and 1200 in SKR03. Must be unique among all your CheckAccounts.
+            Ignore to use a sensible default.
+          type: integer
+          example: 1800
+          nullable: true
+        iban:
+          description: IBAN of the bank account, without spaces
+          type: string
+          example: DE02100500000054540402
+          nullable: true
+    createFileImportAccountResponse:
+      title: CheckAccount model
+      description: >-
+        CheckAccount model. Showing the properties relevant to file import
+        accounts.
+      properties:
+        id:
+          description: The check account id
+          type: string
+          example: '2'
+        objectName:
+          description: The check account object name, always 'CheckAccount'
+          type: string
+          example: CheckAccount
+        create:
+          description: Date of check account creation
+          type: string
+          format: date-time
+          example: '2024-06-28T14:42:58+02:00'
+        update:
+          description: Date of last check account update
+          type: string
+          format: date-time
+          example: '2024-06-28T14:42:58+02:00'
+        sevClient:
+          description: Client to which check account belongs. Will be filled automatically
+          required:
+            - id
+            - objectName
+          properties:
+            id:
+              description: Unique identifier of the client
+              type: string
+              example: '0'
+            objectName:
+              description: Model name, which is 'SevClient'
+              type: string
+              example: SevClient
+          type: object
+        name:
+          description: Name of the check account
+          type: string
+          example: Iron Bank
+        iban:
+          description: The IBAN of the account
+          type: string
+          nullable: true
+          example: DE02100500000054540402
+        type:
+          description: >-
+            The type of the check account. Account with a CSV or MT940 import
+            are regarded as online.
+          type: string
+          enum:
+            - online
+            - offline
+          example: online
+        importType:
+          description: >-
+            Import type, for accounts that are type "online" but not connected
+            to a data provider. Transactions can be imported by this method on
+            the check account.
+          type: string
+          enum:
+            - CSV
+            - MT940
+          example: CSV
+        currency:
+          description: The currency of the check account.
+          type: string
+          example: EUR
+        defaultAccount:
+          description: Defines if this check account is the default account.
+          type: string
+          enum:
+            - '0'
+            - '1'
+          default: '0'
+        status:
+          description: Status of the check account. 0 <-> Archived - 100 <-> Active
+          type: string
+          default: '100'
+          enum:
+            - '0'
+            - '100'
+          example: '100'
+        autoMapTransactions:
+          description: >-
+            Defines if transactions on this account are automatically mapped to
+            invoice and vouchers when imported if possible.
+          type: string
+          enum:
+            - '0'
+            - '1'
+          default: '1'
+        accountingNumber:
+          description: >-
+            The booking account used for this bank account, e.g. 1800 in SKR04
+            and 1200 in SKR03. Must be unique among all your CheckAccounts.
+            Ignore to use a sensible default.
+          type: string
+          example: '1800'
+      type: object
+    createClearingAccount:
+      title: Data to create a clearing account
+      type: object
+      properties:
+        name:
+          description: Name of the check account
+          type: string
+          example: Coupons
+        accountingNumber:
+          description: >-
+            The booking account used for this clearing account, e.g. 3320 in
+            SKR04 and 1723 in SKR03. Must be unique among all your
+            CheckAccounts. Ask your tax consultant what to choose.
+          type: integer
+          nullable: true
+    createClearingAccountResponse:
+      title: CheckAccount model
+      description: >-
+        CheckAccount model. Showing the properties relevant to clearing
+        accounts.
+      properties:
+        id:
+          description: The check account id
+          type: string
+          example: '2'
+        objectName:
+          description: The check account object name, always 'CheckAccount'
+          type: string
+          example: CheckAccount
+        create:
+          description: Date of check account creation
+          type: string
+          format: date-time
+          example: '2024-06-28T14:42:58+02:00'
+        update:
+          description: Date of last check account update
+          type: string
+          format: date-time
+          example: '2024-06-28T14:42:58+02:00'
+        sevClient:
+          description: Client to which check account belongs. Will be filled automatically
+          required:
+            - id
+            - objectName
+          properties:
+            id:
+              description: Unique identifier of the client
+              type: string
+              example: '0'
+            objectName:
+              description: Model name, which is 'SevClient'
+              type: string
+              example: SevClient
+          type: object
+        name:
+          description: Name of the check account
+          type: string
+          example: Coupons
+        type:
+          description: >-
+            The type of the check account. Clearing accounts are regarded as
+            offline.
+          type: string
+          enum:
+            - online
+            - offline
+          example: offline
+        currency:
+          description: The currency of the check account.
+          type: string
+          example: EUR
+        defaultAccount:
+          description: Defines if this check account is the default account.
+          type: string
+          enum:
+            - '0'
+            - '1'
+          default: '0'
+        status:
+          description: Status of the check account. 0 <-> Archived - 100 <-> Active
+          type: string
+          default: '100'
+          enum:
+            - '0'
+            - '100'
+          example: '100'
+        accountingNumber:
+          description: The booking account used for this clearing account.
+          type: string
+          example: '3320'
+      type: object
     Model_CheckAccountUpdate:
       title: CheckAccount model
       description: CheckAccount model. Responsible for the payment accounts.
@@ -9039,29 +9341,35 @@ components:
           description: Date the check account transaction was imported
           type: string
           format: date-time
-          example: 01.01.2022
-          readOnly: true
+          example: '2024-05-10T00:00:00+02:00'
         entryDate:
           description: Date the check account transaction was booked
           type: string
           format: date-time
-          example: 01.01.2022
-          readOnly: true
+          example: '2024-05-10T00:00:00+02:00'
+          nullable: true
         paymtPurpose:
-          description: the purpose of the transaction
+          description: The purpose of the transaction
           type: string
           example: salary
-          readOnly: true
+          nullable: true
         amount:
           description: Amount of the transaction
           type: string
-          example: '100'
-          readOnly: true
+          example: '-100.32'
         payeePayerName:
-          description: Name of the payee/payer
+          description: Name of the other party
           type: string
           example: Cercei Lannister
-          readOnly: true
+          nullable: true
+        payeePayerAcctNo:
+          description: IBAN or account number of the other party
+          type: string
+          nullable: true
+        payeePayerBankCode:
+          description: BIC or bank code of the other party
+          type: string
+          nullable: true
         checkAccount:
           description: The check account to which the transaction belongs
           required:
@@ -9194,29 +9502,37 @@ components:
           description: Date the check account transaction was booked
           type: string
           format: date-time
-          example: 01.01.2022
-          nullable: false
+          example: '2024-05-10T00:00:00+02:00'
         entryDate:
           description: Date the check account transaction was imported
           type: string
           format: date-time
-          example: 01.01.2022
-          nullable: false
+          example: '2024-05-10T00:00:00+02:00'
+          nullable: true
         paymtPurpose:
-          description: the purpose of the transaction
+          description: The purpose of the transaction
           type: string
           example: salary
+          nullable: true
         amount:
           description: Amount of the transaction
           type: number
           format: float
-          example: 100
+          example: 100.1
           nullable: false
         payeePayerName:
-          description: Name of the payee/payer
+          description: Name of the other party
           type: string
           example: Cercei Lannister
-          nullable: false
+          nullable: true
+        payeePayerAcctNo:
+          description: IBAN or account number of the other party
+          type: string
+          nullable: true
+        payeePayerBankCode:
+          description: BIC or bank code of the other party
+          type: string
+          nullable: true
         checkAccount:
           description: The check account to which the transaction belongs
           required:
@@ -9290,12 +9606,13 @@ components:
           description: Date the check account transaction was booked
           type: string
           format: date-time
-          example: 01.01.2022
+          example: '2024-05-10T00:00:00+02:00'
         entryDate:
           description: Date the check account transaction was imported
           type: string
           format: date-time
-          example: 01.01.2022
+          example: '2024-05-10T00:00:00+02:00'
+          nullable: true
         paymtPurpose:
           description: the purpose of the transaction
           type: string
