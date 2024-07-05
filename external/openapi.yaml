@@ -638,7 +638,7 @@ paths:
                     items:
                       $ref: >-
                         #/components/schemas/Model_CheckAccountTransactionResponse
-                type: object
+                type: objec
         '400':
           description: Bad request
         '401':
