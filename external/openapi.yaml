@@ -373,6 +373,7 @@ paths:
     post:
       tags:
         - CheckAccount
+        - test
       summary: Create a new clearing account
       description: Creates a new clearing account.
       operationId: createClearingAccount
@@ -638,7 +639,7 @@ paths:
                     items:
                       $ref: >-
                         #/components/schemas/Model_CheckAccountTransactionResponse
-                type: objec
+                type: object
         '400':
           description: Bad request
         '401':
