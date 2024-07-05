@@ -16,8 +16,6 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
-    outputs:
-      update_merged: ${{ steps.update_openapi.outcome == 'success' && steps.create_pr.outcome == 'success' }}
     env:
       UPDATE_BRANCH_NAME: ${{ inputs.updateBranchName || vars.UPDATE_BRANCH_NAME || 'update-openapi' }}
     steps:
@@ -48,7 +46,7 @@ jobs:
           echo "count=$COMMITS" >> "$GITHUB_OUTPUT"
           echo "$COMMITS commits to merge"
       - name: create pull request
-        if: steps.count_commits.outputs.count > 0 && (steps.update_openapi.outcome == 'success' || steps.update_openapi.outcome == 'failure')
+        if: steps.count_commits.outputs.count > 0 || steps.update_openapi.outcome == 'failure'
         id: create_pr
         run: |
           git push --set-upstream -f origin ${{env.UPDATE_BRANCH_NAME}}
@@ -60,7 +58,7 @@ jobs:
         run: |
           gh pr merge --auto --squash --subject "feat: update openapi.yaml" "${{ env.UPDATE_BRANCH_NAME }}"
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
       - name: Comment on failed update
         if: steps.update_openapi.outcome == 'failure' && steps.create_pr.outcome == 'success'
         run: |
@@ -72,8 +70,3 @@ jobs:
         run: |
           git switch --discard-changes "${{ github.ref_name}}"
           git branch -D ${{env.UPDATE_BRANCH_NAME}}
-  notify_sdk:
-    name: Notify SDK
-    needs: update
-    if: needs.update.outputs.update_merged
-    uses: ./.github/workflows/notify-sdk.yml
