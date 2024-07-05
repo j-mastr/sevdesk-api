@@ -373,7 +373,6 @@ paths:
     post:
       tags:
         - CheckAccount
-        - test
       summary: Create a new clearing account
       description: Creates a new clearing account.
       operationId: createClearingAccount
