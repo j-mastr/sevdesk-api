@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/j-mastr/sevdesk-api/compare/v1.1.0...v1.2.0) (2024-07-23)
+
+
+### Features
+
+* update openapi.yaml ([e39c2eb](https://github.com/j-mastr/sevdesk-api/commit/e39c2ebe23628f0697496f987dfe4eb6464dcf89))
+* update openapi.yaml ([#44](https://github.com/j-mastr/sevdesk-api/issues/44)) ([252bddd](https://github.com/j-mastr/sevdesk-api/commit/252bddd7659d6df5f317541d6b812e9ed225c64b))
+
+
+### Bug Fixes
+
+* add support for empty sendType values ([#46](https://github.com/j-mastr/sevdesk-api/issues/46)) ([909dc5b](https://github.com/j-mastr/sevdesk-api/commit/909dc5bf5c9f955fc109eb86933c705adec7d3dd))
+
 ## [1.1.0](https://github.com/j-mastr/sevdesk-api/compare/v1.0.0...v1.1.0) (2024-06-24)
 
 
