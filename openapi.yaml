@@ -11935,6 +11935,9 @@ components:
             - VPDF
             - VM
             - VP
+            - ''
+            - 0
+            - null
           nullable: true
         creditNoteType:
           description: "Type of the creditNote. For more information on the different types, check\r\n    <a href='https://api.sevdesk.de/#section/Types-and-status-of-credit-notes'>this</a>\r\n."
@@ -14014,7 +14017,9 @@ components:
             - VPDF
             - VM
             - VP
+            - ''
             - 0
+            - null
           readOnly: true
         deliveryDateUntil:
           description: "If the delivery date should be a time range, another timestamp can be provided in this attribute\r\n     * to define a range from timestamp used in deliveryDate attribute to the timestamp used here."
@@ -15614,6 +15619,9 @@ components:
             - VPDF
             - VM
             - VP
+            - ''
+            - 0
+            - null
           nullable: true
       type: object
     Model_Order:
