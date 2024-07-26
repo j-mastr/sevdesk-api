@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/j-mastr/sevdesk-api/compare/v1.2.0...v1.3.0) (2024-07-26)
+
+
+### Features
+
+* add FAX as communication way type ([#47](https://github.com/j-mastr/sevdesk-api/issues/47)) ([f1af149](https://github.com/j-mastr/sevdesk-api/commit/f1af1498aedaaebb8cbb76e43f4df47cf82bc892))
+
 ## [1.2.0](https://github.com/j-mastr/sevdesk-api/compare/v1.1.0...v1.2.0) (2024-07-23)
 
 
