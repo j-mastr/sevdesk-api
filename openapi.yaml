@@ -10928,6 +10928,7 @@ components:
             - PHONE
             - WEB
             - MOBILE
+            - FAX
           example: EMAIL
           readOnly: true
         value:
@@ -11046,6 +11047,7 @@ components:
             - PHONE
             - WEB
             - MOBILE
+            - FAX
           example: EMAIL
         value:
           description: "The value of the communication way.<br>\r\n     For example the phone number, e-mail address or website."
@@ -11132,6 +11134,7 @@ components:
             - PHONE
             - WEB
             - MOBILE
+            - FAX
           example: EMAIL
         value:
           description: "The value of the communication way.<br>\r\n     For example the phone number, e-mail address or website."
