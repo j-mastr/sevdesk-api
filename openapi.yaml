@@ -473,7 +473,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_CheckAccountResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_CheckAccountResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -727,7 +730,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_CheckAccountTransactionResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_CheckAccountTransactionResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -797,7 +803,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_CheckAccountTransactionResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_CheckAccountTransactionResponse'
+                type: object
         '400':
           description: Bad request
         '401':
