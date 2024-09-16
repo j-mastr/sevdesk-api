@@ -6155,7 +6155,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/saveOrderResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/saveOrderResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -6223,7 +6226,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_OrderResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_OrderResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -6561,7 +6567,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_OrderResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_OrderResponse'
+                type: object
         '400':
           description: Bad Request
         '401':
@@ -6608,7 +6617,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_OrderResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_OrderResponse'
+                type: object
         '400':
           description: Bad Request
         '401':
@@ -6716,7 +6728,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_OrderResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_OrderResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -6841,7 +6856,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_OrderPosResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_OrderPosResponse'
+                type: object
         '400':
           description: Bad request
         '401':
