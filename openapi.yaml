@@ -8322,7 +8322,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_TagResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_TagResponse'
+                type: object
         '401':
           description: Authentication required
         '500':
@@ -8406,7 +8409,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_TagCreateResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_TagCreateResponse'
+                type: object
         '401':
           description: Authentication required
         '500':
