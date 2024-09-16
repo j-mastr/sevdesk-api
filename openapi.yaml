@@ -5284,7 +5284,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_Email'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_Email'
+                type: object
         '400':
           description: Bad request
         '401':
