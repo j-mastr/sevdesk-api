@@ -2516,7 +2516,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/saveCreditNoteResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/saveCreditNoteResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -2793,7 +2796,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_CreditNote_sendByWithRender'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_CreditNote_sendByWithRender'
+                type: object
         '400':
           description: Bad request.
         '401':
@@ -2848,7 +2854,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_creditNoteResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_creditNoteResponse'
+                type: object
         '400':
           description: Bad request
         '401':
