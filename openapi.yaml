@@ -4394,7 +4394,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_Part'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_Part'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -4462,7 +4465,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_Part'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_Part'
+                type: object
         '400':
           description: Bad request
         '401':
