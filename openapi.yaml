@@ -7195,7 +7195,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_VoucherResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_VoucherResponse'
+                type: object
         '400':
           description: Bad request
         '401':
