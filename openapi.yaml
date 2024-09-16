@@ -1102,7 +1102,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_ContactResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_ContactResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -1172,7 +1175,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_ContactResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_ContactResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -1283,7 +1289,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_ContactAddressResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_ContactAddressResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -1389,7 +1398,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_ContactAddressResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_ContactAddressResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -1539,7 +1551,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_CommunicationWayResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_CommunicationWayResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -1643,7 +1658,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_CommunicationWayResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_CommunicationWayResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -1807,7 +1825,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_AccountingContactResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_AccountingContactResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -1880,7 +1901,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_AccountingContactResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_AccountingContactResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -2031,7 +2055,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_ContactCustomFieldResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_ContactCustomFieldResponse'
+                type: object
         '401':
           description: Authentication required
         '500':
@@ -2094,7 +2121,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_ContactCustomFieldResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_ContactCustomFieldResponse'
+                type: object
         '401':
           description: Authentication required
         '500':
@@ -2253,7 +2283,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_ContactCustomFieldSettingResponse'
+                properties:
+                  objects:
+                    $ref: >-
+                      #/components/schemas/Model_ContactCustomFieldSettingResponse
+                type: object
         '401':
           description: Authentication required
         '500':
