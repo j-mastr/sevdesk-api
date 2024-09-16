@@ -8824,7 +8824,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_TextTemplateResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_TextTemplateResponse'
+                type: object
           description: created
         '400':
           description: invalid request
@@ -8882,7 +8885,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_TextTemplateResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_TextTemplateResponse'
+                type: object
           description: successful operation
         '400':
           description: invalid request
