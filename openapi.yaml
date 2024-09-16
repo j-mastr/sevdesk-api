@@ -5958,7 +5958,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_ChangeLayoutResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_ChangeLayoutResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -5993,7 +5996,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_ChangeLayoutResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_ChangeLayoutResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -6028,7 +6034,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_ChangeLayoutResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_ChangeLayoutResponse'
+                type: object
         '400':
           description: Bad request
         '401':
