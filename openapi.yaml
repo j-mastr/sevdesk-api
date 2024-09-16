@@ -4726,7 +4726,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/saveInvoiceResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/saveInvoiceResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -4990,7 +4993,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_InvoiceResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_InvoiceResponse'
+                type: object
         '400':
           description: Bad Request
         '401':
@@ -5135,7 +5141,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_InvoiceResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_InvoiceResponse'
+                type: object
         '400':
           description: Bad request
         '401':
@@ -5382,7 +5391,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model_InvoiceResponse'
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_InvoiceResponse'
+                type: object
         '400':
           description: Bad request
         '401':
