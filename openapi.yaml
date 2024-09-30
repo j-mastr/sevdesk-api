@@ -14219,6 +14219,7 @@ components:
           default: Invoice
           enum:
             - Invoice
+            - Order
         invoiceNumber:
           description: The invoice number
           type: string
