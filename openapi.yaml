@@ -13956,16 +13956,22 @@ components:
           properties:
             id:
               description: Unique identifier of the object
-              type: string
-              example: '1'
+              type: integer
+              example: 1
+              nullable: false
+              readOnly: true
             objectName:
               description: Model name. Could f.e. be 'Order''
               type: string
               enum:
                 - Order
+                - Invoice
+              example: Order
+              nullable: false
           type: object
           readOnly: true
-          $ref: '#/components/schemas/Model_InvoiceResponse'
+          example: null
+          nullable: true
         invoiceType:
           description: "Type of the invoice. For more information on the different types, check\r\n     <a href='#tag/Invoice/Types-and-status-of-invoices'>this</a> section\r\n"
           type: string
