@@ -13964,8 +13964,8 @@ components:
               description: Model name. Could f.e. be 'Order''
               type: string
               enum:
-                - Order
                 - Invoice
+                - Order
               example: Order
               nullable: false
           type: object
