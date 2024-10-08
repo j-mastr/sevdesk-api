@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/j-mastr/sevdesk-api/compare/v1.3.0...v1.4.0) (2024-10-08)
+
+
+### Features
+
+* update openapi.yaml ([c089ac7](https://github.com/j-mastr/sevdesk-api/commit/c089ac7ad2a3abe07ff27170b1d095891d532232))
+
+
+### Bug Fixes
+
+* Invoices originating from an Order ([#56](https://github.com/j-mastr/sevdesk-api/issues/56)) ([11be80f](https://github.com/j-mastr/sevdesk-api/commit/11be80f2b5f1bf45403e21f4c75a09fa7d753a83))
+
 ## [1.3.0](https://github.com/j-mastr/sevdesk-api/compare/v1.2.0...v1.3.0) (2024-07-26)
 
 
