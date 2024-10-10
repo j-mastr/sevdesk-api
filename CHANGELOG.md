@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/j-mastr/sevdesk-api/compare/v1.4.0...v1.4.1) (2024-10-10)
+
+
+### Bug Fixes
+
+* remove invoice_id parameter to createInvoiceFromOrder ([#58](https://github.com/j-mastr/sevdesk-api/issues/58)) ([55a940f](https://github.com/j-mastr/sevdesk-api/commit/55a940f9eee2bd62ee48f75fad08dca1e50ca536))
+
 ## [1.4.0](https://github.com/j-mastr/sevdesk-api/compare/v1.3.0...v1.4.0) (2024-10-08)
 
 
