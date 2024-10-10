@@ -5005,23 +5005,6 @@ paths:
           description: Server Error
       security:
         - api_key: []
-      parameters:
-        - description: the id of the invoice
-          in: query
-          name: invoice[id]
-          required: true
-          schema:
-            type: integer
-        - description: Model name, which is 'Invoice'
-          example: Invoice
-          in: query
-          name: invoice[objectName]
-          required: true
-          schema:
-            default: Invoice
-            enum:
-              - Invoice
-            type: string
   /Invoice/Factory/createInvoiceReminder:
     post:
       tags:
