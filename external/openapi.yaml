@@ -313,38 +313,38 @@ paths:
       security:
         - api_key: []
     post:
-      tags:
-        - CheckAccount
-      summary: Create a new check account
+      deprecated: true
       description: Creates a new banking account on which transactions can be created.
       operationId: createCheckAccount
       requestBody:
-        description: "Creation data. Please be aware, that you need to provide at least all required parameter\r\n    of the CheckAccount model!"
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Model_CheckAccount'
+        description: "Creation data. Please be aware, that you need to provide at least all required parameter\r\n    of the CheckAccount model!"
       responses:
         '201':
-          description: Created - Returns created check account
           content:
             application/json:
               schema:
                 properties:
                   objects:
-                    type: array
                     items:
                       $ref: '#/components/schemas/Model_CheckAccountResponse'
+                    type: array
                 type: object
+          description: Created - Returns created check account
         '400':
           description: Bad request
         '401':
           description: Authentication required
         '500':
           description: Server error
-      deprecated: true
       security:
         - api_key: []
+      summary: Create a new check account
+      tags:
+        - CheckAccount
   /CheckAccount/Factory/fileImportAccount:
     post:
       tags:
@@ -7760,111 +7760,6 @@ components:
             Ignore to use a sensible default.
           type: string
           example: '1800'
-      type: object
-    Model_CheckAccount:
-      title: CheckAccount model
-      description: CheckAccount model. Responsible for the payment accounts.
-      required:
-        - name
-        - type
-        - currency
-        - status
-      properties:
-        id:
-          description: The check account id
-          type: integer
-          readOnly: true
-          nullable: false
-        objectName:
-          description: The check account object name
-          type: string
-          readOnly: true
-          nullable: false
-        create:
-          description: Date of check account creation
-          type: string
-          format: date-time
-          readOnly: true
-        update:
-          description: Date of last check account update
-          type: string
-          format: date-time
-          readOnly: true
-        sevClient:
-          description: Client to which check account belongs. Will be filled automatically
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the client
-              type: integer
-            objectName:
-              description: Model name, which is 'SevClient'
-              type: string
-          type: object
-          readOnly: true
-        name:
-          description: Name of the check account
-          type: string
-          example: Iron Bank
-          nullable: false
-        type:
-          description: "The type of the check account. Account with a CSV or MT940 import are regarded as online.<br>\r\n     Apart from that, created check accounts over the API need to be offline, as online accounts with an active connection\r\n     to a bank application can not be managed over the API."
-          type: string
-          enum:
-            - online
-            - offline
-          example: online
-          nullable: false
-        importType:
-          description: >-
-            Import type. Transactions can be imported by this method on the
-            check account.
-          type: string
-          enum:
-            - CSV
-            - MT940
-            - null
-          example: CSV
-          nullable: true
-        currency:
-          description: The currency of the check account.
-          type: string
-          example: EUR
-          nullable: false
-        defaultAccount:
-          description: Defines if this check account is the default account.
-          type: integer
-          default: 0
-          enum:
-            - 0
-            - 1
-        status:
-          description: Status of the check account. 0 <-> Archived - 100 <-> Active
-          type: integer
-          default: 100
-          enum:
-            - 0
-            - 100
-          nullable: false
-        bankServer:
-          description: Bank server of check account
-          type: string
-          readOnly: true
-        autoMapTransactions:
-          description: >-
-            Defines if transactions on this account are automatically mapped to
-            invoice and vouchers when imported if possible.
-          type: integer
-          default: 1
-          nullable: true
-        accountingNumber:
-          description: >-
-            The booking account used for this bank account, e.g. 1800 in SKR04
-            and 1200 in SKR03. Must be unique among all your CheckAccounts.
-            Ignore to use a sensible default.
-          type: string
       type: object
     createFileImportAccount:
       title: Data to create a file import account
@@ -16733,6 +16628,111 @@ components:
               type: string
               example: SevClient
           type: object
+    Model_CheckAccount:
+      description: CheckAccount model. Responsible for the payment accounts.
+      properties:
+        accountingNumber:
+          description: >-
+            The booking account used for this bank account, e.g. 1800 in SKR04
+            and 1200 in SKR03. Must be unique among all your CheckAccounts.
+            Ignore to use a sensible default.
+          type: string
+        autoMapTransactions:
+          default: 1
+          description: >-
+            Defines if transactions on this account are automatically mapped to
+            invoice and vouchers when imported if possible.
+          nullable: true
+          type: integer
+        bankServer:
+          description: Bank server of check account
+          readOnly: true
+          type: string
+        create:
+          description: Date of check account creation
+          format: date-time
+          readOnly: true
+          type: string
+        currency:
+          description: The currency of the check account.
+          example: EUR
+          nullable: false
+          type: string
+        defaultAccount:
+          default: 0
+          description: Defines if this check account is the default account.
+          enum:
+            - 0
+            - 1
+          type: integer
+        id:
+          description: The check account id
+          nullable: false
+          readOnly: true
+          type: integer
+        importType:
+          description: >-
+            Import type. Transactions can be imported by this method on the
+            check account.
+          enum:
+            - CSV
+            - MT940
+            - null
+          example: CSV
+          nullable: true
+          type: string
+        name:
+          description: Name of the check account
+          example: Iron Bank
+          nullable: false
+          type: string
+        objectName:
+          description: The check account object name
+          nullable: false
+          readOnly: true
+          type: string
+        sevClient:
+          description: Client to which check account belongs. Will be filled automatically
+          properties:
+            id:
+              description: Unique identifier of the client
+              type: integer
+            objectName:
+              description: Model name, which is 'SevClient'
+              type: string
+          readOnly: true
+          required:
+            - id
+            - objectName
+          type: object
+        status:
+          default: 100
+          description: Status of the check account. 0 <-> Archived - 100 <-> Active
+          enum:
+            - 0
+            - 100
+          nullable: false
+          type: integer
+        type:
+          description: "The type of the check account. Account with a CSV or MT940 import are regarded as online.<br>\r\n     Apart from that, created check accounts over the API need to be offline, as online accounts with an active connection\r\n     to a bank application can not be managed over the API."
+          enum:
+            - offline
+            - online
+          example: online
+          nullable: false
+          type: string
+        update:
+          description: Date of last check account update
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+        - currency
+        - name
+        - status
+        - type
+      title: CheckAccount model
+      type: object
   securitySchemes:
     api_key:
       type: apiKey
