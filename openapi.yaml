@@ -2954,18 +2954,21 @@ paths:
             application/json:
               schema:
                 properties:
-                  filename:
-                    type: string
-                    example: GU-1001.pdf
-                  mimeType:
-                    type: string
-                    example: application/pdf
-                  base64encoded:
-                    type: boolean
-                    example: true
-                  content:
-                    type: string
-                    format: binary
+                  objects:
+                    type: object
+                    properties:
+                      filename:
+                        type: string
+                        example: GU-1001.pdf
+                      mimeType:
+                        type: string
+                        example: application/pdf
+                      base64encoded:
+                        type: boolean
+                        example: true
+                      content:
+                        type: string
+                        format: binary
                 type: object
         '400':
           description: Bad request. Invoice was not found
@@ -5325,18 +5328,21 @@ paths:
             application/json:
               schema:
                 properties:
-                  filename:
-                    type: string
-                    example: RE-101.pdf
-                  mimeType:
-                    type: string
-                    example: application/pdf
-                  base64encoded:
-                    type: boolean
-                    example: true
-                  content:
-                    type: string
-                    format: binary
+                  objects:
+                    type: object
+                    properties:
+                      filename:
+                        type: string
+                        example: RE-101.pdf
+                      mimeType:
+                        type: string
+                        example: application/pdf
+                      base64encoded:
+                        type: boolean
+                        example: true
+                      content:
+                        type: string
+                        format: binary
                 type: object
         '400':
           description: Bad request. Invoice was not found
@@ -6696,18 +6702,21 @@ paths:
             application/json:
               schema:
                 properties:
-                  filename:
-                    type: string
-                    example: OR-1001.pdf
-                  mimeType:
-                    type: string
-                    example: application/pdf
-                  base64encoded:
-                    type: boolean
-                    example: true
-                  content:
-                    type: string
-                    format: binary
+                  objects:
+                    type: object
+                    properties:
+                      filename:
+                        type: string
+                        example: OR-1001.pdf
+                      mimeType:
+                        type: string
+                        example: application/pdf
+                      base64encoded:
+                        type: boolean
+                        example: true
+                      content:
+                        type: string
+                        format: binary
                 type: object
         '400':
           description: Bad request. order was not found
