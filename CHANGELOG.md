@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/j-mastr/sevdesk-api/compare/v1.5.0...v1.5.1) (2025-01-11)
+
+
+### Bug Fixes
+
+* add missing objects property for PDF retrievals ([#66](https://github.com/j-mastr/sevdesk-api/issues/66)) ([b7d45cc](https://github.com/j-mastr/sevdesk-api/commit/b7d45cc9a73341397d863e06145448fd3b2b11ab))
+
 ## [1.5.0](https://github.com/j-mastr/sevdesk-api/compare/v1.4.1...v1.5.0) (2024-12-18)
 
 
