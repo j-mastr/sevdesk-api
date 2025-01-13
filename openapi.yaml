@@ -2955,20 +2955,20 @@ paths:
               schema:
                 properties:
                   objects:
-                    type: object
                     properties:
-                      filename:
-                        type: string
-                        example: GU-1001.pdf
-                      mimeType:
-                        type: string
-                        example: application/pdf
                       base64encoded:
-                        type: boolean
                         example: true
+                        type: boolean
                       content:
-                        type: string
                         format: binary
+                        type: string
+                      filename:
+                        example: GU-1001.pdf
+                        type: string
+                      mimeType:
+                        example: application/pdf
+                        type: string
+                    type: object
                 type: object
         '400':
           description: Bad request. Invoice was not found
@@ -5329,20 +5329,20 @@ paths:
               schema:
                 properties:
                   objects:
-                    type: object
                     properties:
-                      filename:
-                        type: string
-                        example: RE-101.pdf
-                      mimeType:
-                        type: string
-                        example: application/pdf
                       base64encoded:
-                        type: boolean
                         example: true
+                        type: boolean
                       content:
-                        type: string
                         format: binary
+                        type: string
+                      filename:
+                        example: RE-101.pdf
+                        type: string
+                      mimeType:
+                        example: application/pdf
+                        type: string
+                    type: object
                 type: object
         '400':
           description: Bad request. Invoice was not found
@@ -6703,20 +6703,20 @@ paths:
               schema:
                 properties:
                   objects:
-                    type: object
                     properties:
-                      filename:
-                        type: string
-                        example: OR-1001.pdf
-                      mimeType:
-                        type: string
-                        example: application/pdf
                       base64encoded:
-                        type: boolean
                         example: true
+                        type: boolean
                       content:
-                        type: string
                         format: binary
+                        type: string
+                      filename:
+                        example: OR-1001.pdf
+                        type: string
+                      mimeType:
+                        example: application/pdf
+                        type: string
+                    type: object
                 type: object
         '400':
           description: Bad request. order was not found
