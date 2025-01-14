@@ -9440,8 +9440,8 @@ components:
             - '100'
             - '200'
             - '300'
-            - '400'
             - '350'
+            - '400'
         sourceTransaction:
           description: The check account transaction serving as the source of the rebooking
           required:
