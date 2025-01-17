@@ -20,20 +20,18 @@ tags:
     description: >-
       A check account is a payment account on which payments to or from the
       customer are stored.<br> There are three general types of check accounts:
-      <ul><li>Offline</li> <li>Online</li> <li>Register</li> </ul> Offline
-      accounts are accounts on which transactions can be created and booked over
-      the API or over CSV and MT940 imports.<br> The only exception is the
-      standard account, on which transactions can not be created over the
-      API.<br> Please also note, that accounts with CSV and MT940 imports will
-      have online given as the value for their type attribute.<br> Nevertheless,
-      they count as offline accounts.<br> Online accounts are directly connected
-      to a bank application and can not be manipulated over the API.<br>
-      Register accounts represent the cash register for sevdesk account holders
-      needing one and they behave the same way as offline
-      accounts.<br><br>Regarding the check accounts, you will most certainly
-      only need to request existing check accounts for using their ID in further
-      requests.<br> Therefore, you only need to send normal GET requests to the
-      CheckAccount endpoint.<br>
+      <ul><li>Clearing Account (type=offline)</li> <li>Bank Accounts including
+      PayPal and CSV import accounts (type=online)</li> <li>Cash Register
+      (type=register)</li> </ul> Bank accounts can be linked to PayPal or Banks,
+      these must be created through the UI. File import accounts can be created
+      through an endpoint.<br> Clearing accounts can be created through an
+      endpoint.<br> If you want to create payment entries via API, use a file
+      import account.<br> Register accounts represent the cash register for
+      sevdesk account holders needing one and they behave the same way as
+      offline accounts.<br><br> Regarding the check accounts, you will most
+      certainly only need to request existing check accounts for using their ID
+      in further requests.<br> Therefore, you only need to send normal GET
+      requests to the CheckAccount endpoint.<br>
     x-displayName: CheckAccount
   - name: CheckAccountTransaction
     description: >-
@@ -42,7 +40,7 @@ tags:
       and credit notes with them to mark them as paid.<br> For a correct
       bookkeeping, there is always one or multiple transactions linked to an
       invoice, a voucher or a credit note, until the relevant object is
-      completely payed.
+      completely paid.
     x-displayName: CheckAccountTransaction
   - name: AccountingContact
     description: >-
@@ -310,39 +308,6 @@ paths:
         '500':
           description: Server error
       deprecated: false
-      security:
-        - api_key: []
-    post:
-      tags:
-        - CheckAccount
-      summary: Create a new check account
-      description: Creates a new banking account on which transactions can be created.
-      operationId: createCheckAccount
-      requestBody:
-        description: "Creation data. Please be aware, that you need to provide at least all required parameter\r\n    of the CheckAccount model!"
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Model_CheckAccount'
-      responses:
-        '201':
-          description: Created - Returns created check account
-          content:
-            application/json:
-              schema:
-                properties:
-                  objects:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Model_CheckAccountResponse'
-                type: object
-        '400':
-          description: Bad request
-        '401':
-          description: Authentication required
-        '500':
-          description: Server error
-      deprecated: true
       security:
         - api_key: []
   /CheckAccount/Factory/fileImportAccount:
@@ -7705,17 +7670,19 @@ components:
           nullable: true
           example: DE02100500000054540402
         type:
-          description: "The type of the check account. Account with a CSV or MT940 import are regarded as online.<br>\r\n     Apart from that, created check accounts over the API need to be offline, as online accounts with an active connection\r\n     to a bank application can not be managed over the API."
+          description: >-
+            The type of the check account. Account with a CSV or MT940 import
+            are regarded as online.
           type: string
           enum:
             - online
             - offline
+            - register
           example: online
         importType:
           description: >-
             Import type, for accounts that are type "online" but not connected
-            to a data provider. Transactions can be imported by this method on
-            the check account.
+            to a data provider.
           type: string
           enum:
             - CSV
@@ -7731,6 +7698,16 @@ components:
           description: Defines if this check account is the default account.
           type: string
           default: '0'
+        baseAccount:
+          description: >-
+            This will be 1 if the account is your base account that comes with
+            every sevdesk setup.
+          type: string
+          example: '1'
+        priority:
+          description: Defines the sorting of accounts, highest is first.
+          type: string
+          example: '2'
         status:
           description: Status of the check account. 0 <-> Archived - 100 <-> Active
           type: string
@@ -7739,6 +7716,13 @@ components:
             - '0'
             - '100'
           example: '100'
+        balance:
+          description: >-
+            The account balance as reported by PayPal or finAPI. Not set for
+            other types of accounts.
+          type: string
+          example: '12.34'
+          nullable: true
         bankServer:
           description: >-
             Bank server of check account, only set if the account is connected
@@ -7753,118 +7737,22 @@ components:
           type: string
           default: '1'
           nullable: true
+        autoSyncTransactions:
+          description: >-
+            If this is 1 the account will be automatically updated through
+            PayPal or finAPI. Only applicable for connected online accounts.
+          type: string
+        lastSync:
+          description: Timepoint of the last payment import through PayPal or finAPI.
+          type: string
+          format: date-time
+          example: '2024-06-28T14:42:58+02:00'
         accountingNumber:
           description: >-
-            The booking account used for this bank account, e.g. 1800 in SKR04
-            and 1200 in SKR03. Must be unique among all your CheckAccounts.
-            Ignore to use a sensible default.
+            The booking account used for this account, e.g. 1800 in SKR04 and
+            1200 in SKR03. Must be unique among all your CheckAccounts.
           type: string
           example: '1800'
-      type: object
-    Model_CheckAccount:
-      title: CheckAccount model
-      description: CheckAccount model. Responsible for the payment accounts.
-      required:
-        - name
-        - type
-        - currency
-        - status
-      properties:
-        id:
-          description: The check account id
-          type: integer
-          readOnly: true
-          nullable: false
-        objectName:
-          description: The check account object name
-          type: string
-          readOnly: true
-          nullable: false
-        create:
-          description: Date of check account creation
-          type: string
-          format: date-time
-          readOnly: true
-        update:
-          description: Date of last check account update
-          type: string
-          format: date-time
-          readOnly: true
-        sevClient:
-          description: Client to which check account belongs. Will be filled automatically
-          required:
-            - id
-            - objectName
-          properties:
-            id:
-              description: Unique identifier of the client
-              type: integer
-            objectName:
-              description: Model name, which is 'SevClient'
-              type: string
-          type: object
-          readOnly: true
-        name:
-          description: Name of the check account
-          type: string
-          example: Iron Bank
-          nullable: false
-        type:
-          description: "The type of the check account. Account with a CSV or MT940 import are regarded as online.<br>\r\n     Apart from that, created check accounts over the API need to be offline, as online accounts with an active connection\r\n     to a bank application can not be managed over the API."
-          type: string
-          enum:
-            - online
-            - offline
-          example: online
-          nullable: false
-        importType:
-          description: >-
-            Import type. Transactions can be imported by this method on the
-            check account.
-          type: string
-          enum:
-            - CSV
-            - MT940
-            - null
-          example: CSV
-          nullable: true
-        currency:
-          description: The currency of the check account.
-          type: string
-          example: EUR
-          nullable: false
-        defaultAccount:
-          description: Defines if this check account is the default account.
-          type: integer
-          default: 0
-          enum:
-            - 0
-            - 1
-        status:
-          description: Status of the check account. 0 <-> Archived - 100 <-> Active
-          type: integer
-          default: 100
-          enum:
-            - 0
-            - 100
-          nullable: false
-        bankServer:
-          description: Bank server of check account
-          type: string
-          readOnly: true
-        autoMapTransactions:
-          description: >-
-            Defines if transactions on this account are automatically mapped to
-            invoice and vouchers when imported if possible.
-          type: integer
-          default: 1
-          nullable: true
-        accountingNumber:
-          description: >-
-            The booking account used for this bank account, e.g. 1800 in SKR04
-            and 1200 in SKR03. Must be unique among all your CheckAccounts.
-            Ignore to use a sensible default.
-          type: string
       type: object
     createFileImportAccount:
       title: Data to create a file import account
@@ -8157,7 +8045,7 @@ components:
         id:
           description: The check account transaction id
           type: string
-          example: '0'
+          example: '1'
           readOnly: true
         objectName:
           description: The check account transaction object name
@@ -8225,6 +8113,22 @@ components:
           description: BIC or bank code of the other party
           type: string
           nullable: true
+        gvCode:
+          description: >-
+            ZKA business transaction code. This can be given for finAPI
+            accounts.
+          type: string
+          nullable: true
+        entryText:
+          description: >-
+            Transaction type, according to the bank. This can be given for
+            finAPI accounts.
+          type: string
+          nullable: true
+        primaNotaNo:
+          description: Transaction primanota. This can be given for finAPI accounts.
+          type: string
+          nullable: true
         checkAccount:
           description: The check account to which the transaction belongs
           required:
@@ -8242,16 +8146,19 @@ components:
           type: object
           readOnly: true
         status:
-          description: "Status of the check account transaction.<br>\r\n     100 <-> Created<br>\r\n     200 <-> Linked<br>\r\n     300 <-> Private<br>\r\n     400 <-> Booked"
+          description: "Status of the check account transaction.<br>\r\n     100 <-> Created<br>\r\n     200 <-> Linked<br>\r\n     300 <-> Private<br>\r\n     350 <-> Auto-booked without user confirmation<br>400 <-> Booked"
           type: string
           readOnly: true
           enum:
             - '100'
             - '200'
             - '300'
+            - '350'
             - '400'
         sourceTransaction:
-          description: The check account transaction serving as the source of the rebooking
+          description: >-
+            The check account transaction serving as the source of a money
+            transit
           required:
             - id
             - objectName
@@ -8267,7 +8174,9 @@ components:
           type: object
           readOnly: true
         targetTransaction:
-          description: The check account transaction serving as the target of the rebooking
+          description: >-
+            The check account transaction serving as the target of a money
+            transit
           required:
             - id
             - objectName
@@ -8283,9 +8192,7 @@ components:
           type: object
           readOnly: true
         enshrined:
-          description: >
-            Can only be set via
-            [CheckAccountTransaction/{checkAccountTransactionId}/enshrine](#tag/CheckAccountTransaction/operation/checkAccountTransactionEnshrine)
+          description: Timepoint when the transaction was enshrined.
           type: string
           format: date-time
           readOnly: true
