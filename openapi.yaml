@@ -17364,6 +17364,8 @@ components:
           type: string
           nullable: true
           readOnly: true
+          pattern: >-
+            ^P(?!$)(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?=\d)(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$
         recurringStartDate:
           description: "The date when the recurring vouchers start being generated.<br>\r\n     Necessary attribute for all recurring vouchers."
           type: string
@@ -17834,9 +17836,9 @@ components:
           enum:
             - '50'
             - '100'
+            - '1000'
             - '150'
             - '750'
-            - '1000'
           example: '50'
           nullable: true
         sumNet:
@@ -18008,6 +18010,8 @@ components:
           description: "The DateInterval in which recurring vouchers are generated.<br>\r\n     Necessary attribute for all recurring vouchers."
           type: string
           nullable: true
+          pattern: >-
+            ^P(?!$)(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?=\d)(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$
         recurringStartDate:
           description: "The date when the recurring vouchers start being generated.<br>\r\n     Necessary attribute for all recurring vouchers."
           type: string
