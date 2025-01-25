@@ -11850,14 +11850,7 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
+              type: integer
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -12208,14 +12201,7 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
+              type: integer
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -13082,14 +13068,7 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
+              type: integer
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -14388,14 +14367,7 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
+              type: integer
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -15569,14 +15541,7 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
+              type: integer
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -15920,14 +15885,7 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
+              type: integer
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -16639,14 +16597,7 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
+              type: integer
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -17334,14 +17285,7 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG (tax rates: 0.0) - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
+              type: integer
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -17418,19 +17362,10 @@ components:
         recurringInterval:
           description: "The DateInterval in which recurring vouchers are generated.<br>\r\n     Necessary attribute for all recurring vouchers."
           type: string
-          enum:
-            - P0Y0M1W
-            - P0Y0M2W
-            - P0Y1M0W
-            - P0Y3M0W
-            - P0Y6M0W
-            - P1Y0M0W
-            - P2Y0M0W
-            - P3Y0M0W
-            - P4Y0M0W
-            - P5Y0M0W
           nullable: true
           readOnly: true
+          pattern: >-
+            ^P(?!$)(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?=\d)(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$
         recurringStartDate:
           description: "The date when the recurring vouchers start being generated.<br>\r\n     Necessary attribute for all recurring vouchers."
           type: string
@@ -17902,6 +17837,8 @@ components:
             - '50'
             - '100'
             - '1000'
+            - '150'
+            - '750'
           example: '50'
           nullable: true
         sumNet:
@@ -17978,14 +17915,7 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG (tax rates: 0.0) - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
+              type: integer
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -18079,18 +18009,9 @@ components:
         recurringInterval:
           description: "The DateInterval in which recurring vouchers are generated.<br>\r\n     Necessary attribute for all recurring vouchers."
           type: string
-          enum:
-            - P0Y0M1W
-            - P0Y0M2W
-            - P0Y1M0W
-            - P0Y3M0W
-            - P0Y6M0W
-            - P1Y0M0W
-            - P2Y0M0W
-            - P3Y0M0W
-            - P4Y0M0W
-            - P5Y0M0W
           nullable: true
+          pattern: >-
+            ^P(?!$)(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?=\d)(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$
         recurringStartDate:
           description: "The date when the recurring vouchers start being generated.<br>\r\n     Necessary attribute for all recurring vouchers."
           type: string
@@ -18440,14 +18361,7 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG (tax rates: 0.0) - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
+              type: integer
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -19703,14 +19617,7 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              enum:
-                - '1'
-                - '11'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-              type: string
+              type: integer
             objectName:
               description: Name of the object. Must always be TaxRule
               enum:
