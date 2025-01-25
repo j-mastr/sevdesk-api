@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/j-mastr/sevdesk-api/compare/v1.5.1...v1.5.2) (2025-01-25)
+
+
+### Bug Fixes
+
+* several voucher related properties + recurring ([#68](https://github.com/j-mastr/sevdesk-api/issues/68)) ([633956f](https://github.com/j-mastr/sevdesk-api/commit/633956f75ca5a574ce4b17353ac96be33445180e))
+
 ## [1.5.1](https://github.com/j-mastr/sevdesk-api/compare/v1.5.0...v1.5.1) (2025-01-11)
 
 
