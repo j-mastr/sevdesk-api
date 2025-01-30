@@ -4696,8 +4696,8 @@ paths:
               schema:
                 properties:
                   object:
-                    type: string
                     example: <?xml version="1.0" encoding="UTF-8"?>
+                    type: string
                 type: object
         '400':
           description: Bad request. Invoice was not found
