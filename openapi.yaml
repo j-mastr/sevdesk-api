@@ -5338,9 +5338,9 @@ paths:
             application/json:
               schema:
                 properties:
-                  object:
-                    example: <?xml version="1.0" encoding="UTF-8"?>
+                  objects:
                     type: string
+                    example: <?xml version="1.0" encoding="UTF-8"?>
                 type: object
         '400':
           description: Bad request. Invoice was not found
