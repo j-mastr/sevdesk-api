@@ -10150,6 +10150,14 @@ components:
             - objectName
           properties:
             id:
+              type: string
+              enum:
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+                - '11'
               description: |-
                 **Use this in sevdesk-Update 2.0 (replaces taxType / taxSet).**
 
@@ -10164,14 +10172,6 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -10480,6 +10480,14 @@ components:
             - objectName
           properties:
             id:
+              type: string
+              enum:
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+                - '11'
               description: |-
                 **Use this in sevdesk-Update 2.0 (replaces taxType / taxSet).**
 
@@ -10494,14 +10502,6 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -11284,6 +11284,14 @@ components:
             - objectName
           properties:
             id:
+              type: string
+              enum:
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+                - '11'
               description: |-
                 **Use this in sevdesk-Update 2.0 (replaces taxType / taxSet).**
 
@@ -11298,14 +11306,6 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -12005,6 +12005,14 @@ components:
             - objectName
           properties:
             id:
+              type: string
+              enum:
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+                - '11'
               description: |-
                 **Use this in sevdesk-Update 2.0 (replaces taxType / taxSet).**
 
@@ -12023,14 +12031,6 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -12537,6 +12537,14 @@ components:
             - objectName
           properties:
             id:
+              type: string
+              enum:
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+                - '11'
               description: |-
                 **Use this in sevdesk-Update 2.0 (replaces taxType / taxSet).**
 
@@ -12555,14 +12563,6 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -13639,6 +13639,14 @@ components:
             - objectName
           properties:
             id:
+              type: string
+              enum:
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+                - '11'
               description: |-
                 **Use this in sevdesk-Update 2.0 (replaces taxType / taxSet).**
 
@@ -13655,14 +13663,6 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -13971,6 +13971,14 @@ components:
             - objectName
           properties:
             id:
+              type: string
+              enum:
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+                - '11'
               description: |-
                 **Use this in sevdesk-Update 2.0 (replaces taxType / taxSet).**
 
@@ -13987,14 +13995,6 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
@@ -14623,6 +14623,14 @@ components:
             - objectName
           properties:
             id:
+              type: string
+              enum:
+                - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+                - '11'
               description: |-
                 **Use this in sevdesk-Update 2.0 (replaces taxType / taxSet).**
 
@@ -14639,14 +14647,6 @@ components:
 
                 For small business owner ("Kleinunternehmer") it can be:
                   - `11` - Steuer nicht erhoben nach §19UStG - tax rates: 0.0 - replaces `"taxType": "ss"`
-              type: string
-              enum:
-                - '1'
-                - '2'
-                - '3'
-                - '4'
-                - '5'
-                - '11'
             objectName:
               description: Name of the object. Must always be TaxRule
               type: string
