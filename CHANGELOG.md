@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/j-mastr/sevdesk-api/compare/v1.5.2...v1.6.0) (2025-03-12)
+
+
+### Features
+
+* update openapi.yaml ([76dbaef](https://github.com/j-mastr/sevdesk-api/commit/76dbaef8bc2f80ad0591df42482da354b304f8fb))
+
 ## [1.5.2](https://github.com/j-mastr/sevdesk-api/compare/v1.5.1...v1.5.2) (2025-01-25)
 
 
