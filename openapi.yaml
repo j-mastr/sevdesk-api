@@ -8412,7 +8412,6 @@ paths:
                         - Order
                         - CreditNote
                   type: object
-                  description: Invoice for the reminder
       responses:
         '200':
           description: Successful operation
@@ -13639,6 +13638,7 @@ components:
           description: Date of last invoice update
           type: string
           format: date-time
+          example: '2024-04-08T00:00:00+02:00'
           readOnly: true
         sevClient:
           description: Client to which invoice belongs. Will be filled automatically
@@ -13775,9 +13775,11 @@ components:
           type: object
           readOnly: true
         taxRate:
-          description: Is overwritten by invoice position tax rates
+          description: >-
+            This is not used anymore. Use the taxRate of the individual
+            positions instead.
           type: string
-          example: '19'
+          example: '0'
           readOnly: true
         taxRule:
           description: >-
@@ -13797,6 +13799,7 @@ components:
               type: string
               enum:
                 - TaxRule
+              default: TaxRule
           type: object
           nullable: false
         taxText:
@@ -13811,6 +13814,9 @@ components:
           readOnly: true
         taxType:
           description: >-
+            **Use this in sevdesk-Update 1.0 (instead of taxRule).**
+
+
             Tax type of the invoice.
 
             There are four tax types:
@@ -13837,6 +13843,7 @@ components:
             - custom
           readOnly: true
         paymentMethod:
+          description: Payment method used for the invoice
           required:
             - id
             - objectName
@@ -13940,6 +13947,9 @@ components:
           readOnly: true
         taxSet:
           description: >-
+            **Use this in sevdesk-Update 1.0 (instead of taxRule).**
+
+
             Tax set of the invoice. Needs to be added if you chose the tax type
             custom
           required:
@@ -13949,7 +13959,7 @@ components:
             id:
               description: Unique identifier of the object
               type: string
-              example: '0'
+              example: '1'
             objectName:
               description: Model name, which is 'TaxSet'
               type: string
@@ -18637,7 +18647,6 @@ components:
                 - Order
                 - CreditNote
           type: object
-          description: the related object
         sevClient:
           description: Client to which invoice belongs. Will be filled automatically
           required:
