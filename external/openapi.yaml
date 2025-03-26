@@ -3105,7 +3105,7 @@ paths:
       tags:
         - Export
       summary: Update export config
-      description: Update export config to export datev CSV
+      description: Update export config to export DATEV
       operationId: updateExportConfig
       parameters:
         - name: SevClientId
@@ -3156,12 +3156,14 @@ paths:
     get:
       summary: Export datev
       description: >-
-        Datev export as zip with csv´s. Before you can perform the datev export,
+        DATEV export as zip with CSVs. Before you can perform the DATEV export,
         you must first set the "accountingYearBegin". To do this, you must use
         the <a
         href='#tag/Export/operation/updateExportConfig'>updateExportConfig</a>
-        endpoint.
-      operationId: exportDatev
+        endpoint. Please note, that this endpoint is deprecated. You should use
+        the endpoint <a
+        href='#tag/Export/operation/exportDatevCSV'>/Export/createDatevCsvZipExportJob</a>.
+      operationId: exportDatevDepricated
       tags:
         - Export
       parameters:
@@ -3173,14 +3175,14 @@ paths:
           example: true
         - name: startDate
           in: query
-          description: the start date of the export as timestamp
+          description: The start date of the export as timestamp
           schema:
             type: integer
           required: true
           example: 1641032867
         - name: endDate
           in: query
-          description: the end date of the export as timestamp
+          description: The end date of the export as timestamp
           schema:
             type: integer
           required: true
@@ -3188,12 +3190,12 @@ paths:
         - name: scope
           in: query
           description: >-
-            Define what you want to include in the datev export. This parameter
+            Define what you want to include in the DATEV export. This parameter
             takes a string of 5 letters. Each stands for a model that should be
             included. Possible letters are: ‘E’ (Earnings), ‘X’ (Expenditure),
             ‘T’ (Transactions), ‘C’ (Cashregister), ‘D’ (Assets). By providing
             one of those letter you specify that it should be included in the
-            datev export. Some combinations are: ‘EXTCD’, ‘EXTD’ …
+            DATEV export. Some combinations are: ‘EXTCD’, ‘EXTD’ …
           schema:
             type: string
           required: true
@@ -3231,6 +3233,332 @@ paths:
           description: Authentication required
         '409':
           description: Conflict
+        '500':
+          description: Server Error
+      deprecated: true
+      security:
+        - api_key: []
+  /Export/createDatevCsvZipExportJob:
+    get:
+      summary: Start DATEV CSV ZIP export
+      description: >-
+        Start an export that generates booking data in the DATEV format (CSV) 
+        Before you can perform the DATEV export, you first have to set the
+        "accountingYearBegin". To do this, use the endpoint <a
+        href='#tag/Export/operation/updateExportConfig'>updateExportConfig</a>. 
+        After that you can use the createDatevCsvZipExportJob endpoint to start
+        the DATEV export which returns the export ID.  You have to use the <a
+        href='#tag/Export/operation/jobDownloadInfo'>jobDownloadInfo</a>
+        endpoint to receive the download url when the export is ready. 
+        <h3>Export workflow</h2> To get the DATEV CSV zip file, please implement
+        the following workflow. <ol> <li>Set the accountingYearBegin (if not
+        already set) via <a
+        href='#tag/Export/operation/updateExportConfig'>updateExportConfig</a></li>
+        <li>Start the export by using the createDatevCsvZipExportJob
+        endpoint</li> <li>Request a progressHash with endpoint <a
+        href='#tag/Export/operation/generateDownloadHash'>generateDownloadHash</a>
+        (optional)</li> <li>Use the progressHash to receive export progress
+        information with endpoint <a
+        href='#tag/Export/operation/getProgress'>getProgress</a> (optional)</li>
+        <li>Use the <a
+        href='#tag/Export/operation/jobDownloadInfo'>jobDownloadInfo</a>
+        endpoint to get the download url to the zip file.</li> </ol>
+      operationId: exportDatevCSV
+      tags:
+        - Export
+      parameters:
+        - name: startDate
+          in: query
+          description: The start date of the export as timestamp
+          schema:
+            type: integer
+          required: true
+          example: 1641032867
+        - name: endDate
+          in: query
+          description: The end date of the export as timestamp
+          schema:
+            type: integer
+          required: true
+          example: 1648805267
+        - name: scope
+          in: query
+          description: >-
+            Define what you want to include in the DATEV export. This parameter
+            takes a string of 5 letters. Each stands for a model that should be
+            included. Possible letters are: ‘E’ (Earnings), ‘X’ (Expenditure),
+            ‘T’ (Transactions), ‘C’ (Cashregister), ‘D’ (Assets). By providing
+            one of those letter you specify that it should be included in the
+            DATEV export. Some combinations are: ‘EXTCD’, ‘EXTD’ …
+          schema:
+            type: string
+          required: true
+          example: EXTCD
+        - name: exportByPaydate
+          in: query
+          description: >-
+            When this parameter is true, the export contains only paid documents
+            where pay date is in the time range of startDate and endDate
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: includeEnshrined
+          in: query
+          description: If set to false, the export excludes enshrined documents
+          schema:
+            type: boolean
+            default: true
+          example: true
+        - name: enshrineDocuments
+          in: query
+          description: >-
+            Specify if you want to enshrine all models which were included in
+            the export
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: includeDocumentImages
+          in: query
+          description: Specify if you want to include the document images in the export
+          schema:
+            type: boolean
+            default: false
+          example: true
+      responses:
+        '200':
+          description: Successful operation. Returns the ID of the export job.
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    type: string
+                    example: 0a0e1eff-9590-1bea-1195-a3cfc04364cc
+                type: object
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '409':
+          description: Conflict
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+  /Export/createDatevXmlZipExportJob:
+    get:
+      summary: Start DATEV XML ZIP export
+      description: >-
+        Start an export that generates invoice data in the DATEV format (XML) 
+        Before you can perform the DATEV export, you first have to set the
+        "accountingYearBegin". To do this, use the endpoint <a
+        href='#tag/Export/operation/updateExportConfig'>updateExportConfig</a>.  
+        After that you can use the createDatevXmlZipExportJob endpoint to start
+        the DATEV export which returns the export ID.  You have to use the <a
+        href='#tag/Export/operation/jobDownloadInfo'>jobDownloadInfo</a>
+        endpoint to receive the download url when the export is ready. 
+        <h3>Export workflow</h2> To get the DATEV XML zip file, please implement
+        the following workflow. <ol> <li>Set the accountingYearBegin (if not
+        already set) via <a
+        href='#tag/Export/operation/updateExportConfig'>updateExportConfig</a></li>
+        <li>Start the export by using the createDatevXmlZipExportJob
+        endpoint</li> <li>Request a progressHash with endpoint <a
+        href='#tag/Export/operation/generateDownloadHash'>generateDownloadHash</a>
+        (optional)</li> <li>Use the progressHash to receive export progress
+        information with endpoint <a
+        href='#tag/Export/operation/getProgress'>getProgress</a> (optional)</li>
+        <li>Use the <a
+        href='#tag/Export/operation/jobDownloadInfo'>jobDownloadInfo</a>
+        endpoint to get the download url to the zip file.</li> </ol>
+      operationId: exportDatevXML
+      tags:
+        - Export
+      parameters:
+        - name: startDate
+          in: query
+          description: The start date of the export as ISO timestamp
+          schema:
+            type: integer
+          required: true
+          example: 1641032867
+        - name: endDate
+          in: query
+          description: The end date of the export as ISO timestamp
+          schema:
+            type: integer
+          required: true
+          example: 1648805267
+        - name: scope
+          in: query
+          description: >-
+            Define what you want to include in the DATEV export. This parameter
+            takes a string of letters. Each letter stands for a document type
+            that should be included. Possible letters are: ‘E’ (Receipts,
+            outgoing invoices & credit notes) and ‘X’ (Expenditure documents).
+          schema:
+            type: string
+          required: true
+          example: EX
+        - name: exportByPaydate
+          in: query
+          description: >-
+            When this parameter is true, the export contains only paid documents
+            where pay date is in the time range of startDate and endDate
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: includeEnshrined
+          in: query
+          description: If set to false, the export excludes enshrined documents
+          schema:
+            type: boolean
+            default: true
+          example: true
+        - name: includeExportedDocuments
+          in: query
+          description: If set to false, the export excludes already exported documents
+          schema:
+            type: boolean
+            default: true
+          example: true
+        - name: includeDocumentXml
+          in: query
+          description: >-
+            If set to false, the export excludes XML files containing the data
+            for each document
+          schema:
+            type: boolean
+            default: true
+          example: true
+      responses:
+        '200':
+          description: Successful operation. Returns the ID of the export job.
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    type: string
+                    example: 0a0e1eff-9590-1bea-1195-a3cfc04364cc
+                type: object
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '409':
+          description: Conflict
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+  /Progress/generateDownloadHash:
+    get:
+      summary: Generate download hash
+      description: Generates an identifier to request the current export progress.
+      operationId: generateDownloadHash
+      tags:
+        - Export
+      parameters:
+        - name: jobId
+          in: query
+          description: The export job ID
+          schema:
+            type: string
+          example: 0a0e1eff-9590-1bea-1195-a3cfc04364cc
+          required: true
+      responses:
+        '200':
+          description: Successful operation. Returns progress hash.
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Export_Progress_Data'
+                type: object
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+  /Progress/getProgress:
+    get:
+      summary: Get progress
+      description: >-
+        Get the progress state of the export. You can use polling (request every
+        few seconds) to get the current state.
+      operationId: getProgress
+      tags:
+        - Export
+      parameters:
+        - name: hash
+          in: query
+          description: The hash string of an export
+          schema:
+            type: string
+          example: 22ae177d286f17aac5daac591c70164159b64c7f_0a0e1eff
+          required: true
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Export_Progress_Data'
+                type: object
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+  /ExportJob/jobDownloadInfo:
+    get:
+      summary: Get job download info
+      description: >-
+        When the export job has finished you can call this endpoint to get the
+        download url.
+      operationId: jobDownloadInfo
+      tags:
+        - Export
+      parameters:
+        - name: jobId
+          in: query
+          description: The export job ID
+          schema:
+            type: string
+          example: 0a0e1eff-9590-1bea-1195-a3cfc04364cc
+          required: true
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Export_Job_Download_Info'
+                type: object
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
         '500':
           description: Server Error
       security:
@@ -11530,6 +11858,38 @@ components:
               description: Model name, which is 'SevClient'
               type: string
               example: SevClient
+    Export_Progress_Data:
+      title: Export progress data JSON
+      properties:
+        current:
+          description: >-
+            Current progress of the export. Export is finished when "current"
+            reaches "total" (usually 100)
+          type: integer
+          example: 33
+        total:
+          description: Total value of the export
+          type: integer
+          example: 100
+    Export_Job_Download_Info:
+      title: Export job download info JSON
+      properties:
+        filename:
+          description: >-
+            Current progress of the export. Export is finished when "current"
+            reaches "total" (usually 100)
+          type: string
+          example: >-
+            BITTE-ENTPACKEN_Buchungsstapel_und_Belegbilder_5621913_99998_20250201_bis_20250228.zip
+        link:
+          description: Download url of the export file
+          type: string
+          example: >-
+            https://sevexport-filestorage-workload-prod.s3.eu-central-1.amazonaws.com/542277/0a0e1eff-9590-1bea-1195-a3cfc04364cc/zip/BITTE-ENTPACKEN_Buchungsstapel_und_Belegbilder_123456_66666_20250201_bis_20250228.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20250317T111422Z&X-Amz-SignedHeaders=host&X-Amz-Credential=AKIAIIODRVFBPEMLYBCQ%2F20250317%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Expires=604800&X-Amz-Signature=35854d4cd746fca8eb9f7624960ea5b207f24ffd2c9bb14361440c70f05998d2
+        linkExpireDate:
+          description: Expire date of the download url
+          type: string
+          example: '2025-03-24T12:14:22+01:00'
     Model_Part:
       title: Part model
       description: Part model
