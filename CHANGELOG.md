@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/j-mastr/sevdesk-api/compare/v1.7.0...v1.7.1) (2025-05-13)
+
+
+### Bug Fixes
+
+* GitHub action ([#80](https://github.com/j-mastr/sevdesk-api/issues/80)) ([dcf895a](https://github.com/j-mastr/sevdesk-api/commit/dcf895aa8d3d07f8ae254a60e1830ed6289bada2))
+
 ## [1.7.0](https://github.com/j-mastr/sevdesk-api/compare/v1.6.0...v1.7.0) (2025-04-26)
 
 
