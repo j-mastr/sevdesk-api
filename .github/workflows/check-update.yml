@@ -38,7 +38,6 @@ jobs:
       - name: Update OpenAPI
         id: update_openapi
         run: ./scripts/update.sh
-        continue-on-error: true
       - name: Count commits
         id: count_commits
         run: |
@@ -46,7 +45,7 @@ jobs:
           echo "count=$COMMITS" >> "$GITHUB_OUTPUT"
           echo "$COMMITS commits to merge"
       - name: create pull request
-        if: steps.count_commits.outputs.count > 0 || steps.update_openapi.outcome == 'failure'
+        if: steps.count_commits.outputs.count > 0
         id: create_pr
         run: |
           git push --set-upstream -f origin ${{env.UPDATE_BRANCH_NAME}}
@@ -54,18 +53,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Auto-merge update
-        if: steps.update_openapi.outcome == 'success' && steps.create_pr.outcome == 'success'
+        if: steps.create_pr.outcome == 'success'
         run: |
           gh pr merge --auto --squash --subject "feat: update openapi.yaml" "${{ env.UPDATE_BRANCH_NAME }}"
         env:
           GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
-      - name: Comment on failed update
-        if: steps.update_openapi.outcome == 'failure' && steps.create_pr.outcome == 'success'
-        run: |
-          gh pr comment "${{env.UPDATE_BRANCH_NAME}}" --body "Failed to merge updated OpenAPI automatically. Please \`git checkout ${{env.UPDATE_BRANCH_NAME}}\` and \`./scripts/update.sh\` manually."
-          gh pr edit "${{env.UPDATE_BRANCH_NAME}}" --add-label "update: failed"
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Cleanup
         run: |
           git switch --discard-changes "${{ github.ref_name}}"
