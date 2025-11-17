@@ -7605,8 +7605,8 @@ paths:
         booking a voucher, all by using the same endpoint.<br> Conveniently, the
         booking process is exactly the same as the process for invoices.<br> For
         this reason, you can have a look at it <a
-        href='#tag/Voucher/How-to-filter-for-certain-vouchers'>here</a> and all
-        you need to to is to change "Invoice" into "Voucher" in the URL.
+        href='#tag/Invoice/How-to-book-an-invoice'>here</a> and all you need to
+        do is to change "Invoice" into "Voucher" in the URL.
       operationId: bookVoucher
       parameters:
         - name: voucherId
@@ -7663,7 +7663,7 @@ paths:
                         - CheckAccount
                   type: object
                 checkAccountTransaction:
-                  description: "The check account transaction on which should be booked.<br>\r\n    The transaction will be linked to the voucher."
+                  description: "The check account transaction on which should be booked.<br>\r\n    The transaction will be linked to the voucher.<br>Providing a transaction is required for online checkaccounts (like you would select an existing transaction in the UI)."
                   required:
                     - id
                     - objectName
@@ -7687,7 +7687,7 @@ paths:
               type: object
       responses:
         '200':
-          description: Successful operation - Returns changed voucher log entry
+          description: Successful operation - Returns voucher log entry
           content:
             application/json:
               schema:
@@ -7708,21 +7708,36 @@ paths:
                     type: string
                     format: date-time
                     example: '2023-04-18T15:45:38+02:00'
+                  voucher:
+                    type: object
+                    required:
+                      - id
+                      - objectName
+                    properties:
+                      id:
+                        description: The id of the voucher
+                        type: integer
+                        example: 2
+                      objectName:
+                        description: Internal object name which is 'Voucher'.
+                        type: string
+                        example: Voucher
                   fromStatus:
                     type: string
                     example: 200
                   toStatus:
                     type: string
                     example: 1000
+                  amountPayed:
+                    type: string
+                    example: 0
                   bookingDate:
                     type: string
                     format: date-time
                     example: '2023-04-18T15:45:38+02:00'
                   sevClient:
                     type: object
-                    description: >-
-                      Client to which invoice belongs. Will be filled
-                      automatically
+                    description: Client to which the voucher belongs.
                     required:
                       - id
                       - objectName
@@ -7737,28 +7752,6 @@ paths:
                         example: SevClient
                         enum:
                           - SevClient
-                  additionalInformation:
-                    default: null
-                    type: string
-                  ammountPayed:
-                    example: 0
-                    type: string
-                  creditNote:
-                    properties:
-                      id:
-                        description: The id of the voucher
-                        example: 2
-                        type: integer
-                      objectName:
-                        description: Internal object name which is 'Voucher'.
-                        enum:
-                          - Voucher
-                        example: Voucher
-                        type: string
-                    required:
-                      - id
-                      - objectName
-                    type: object
         '400':
           description: Bad request
         '401':
