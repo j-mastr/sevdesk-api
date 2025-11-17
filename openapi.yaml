@@ -7703,39 +7703,17 @@ paths:
                     description: Internal object name which is 'VoucherLog'.
                     enum:
                       - VoucherLog
-                  additionalInformation:
-                    type: string
-                    default: null
                   create:
                     description: Date of email creation
                     type: string
                     format: date-time
                     example: '2023-04-18T15:45:38+02:00'
-                  creditNote:
-                    type: object
-                    required:
-                      - id
-                      - objectName
-                    properties:
-                      id:
-                        description: The id of the voucher
-                        type: integer
-                        example: 2
-                      objectName:
-                        description: Internal object name which is 'Voucher'.
-                        type: string
-                        example: Voucher
-                        enum:
-                          - Voucher
                   fromStatus:
                     type: string
                     example: 200
                   toStatus:
                     type: string
                     example: 1000
-                  ammountPayed:
-                    type: string
-                    example: 0
                   bookingDate:
                     type: string
                     format: date-time
@@ -7759,6 +7737,28 @@ paths:
                         example: SevClient
                         enum:
                           - SevClient
+                  additionalInformation:
+                    default: null
+                    type: string
+                  ammountPayed:
+                    example: 0
+                    type: string
+                  creditNote:
+                    properties:
+                      id:
+                        description: The id of the voucher
+                        example: 2
+                        type: integer
+                      objectName:
+                        description: Internal object name which is 'Voucher'.
+                        enum:
+                          - Voucher
+                        example: Voucher
+                        type: string
+                    required:
+                      - id
+                      - objectName
+                    type: object
         '400':
           description: Bad request
         '401':
