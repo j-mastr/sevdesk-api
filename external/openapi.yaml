@@ -6849,8 +6849,8 @@ paths:
         booking a voucher, all by using the same endpoint.<br> Conveniently, the
         booking process is exactly the same as the process for invoices.<br> For
         this reason, you can have a look at it <a
-        href='#tag/Voucher/How-to-filter-for-certain-vouchers'>here</a> and all
-        you need to to is to change "Invoice" into "Voucher" in the URL.
+        href='#tag/Invoice/How-to-book-an-invoice'>here</a> and all you need to
+        do is to change "Invoice" into "Voucher" in the URL.
       operationId: bookVoucher
       parameters:
         - name: voucherId
@@ -6904,7 +6904,7 @@ paths:
                       example: CheckAccount
                   type: object
                 checkAccountTransaction:
-                  description: "The check account transaction on which should be booked.<br>\r\n    The transaction will be linked to the voucher."
+                  description: "The check account transaction on which should be booked.<br>\r\n    The transaction will be linked to the voucher.<br>Providing a transaction is required for online checkaccounts (like you would select an existing transaction in the UI)."
                   required:
                     - id
                     - objectName
@@ -6925,7 +6925,7 @@ paths:
               type: object
       responses:
         '200':
-          description: Successful operation - Returns changed voucher log entry
+          description: Successful operation - Returns voucher log entry
           content:
             application/json:
               schema:
@@ -6937,15 +6937,12 @@ paths:
                   objectName:
                     type: string
                     example: VoucherLog
-                  additionalInformation:
-                    type: string
-                    default: null
                   create:
                     description: Date of email creation
                     type: string
                     format: date-time
                     example: '2023-04-18T15:45:38+02:00'
-                  creditNote:
+                  voucher:
                     type: object
                     required:
                       - id
@@ -6965,7 +6962,7 @@ paths:
                   toStatus:
                     type: string
                     example: 1000
-                  ammountPayed:
+                  amountPayed:
                     type: string
                     example: 0
                   bookingDate:
@@ -6974,9 +6971,7 @@ paths:
                     example: '2023-04-18T15:45:38+02:00'
                   sevClient:
                     type: object
-                    description: >-
-                      Client to which invoice belongs. Will be filled
-                      automatically
+                    description: Client to which the voucher belongs.
                     required:
                       - id
                       - objectName
