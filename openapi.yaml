@@ -42,6 +42,16 @@ tags:
       invoice, a voucher or a credit note, until the relevant object is
       completely paid.
     x-displayName: CheckAccountTransaction
+  - name: PrivateTransactionRule
+    description: >-
+      A private transaction rule can be used to automatically set transactions
+      to private after importing.<br> <br> Every rule can define a
+      paymentPurpose and/or counterpartName to match. At least one of these must
+      be set.<br> <br> Matching is case sensitive, a simple string match. The
+      properties that are set must match the transaction properties to have an
+      effect.<br> Example: A rule with counterpartName=Schmid will match
+      transactions from 'Anne Schmid' and 'Hans Schmidt' but not 'X SCHMID'.
+    x-displayName: PrivateTransactionRule
   - name: AccountingContact
     description: >-
       A accounting contact object belongs to one specific contact object and
@@ -874,6 +884,98 @@ paths:
                 $ref: '#/components/schemas/validationError'
         '500':
           description: Server Error
+      security:
+        - api_key: []
+  /PrivateTransactionRule:
+    get:
+      tags:
+        - PrivateTransactionRule
+      summary: List existing rules
+      description: >-
+        List all existing rules you defined for automated marking private
+        transactions.
+      operationId: listPrivateTransactionRules
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/Model_PrivateTransactionRuleResponse
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server error
+      security:
+        - api_key: []
+    post:
+      tags:
+        - PrivateTransactionRule
+      summary: Create a new rule
+      description: Creates a new rule for marking private transactions automatically.
+      operationId: createPrivateTransactionRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePrivateTransactionRule'
+      responses:
+        '201':
+          description: Created - Returns created rule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model_PrivateTransactionRuleResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '422':
+          description: Validation error, you did not submit valid input
+        '500':
+          description: Server error
+      security:
+        - api_key: []
+  /PrivateTransactionRule/{id}:
+    delete:
+      tags:
+        - PrivateTransactionRule
+      summary: Delete the rule by id
+      operationId: deletePrivateTransactionRule
+      parameters:
+        - name: id
+          in: path
+          description: Id of the rule to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation - entity deleted
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    type: array
+                    items:
+                      default: null
+                type: object
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '409':
+          description: Conflict
+        '500':
+          description: Server error
       security:
         - api_key: []
   /Contact/Factory/getNextCustomerNumber:
@@ -10087,6 +10189,65 @@ components:
               description: >-
                 An identifier of this exact problem that can be given to the
                 support team.
+    Model_PrivateTransactionRuleResponse:
+      title: PrivateTransactionRule model, response format
+      description: A rule defining which transactions to mark as private automatically.
+      type: object
+      properties:
+        id:
+          description: The entity id
+          type: string
+          example: '1'
+        objectName:
+          description: The entity object name, PrivateTransactionRule
+          type: string
+          example: PrivateTransactionRule
+        create:
+          description: Date of entity creation
+          type: string
+          format: date-time
+          example: '2026-01-16T12:51:22+01:00'
+        update:
+          description: Date of last entity update
+          type: string
+          format: date-time
+          example: '2026-01-16T12:51:22+01:00'
+        sevClient:
+          description: Client to which the entity belongs.
+          properties:
+            id:
+              description: Unique identifier of the client
+              type: string
+              example: '0'
+            objectName:
+              description: Model name, which is 'SevClient'
+              type: string
+          type: object
+        paymentPurpose:
+          description: The payment purpose of transactions to match
+          type: string
+          nullable: true
+        counterpartName:
+          description: The counterpart name of transactions to match
+          type: string
+          nullable: true
+    CreatePrivateTransactionRule:
+      title: Request body to create a PrivateTransactionRule
+      type: object
+      required:
+        - objectName
+      properties:
+        objectName:
+          type: string
+          description: PrivateTransactionRule
+        paymentPurpose:
+          description: The purpose of transactions that you want to match
+          type: string
+          nullable: true
+        counterpartName:
+          description: The counterpart name of transactions that you want to match
+          type: string
+          nullable: true
     Model_ContactResponse:
       title: Contact model
       description: Contact model
@@ -20343,6 +20504,7 @@ x-tagGroups:
       - Basics
       - CheckAccount
       - CheckAccountTransaction
+      - PrivateTransactionRule
       - AccountingContact
       - CommunicationWay
       - ContactAddress
