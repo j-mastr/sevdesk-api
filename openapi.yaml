@@ -255,8 +255,8 @@ tags:
       # Tag relation
        With the tag relations you can display all invoices, receipts, orders and credit notes that have a tag<br> The tag relation does not have to be created separately, as this is automatically created when a tag is created.<br> <br>
     x-displayName: Tag
-  - description: Everything about the TextTemplate model
-    name: TextTemplate
+  - name: TextTemplate
+    description: Everything about the TextTemplate model
   - name: SevUser
 paths:
   /Tools/bookkeepingSystemVersion:
