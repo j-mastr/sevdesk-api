@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.8.0](https://github.com/j-mastr/sevdesk-api/compare/v1.7.0...v1.8.0) (2026-02-19)
+
+
+### Features
+
+* getAsPdf query parameter for PDF rendering ([#85](https://github.com/j-mastr/sevdesk-api/issues/85)) ([9a0431a](https://github.com/j-mastr/sevdesk-api/commit/9a0431ad0c80a30b5328d82543188eda1f4d1b0a))
+* update openapi.yaml ([80b2e1d](https://github.com/j-mastr/sevdesk-api/commit/80b2e1d52e0b03f5645d1828f9a01a96347a7344))
+
+
+### Bug Fixes
+
+* GitHub action ([#80](https://github.com/j-mastr/sevdesk-api/issues/80)) ([dcf895a](https://github.com/j-mastr/sevdesk-api/commit/dcf895aa8d3d07f8ae254a60e1830ed6289bada2))
+
 ## [1.7.0](https://github.com/j-mastr/sevdesk-api/compare/v1.6.0...v1.7.0) (2025-04-26)
 
 
