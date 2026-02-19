@@ -2872,6 +2872,7 @@ paths:
             type: string
           example: PRN
           required: true
+        - $ref: '#/components/parameters/getAsPdf'
       responses:
         '200':
           description: Successful operation
@@ -5563,6 +5564,7 @@ paths:
           required: true
           schema:
             type: integer
+        - $ref: '#/components/parameters/getAsPdf'
       requestBody:
         description: Define if the document should be forcefully re-rendered.
         content:
@@ -5579,47 +5581,53 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  thumbs:
-                    type: array
-                    items:
-                      example: null
-                  pages:
-                    type: integer
-                    example: 2
-                  docId:
-                    type: string
-                    example: d4605b19248ad176443b7cb382679b1f
-                  parameters:
-                    type: array
-                    items:
-                      properties:
-                        key:
-                          type: string
-                          example: language
-                        name:
-                          type: string
-                          example: Sprache
-                        values:
-                          type: array
-                          items:
-                            properties:
-                              name:
-                                type: string
-                                example: deutsch
-                              translationCade:
-                                type: string
-                                example: SEVDOC_LANG_DE_DE
-                              value:
-                                type: string
-                                example: de_DE
-                            type: object
-                        visible:
-                          type: boolean
-                          example: true
-                        value:
-                          type: string
-                          example: de_DE
+                allOf:
+                  - oneOf:
+                      - properties:
+                          pdf:
+                            type: string
+                      - properties:
+                          pages:
+                            example: 2
+                            type: integer
+                          thumbs:
+                            items:
+                              example: null
+                            type: array
+                  - properties:
+                      docId:
+                        example: d4605b19248ad176443b7cb382679b1f
+                        type: string
+                      parameters:
+                        items:
+                          properties:
+                            key:
+                              example: language
+                              type: string
+                            name:
+                              example: Sprache
+                              type: string
+                            value:
+                              example: de_DE
+                              type: string
+                            values:
+                              items:
+                                properties:
+                                  name:
+                                    example: deutsch
+                                    type: string
+                                  translationCade:
+                                    example: SEVDOC_LANG_DE_DE
+                                    type: string
+                                  value:
+                                    example: de_DE
+                                    type: string
+                                type: object
+                              type: array
+                            visible:
+                              example: true
+                              type: boolean
+                        type: array
         '400':
           description: Bad request
         '401':
@@ -6386,6 +6394,7 @@ paths:
           required: true
           schema:
             type: integer
+        - $ref: '#/components/parameters/getAsPdf'
       requestBody:
         description: Change Layout
         content:
@@ -6424,6 +6433,7 @@ paths:
           required: true
           schema:
             type: integer
+        - $ref: '#/components/parameters/getAsPdf'
       requestBody:
         description: Change Layout
         content:
@@ -6462,6 +6472,7 @@ paths:
           required: true
           schema:
             type: integer
+        - $ref: '#/components/parameters/getAsPdf'
       requestBody:
         description: Change Layout
         content:
@@ -13677,47 +13688,53 @@ components:
       type: object
     Model_CreditNote_sendByWithRender:
       type: object
-      properties:
-        thumbs:
-          type: array
-          items:
-            example: null
-        pages:
-          type: integer
-          example: 2
-        docId:
-          type: string
-          example: d4605b19248ad176443b7cb382679b1f
-        parameters:
-          type: array
-          items:
-            properties:
-              key:
-                type: string
-                example: language
-              name:
-                type: string
-                example: Sprache
-              values:
-                type: array
-                items:
-                  properties:
-                    name:
-                      type: string
-                      example: deutsch
-                    translationCade:
-                      type: string
-                      example: SEVDOC_LANG_DE_DE
-                    value:
-                      type: string
-                      example: de_DE
-                  type: object
-              visible:
-                type: boolean
-                example: true
-              value:
-                type: string
-                example: de_DE
+      allOf:
+        - oneOf:
+            - properties:
+                pdf:
+                  type: string
+            - properties:
+                pages:
+                  example: 2
+                  type: integer
+                thumbs:
+                  items:
+                    example: null
+                  type: array
+        - properties:
+            docId:
+              example: d4605b19248ad176443b7cb382679b1f
+              type: string
+            parameters:
+              items:
+                properties:
+                  key:
+                    example: language
+                    type: string
+                  name:
+                    example: Sprache
+                    type: string
+                  value:
+                    example: de_DE
+                    type: string
+                  values:
+                    items:
+                      properties:
+                        name:
+                          example: deutsch
+                          type: string
+                        translationCade:
+                          example: SEVDOC_LANG_DE_DE
+                          type: string
+                        value:
+                          example: de_DE
+                          type: string
+                      type: object
+                    type: array
+                  visible:
+                    example: true
+                    type: boolean
+              type: array
     Model_creditNote_mailResponse:
       type: object
       properties:
@@ -15797,39 +15814,49 @@ components:
           example: '1'
         metadaten:
           type: object
-          properties:
-            pages:
-              description: the number of pages in the document
-              type: integer
-              example: 1
-            docId:
-              description: the id of the document
-              type: string
-              readOnly: true
-            thumbs:
-              description: the pdf file
-              type: array
-              items:
-                properties:
-                  key:
-                    type: string
-                    example: language
-                  name:
-                    type: string
-                    example: Sprache
-                  values:
-                    type: array
-                    items:
-                      properties:
-                        name:
-                          type: string
-                          example: deutsch
-                        value:
-                          type: string
-                          example: de_DE
-                        translationCode:
-                          type: string
-                          example: SEVDOC_LANG_DE_DE
+          allOf:
+            - oneOf:
+                - properties:
+                    pdf:
+                      type: string
+                - properties:
+                    pages:
+                      description: the number of pages in the document
+                      example: 1
+                      type: integer
+                    thumbs:
+                      items:
+                        example: null
+                      type: array
+            - properties:
+                docId:
+                  description: the id of the document
+                  readOnly: true
+                  type: string
+                parameters:
+                  description: the pdf file
+                  items:
+                    properties:
+                      key:
+                        example: language
+                        type: string
+                      name:
+                        example: Sprache
+                        type: string
+                      values:
+                        items:
+                          properties:
+                            name:
+                              example: deutsch
+                              type: string
+                            translationCode:
+                              example: SEVDOC_LANG_DE_DE
+                              type: string
+                            value:
+                              example: de_DE
+                              type: string
+                        type: array
+                  type: array
     Model_OrderResponse:
       title: Order model
       description: Order model
@@ -20484,6 +20511,15 @@ components:
           type: string
         type: array
       style: form
+    getAsPdf:
+      description: >-
+        If the rendered document should be returned as a single PDF instead of
+        an array of pages. [Becomes the default on April 7th.](https://tech.sevdesk.com/api_news/posts/2026_02_breaking_changes_q1_2026/)
+      in: query
+      name: getAsPdf
+      required: false
+      schema:
+        type: boolean
     limit:
       description: The max number of objects to return
       in: query
