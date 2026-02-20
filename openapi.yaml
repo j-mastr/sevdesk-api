@@ -20514,7 +20514,8 @@ components:
     getAsPdf:
       description: >-
         If the rendered document should be returned as a single PDF instead of
-        an array of pages. [Becomes the default on April 7th.](https://tech.sevdesk.com/api_news/posts/2026_02_breaking_changes_q1_2026/)
+        an array of pages. [Becomes the default on April
+        7th.](https://tech.sevdesk.com/api_news/posts/2026_02_breaking_changes_q1_2026/)
       in: query
       name: getAsPdf
       required: false
