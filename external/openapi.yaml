@@ -168,7 +168,7 @@ tags:
        Invoice types <br> Invoices are most certainly the most complex objects that can be handled over the API. There are multiple types of invoices and these invoices can have multiple status again. Let's have a look at the different types of invoices first.<br> <table> <tr> <th>Invoice Type</th> <th>Description</th> <th>Abbreviation</th> </tr> <tr> <td>Normal invoice</td> <td> A normal invoice which documents a simple selling process. </td> <td> RE </td> </tr> <tr> <td>Recurring invoice</td> <td> An invoice which generates normal invoices with the same values regularly in fixed time frames (every month, year, ...). </td> <td> WKR </td> </tr> <tr> <td>Cancellation invoice</td> <td> An invoice which cancels another already created normal invoice. </td> <td> SR </td> </tr> <tr> <td>Reminder invoice</td> <td> An invoice which gets created if the end-customer failed to pay a normal invoice in a given time frame.<br> Often includes some kind of reminder fee. </td> <td> MA </td> </tr> <tr> <td>Partial invoice</td> <td> Used when partial services have already been provided. One or more partial invoices result in a final invoice. </td> <td> TR </td> </tr> <tr> <td>Advance invoice</td> <td> Used when no service has been provided yet. One or more advance invoices result in a final invoice. </td> <td> AR </td> </tr> <tr> <td>Final invoice</td> <td> The final invoice includes all partial / advance invoices.<br> After the final invoice is paid by the end-customer, the selling process is complete. </td> <td> ER </td> </tr> </table><br> For now we will only cover the normal invoices, as this is complex enough.<br> However, it is important to keep in mind the abbreviations for all types of invoices or at least the one you will need.<br> This is, because you will need to provide the invoice type when creating an invoice.<br> <br> <b>Invoice status</b><br> Now that we have covered all invoice types, let's move to the different status they can have.<br> <table> <tr> <th>Invoice status</th> <th>Meaning</th> <th>Status code</th> </tr> <tr> <td>Deactivated recurring invoice</td> <td> The invoice is a deactivated recurring invoice.<br> This status code is only relevant for recurring invoices. </td> <td> 50 </td> </tr> <tr> <td>Draft</td> <td> The invoice is still a draft.<br> It has not been sent to the end-customer and can still be changed. </td> <td> 100 </td> </tr> <tr> <td>Open / Due</td> <td> The invoice has been sent to the end-customer.<br> It is either shown as <b>open</b> if the pay date is not exceeded or <b>due</b> if it is. </td> <td> 200 </td> </tr> <tr> <td>Partially paid</td> <td> The invoice has been partially paid.<br> This means, that it is linked to a transaction on some payment account in sevdesk. This status was introduced with Release 4.181 (June 13, 2024). Invoices that were partially paid before that release will have the status "Open" (<code>"status": "200"</code>). In that case use [Invoice/{invoiceId}/getIsPartiallyPaid](#tag/Invoice/operation/getIsInvoicePartiallyPaid) instead of checking the status directly. </td> <td> 750 </td> </tr> <tr> <td>Paid</td> <td> The invoice has been paid.<br> This means, that it is linked to a transaction on some payment account in sevdesk. </td> <td> 1000 </td> </tr> </table><br> It is again important to keep in mind the status codes for all status of invoices or at least the one you will need.<br> This is, because you will need to provide the status code when creating an invoice.<br> 
 
       # How e-invoice works
-       The e-invoice is a new feature in sevdesk, which allows you to send invoices to your customers in a digital way. To turn an invoice into an e-invoice, you have to set <code>propertyIsEInvoice</code> to <code>true</code> When <code>propertyIsEInvoice</code> is set an XML is embedded inside the PDF. Embedding the XML into the PDF is called ZUGFeRD. If you just need the XML (XRechnung) you can get it by calling [Invoice/{invoiceId}/getXml](#tag/Invoice/operation/invoiceGetXml). Both XML files are identical. 
+       The e-invoice is a new feature in sevdesk, which allows you to send invoices to your customers in a digital way. To turn an invoice into an e-invoice, you have to set <code>propertyIsEInvoice</code> to <code>true</code> When <code>propertyIsEInvoice</code> is set an XML is embedded inside the PDF. Embedding the XML into the PDF is called ZUGFeRD. If you just need the XML (XRechnung) you can get it by calling [Invoice/{invoiceId}/getXml](#tag/Invoice/operation/invoiceGetXml). Both XML files are identical.
 
        # How to book an invoice
        Booking the invoice with a transaction is probably the most important part in the bookkeeping process.<br> There are several ways on correctly booking an invoice, all by using the same endpoint.<br> This endpoint is called <b>/Invoice/{id}/bookAmount</b>.<br><br> The first way of correctly booking an invoice is to book it on the standard check account which is provided by sevdesk.<br> This is perhaps the easiest way, as no transaction needs to be manually created or searched.<br> The fitting transaction will automatically be created on the standard account and the invoice will be booked with it.<br> This works the same way with the register check account.<br><br> <img src='openAPI/img/bookAmountStandard.PNG' width= '800px'><br><br> In the second variant, it is necessary that a transaction already exists, because it is not automatically generated in a manual account or online/finapi account.<br> For this, you must either create the transactions or, in the case of an online/finapi account, import the transactions. When booking the invoices it is important that an id and an objectName are passed along, otherwise a logic error will occur.<br> <img src='openAPI/img/bookAmountWithTransaction.PNG' width= '800px'><br><br> 
@@ -642,10 +642,14 @@ paths:
       tags:
         - CheckAccountTransaction
       summary: Create a new transaction
-      description: Creates a new transaction on a check account.
+      description: >-
+        Creates a new transaction on a check account. This should only be used
+        with check account type online, preferably for csv import accounts.
       operationId: createTransaction
       requestBody:
-        description: "Creation data. Please be aware, that you need to provide at least all required parameter\r\n    of the CheckAccountTransaction model!"
+        description: >-
+          Creation data. Please note that only status 100 makes sense when
+          creating transactions.
         content:
           application/json:
             schema:
@@ -2949,7 +2953,7 @@ paths:
                       example: CheckAccount
                   type: object
                 checkAccountTransaction:
-                  description: "The check account transaction on which should be booked.<br>\r\n    The transaction will be linked to the credit note."
+                  description: "The check account transaction on which should be booked.<br>\r\n    The transaction will be linked to the credit note.<br>When the check account is type online, you must provider a transaction; other types will create the transaction."
                   required:
                     - id
                     - objectName
@@ -5304,7 +5308,7 @@ paths:
                       example: CheckAccount
                   type: object
                 checkAccountTransaction:
-                  description: "The check account transaction on which should be booked.<br>\r\n    The transaction will be linked to the invoice."
+                  description: "The check account transaction on which should be booked.<br>\r\n    The transaction will be linked to the invoice.<br>When the check account is type online, you must provider a transaction; other types will create the transaction."
                   required:
                     - id
                     - objectName
@@ -7006,7 +7010,7 @@ paths:
                       example: CheckAccount
                   type: object
                 checkAccountTransaction:
-                  description: "The check account transaction on which should be booked.<br>\r\n    The transaction will be linked to the voucher.<br>Providing a transaction is required for online checkaccounts (like you would select an existing transaction in the UI)."
+                  description: "The check account transaction on which should be booked.<br>\r\n    The transaction will be linked to the voucher.<br>Providing a transaction is required for online checkaccounts (like you would select an existing transaction in the UI). You should not provide a transaction for other account types, the transaction will be created automatically."
                   required:
                     - id
                     - objectName
@@ -8185,6 +8189,11 @@ components:
             1200 in SKR03. Must be unique among all your CheckAccounts.
           type: string
           example: '1800'
+        bic:
+          description: The BIC of the bank this account belongs to
+          type: string
+          nullable: true
+          example: BELADEBEXXX
       type: object
     createFileImportAccount:
       title: Data to create a file import account
@@ -8438,34 +8447,11 @@ components:
             and 1200 in SKR03. Must be unique among all your CheckAccounts.
             Ignore to use a sensible default.
           type: string
-        currency:
-          description: The currency of the check account.
-          example: EUR
+        iban:
+          description: IBAN of a bank account
           type: string
-        importType:
-          description: >-
-            Import type. Transactions can be imported by this method on the
-            check account.
-          enum:
-            - CSV
-            - MT940
-            - null
-          example: CSV
-          nullable: true
-          type: string
-        status:
-          default: 100
-          description: Status of the check account. 0 <-> Archived - 100 <-> Active
-          enum:
-            - 0
-            - 100
-          type: integer
-        type:
-          description: "The type of the check account. Account with a CSV or MT940 import are regarded as online.<br>\r\n     Apart from that, created check accounts over the API need to be offline, as online accounts with an active connection\r\n     to a bank application can not be managed over the API."
-          enum:
-            - offline
-            - online
-          example: online
+        bic:
+          description: BIC of the related bank
           type: string
       type: object
     Model_CheckAccountTransactionResponse:
