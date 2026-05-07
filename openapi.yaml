@@ -3607,14 +3607,14 @@ paths:
     get:
       summary: Start DATEV CSV ZIP export
       description: >-
-        Start an export that generates booking data in the DATEV format (CSV) 
+        Start an export that generates booking data in the DATEV format (CSV)
         Before you can perform the DATEV export, you first have to set the
         "accountingYearBegin". To do this, use the endpoint <a
-        href='#tag/Export/operation/updateExportConfig'>updateExportConfig</a>. 
+        href='#tag/Export/operation/updateExportConfig'>updateExportConfig</a>.
         After that you can use the createDatevCsvZipExportJob endpoint to start
-        the DATEV export which returns the export ID.  You have to use the <a
+        the DATEV export which returns the export ID. You have to use the <a
         href='#tag/Export/operation/jobDownloadInfo'>jobDownloadInfo</a>
-        endpoint to receive the download url when the export is ready. 
+        endpoint to receive the download url when the export is ready.
         <h3>Export workflow</h2> To get the DATEV CSV zip file, please implement
         the following workflow. <ol> <li>Set the accountingYearBegin (if not
         already set) via <a
@@ -3716,14 +3716,14 @@ paths:
     get:
       summary: Start DATEV XML ZIP export
       description: >-
-        Start an export that generates invoice data in the DATEV format (XML) 
+        Start an export that generates invoice data in the DATEV format (XML)
         Before you can perform the DATEV export, you first have to set the
         "accountingYearBegin". To do this, use the endpoint <a
-        href='#tag/Export/operation/updateExportConfig'>updateExportConfig</a>.  
+        href='#tag/Export/operation/updateExportConfig'>updateExportConfig</a>.
         After that you can use the createDatevXmlZipExportJob endpoint to start
-        the DATEV export which returns the export ID.  You have to use the <a
+        the DATEV export which returns the export ID. You have to use the <a
         href='#tag/Export/operation/jobDownloadInfo'>jobDownloadInfo</a>
-        endpoint to receive the download url when the export is ready. 
+        endpoint to receive the download url when the export is ready.
         <h3>Export workflow</h2> To get the DATEV XML zip file, please implement
         the following workflow. <ol> <li>Set the accountingYearBegin (if not
         already set) via <a
@@ -3948,6 +3948,9 @@ paths:
             required:
               - modelName
               - objectName
+            example:
+              sevQuery[objectName]: SevQuery
+              sevQuery[modelName]: Invoice
             properties:
               limit:
                 type: integer
@@ -4075,6 +4078,9 @@ paths:
             required:
               - modelName
               - objectName
+            example:
+              sevQuery[objectName]: SevQuery
+              sevQuery[modelName]: Invoice
             properties:
               limit:
                 type: integer
@@ -4082,10 +4088,10 @@ paths:
                 example: 1000
               modelName:
                 description: Model name, which is 'Invoice'
+                example: Invoice
                 default: Invoice
                 enum:
                   - Invoice
-                example: Invoice
                 type: string
               objectName:
                 description: Model name, which is 'SevQuery'
@@ -4204,6 +4210,9 @@ paths:
             required:
               - modelName
               - objectName
+            example:
+              sevQuery[objectName]: SevQuery
+              sevQuery[modelName]: CreditNote
             properties:
               limit:
                 type: integer
@@ -4311,6 +4320,9 @@ paths:
             required:
               - modelName
               - objectName
+            example:
+              sevQuery[objectName]: SevQuery
+              sevQuery[modelName]: Voucher
             properties:
               limit:
                 type: integer
@@ -4424,6 +4436,9 @@ paths:
             required:
               - modelName
               - objectName
+            example:
+              sevQuery[objectName]: SevQuery
+              sevQuery[modelName]: CheckAccountTransaction
             properties:
               limit:
                 type: integer
@@ -4539,6 +4554,9 @@ paths:
             required:
               - modelName
               - objectName
+            example:
+              sevQuery[objectName]: SevQuery
+              sevQuery[modelName]: Voucher
             properties:
               limit:
                 type: integer
@@ -4656,6 +4674,9 @@ paths:
             required:
               - modelName
               - objectName
+            example:
+              sevQuery[objectName]: SevQuery
+              sevQuery[modelName]: Contact
             properties:
               limit:
                 type: integer
