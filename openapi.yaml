@@ -9841,7 +9841,8 @@ components:
           nullable: true
         amount:
           description: Amount of the transaction
-          type: string
+          type: number
+          format: float
           example: '-100.32'
         payeePayerName:
           description: Name of the other party
@@ -10478,9 +10479,9 @@ components:
 
             Depending on defaultDiscountPercentage attribute, in percent or
             absolute value.
-          type: string
+          type: number
           format: float
-          example: string
+          example: 100
           readOnly: true
         defaultDiscountPercentage:
           description: >-
