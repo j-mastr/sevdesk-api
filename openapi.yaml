@@ -4082,10 +4082,10 @@ paths:
                 example: 1000
               modelName:
                 description: Model name, which is 'Invoice'
+                example: Invoice
                 default: Invoice
                 enum:
                   - Invoice
-                example: Invoice
                 type: string
               objectName:
                 description: Model name, which is 'SevQuery'
