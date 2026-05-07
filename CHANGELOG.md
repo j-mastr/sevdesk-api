@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.9.0](https://github.com/j-mastr/sevdesk-api/compare/v1.8.0...v1.9.0) (2026-05-07)
+
+
+### Features
+
+* update openapi.yaml ([e1436e4](https://github.com/j-mastr/sevdesk-api/commit/e1436e49295095293b3b58a2edae8562662ddbb0))
+* update openapi.yaml ([c8b62bb](https://github.com/j-mastr/sevdesk-api/commit/c8b62bbadaacef2deacce7b1156df9a6ee6c03b5))
+
+
+### Bug Fixes
+
+* change transaction amount data type to number ([#90](https://github.com/j-mastr/sevdesk-api/issues/90)) ([f63bfda](https://github.com/j-mastr/sevdesk-api/commit/f63bfdaab6a9a62cecd3940273eb2c6a1181f443))
+
 ## [1.8.0](https://github.com/j-mastr/sevdesk-api/compare/v1.7.0...v1.8.0) (2026-02-19)
 
 
