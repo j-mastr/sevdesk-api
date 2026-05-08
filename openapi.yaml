@@ -9842,8 +9842,8 @@ components:
         amount:
           description: Amount of the transaction
           type: number
-          format: float
           example: '-100.32'
+          format: float
         payeePayerName:
           description: Name of the other party
           type: string
