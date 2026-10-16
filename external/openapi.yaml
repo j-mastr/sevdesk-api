@@ -4969,13 +4969,6 @@ paths:
             application/json:
               schema:
                 properties:
-                  thumbs:
-                    type: array
-                    items:
-                      example: null
-                  pages:
-                    type: integer
-                    example: 2
                   docId:
                     type: string
                     example: d4605b19248ad176443b7cb382679b1f
@@ -5009,6 +5002,13 @@ paths:
                         value:
                           type: string
                           example: de_DE
+                  pages:
+                    example: 2
+                    type: integer
+                  thumbs:
+                    items:
+                      example: null
+                    type: array
         '400':
           description: Bad request
         '401':
@@ -11933,13 +11933,6 @@ components:
     Model_CreditNote_sendByWithRender:
       type: object
       properties:
-        thumbs:
-          type: array
-          items:
-            example: null
-        pages:
-          type: integer
-          example: 2
         docId:
           type: string
           example: d4605b19248ad176443b7cb382679b1f
@@ -11973,6 +11966,13 @@ components:
               value:
                 type: string
                 example: de_DE
+        pages:
+          example: 2
+          type: integer
+        thumbs:
+          items:
+            example: null
+          type: array
     Model_creditNote_mailResponse:
       type: object
       properties:
@@ -13927,38 +13927,38 @@ components:
         metadaten:
           type: object
           properties:
-            pages:
-              description: the number of pages in the document
-              type: integer
-              example: 1
             docId:
               description: the id of the document
               type: string
               readOnly: true
+            pages:
+              description: the number of pages in the document
+              example: 1
+              type: integer
             thumbs:
               description: the pdf file
-              type: array
               items:
                 properties:
                   key:
-                    type: string
                     example: language
-                  name:
                     type: string
+                  name:
                     example: Sprache
+                    type: string
                   values:
-                    type: array
                     items:
                       properties:
                         name:
-                          type: string
                           example: deutsch
-                        value:
                           type: string
-                          example: de_DE
                         translationCode:
-                          type: string
                           example: SEVDOC_LANG_DE_DE
+                          type: string
+                        value:
+                          example: de_DE
+                          type: string
+                    type: array
+              type: array
     Model_OrderResponse:
       title: Order model
       description: Order model
