@@ -268,6 +268,23 @@ tags:
   - description: Everything about the TextTemplate model
     name: TextTemplate
   - name: SevUser
+  - description: Units in which parts and positions are measured.
+    name: Unity
+    x-displayName: Unity
+  - description: Categories to group e.g. parts, contacts and tasks.
+    name: Category
+    x-displayName: Category
+  - description: >-
+      Alternative units of a part, each with its own price and conversion
+      factor.
+    name: PartUnity
+    x-displayName: PartUnity
+  - description: Number sequences used to generate e.g. part, invoice and order numbers.
+    name: SevSequence
+    x-displayName: SevSequence
+  - description: Operations on the client.
+    name: SevClient
+    x-displayName: SevClient
 paths:
   /Tools/bookkeepingSystemVersion:
     get:
@@ -4769,7 +4786,8 @@ paths:
       summary: Retrieve parts
       description: >-
         Retrieve all parts in your sevdesk inventory according to the applied
-        filters.
+        filters.<br> Supported `embed` values: `category`, `unity`, `lastLog`,
+        `accountingType`.
       operationId: getParts
       parameters:
         - name: partNumber
@@ -4800,7 +4818,12 @@ paths:
                   objects:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Model_Part'
+                      $ref: '#/components/schemas/Model_PartResponse'
+                  emptyState:
+                    description: >-
+                      Whether the client has no parts at all (only returned if
+                      the `emptyState` query parameter is set)
+                    type: boolean
                   total:
                     type: integer
                 type: object
@@ -4835,7 +4858,7 @@ paths:
               schema:
                 properties:
                   objects:
-                    $ref: '#/components/schemas/Model_Part'
+                    $ref: '#/components/schemas/Model_PartResponse'
                 type: object
         '400':
           description: Bad request
@@ -4850,7 +4873,11 @@ paths:
       tags:
         - Part
       summary: Find part by ID
-      description: Returns a single part
+      description: >-
+        Returns a single part.<br> Supported `embed` values: `category`,
+        `unity`, `accountingType`, `lastLog`,
+        `propertyReorderNotificationLevel`,
+        `propertyReorderNotificationInterval`.
       operationId: getPartById
       parameters:
         - name: partId
@@ -4859,6 +4886,7 @@ paths:
           required: true
           schema:
             type: integer
+        - $ref: '#/components/parameters/embed'
       responses:
         '200':
           description: Successful operation
@@ -4869,7 +4897,7 @@ paths:
                   objects:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Model_Part'
+                      $ref: '#/components/schemas/Model_PartResponse'
                 type: object
         '400':
           description: Bad request. Part was not found
@@ -4906,7 +4934,7 @@ paths:
               schema:
                 properties:
                   objects:
-                    $ref: '#/components/schemas/Model_Part'
+                    $ref: '#/components/schemas/Model_PartResponse'
                 type: object
         '400':
           description: Bad request
@@ -4916,6 +4944,40 @@ paths:
           description: Server Error
       security:
         - api_key: []
+    delete:
+      operationId: deletePart
+      parameters:
+        - description: Id of part resource to delete
+          in: path
+          name: partId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      default: null
+                    type: array
+                type: object
+          description: Successful operation - part deleted
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '409':
+          description: Conflict
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Deletes a part
+      tags:
+        - Part
   /Part/{partId}/getStock:
     get:
       tags:
@@ -8923,6 +8985,151 @@ paths:
         - $ref: '#/components/parameters/offset'
         - $ref: '#/components/parameters/limit'
         - $ref: '#/components/parameters/embed'
+  /Category:
+    get:
+      description: Retrieve all categories according to the applied filters.
+      operationId: getCategories
+      parameters:
+        - description: >-
+            Only retrieve categories for this object type. Observed values:
+            `Part`, `Contact`, `Task`.
+          in: query
+          name: objectType
+          required: false
+          schema:
+            example: Part
+            type: string
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      $ref: '#/components/schemas/Model_CategoryResponse'
+                    type: array
+                  total:
+                    type: integer
+                required:
+                  - objects
+                type: object
+          description: Successful operation
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Retrieve categories
+      tags:
+        - Category
+    post:
+      description: Creates a custom category for the client.
+      operationId: createCategory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Model_Category'
+        description: Creation data
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_CategoryResponse'
+                type: object
+          description: Created - Returns created category
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Create a new category
+      tags:
+        - Category
+  /Category/{categoryId}:
+    delete:
+      operationId: deleteCategory
+      parameters:
+        - description: Id of category resource to delete
+          in: path
+          name: categoryId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      default: null
+                    type: array
+                type: object
+          description: Successful operation - category deleted
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Deletes a category
+      tags:
+        - Category
+    put:
+      description: Update a custom category of the client.
+      operationId: updateCategory
+      parameters:
+        - description: ID of category to update
+          in: path
+          name: categoryId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Model_Category'
+        description: Update data
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_CategoryResponse'
+                type: object
+          description: Successful operation - Returns changed category resource
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Update an existing category
+      tags:
+        - Category
   /Document:
     get:
       deprecated: false
@@ -9100,6 +9307,278 @@ paths:
       summary: Get the oben reminder debit for an invoice
       tags:
         - Invoice
+  /Part/Mapper/checkPartNumberAvailability:
+    post:
+      description: Checks if a given part number is available or already used.
+      operationId: partNumberAvailabilityCheck
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                originPart:
+                  description: >-
+                    The part that is currently being edited. `null` when a new
+                    part is created. The type is unverified, only `null` has
+                    been observed.
+                partNumber:
+                  description: The part number to be checked.
+                  example: A-1132
+                  type: string
+              required:
+                - partNumber
+              type: object
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    type: boolean
+                type: object
+          description: Returns whether the given part number is available.
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Check if a part number is available
+      tags:
+        - Part
+  /PartUnity:
+    get:
+      description: >-
+        Retrieve all alternative units (with their own price and conversion
+        factor) of parts according to the applied filters.
+      operationId: getPartUnities
+      parameters:
+        - description: Retrieve all part units of this part
+          explode: true
+          in: query
+          name: part
+          required: false
+          schema:
+            properties:
+              id:
+                description: Id of the part
+                type: integer
+              objectName:
+                default: Part
+                description: Model name, which is 'Part'
+                enum:
+                  - Part
+                type: string
+            type: object
+          style: deepObject
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      $ref: '#/components/schemas/Model_PartUnityResponse'
+                    type: array
+                  total:
+                    type: integer
+                required:
+                  - objects
+                type: object
+          description: Successful operation
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Retrieve part units
+      tags:
+        - PartUnity
+    post:
+      description: >-
+        Creates an alternative unit for a part. `price` is the price of the part
+        in this unit, `factor` is the amount of the part's base unit that one
+        unit of this unit corresponds to.
+      operationId: createPartUnity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Model_PartUnity'
+        description: Creation data
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_PartUnityResponse'
+                type: object
+          description: Created - Returns created part unit
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Create a new part unit
+      tags:
+        - PartUnity
+  /PartUnity/{partUnityId}:
+    delete:
+      operationId: deletePartUnity
+      parameters:
+        - description: Id of part unit resource to delete
+          in: path
+          name: partUnityId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      default: null
+                    type: array
+                type: object
+          description: Successful operation - part unit deleted
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Deletes a part unit
+      tags:
+        - PartUnity
+    put:
+      description: Update a part unit
+      operationId: updatePartUnity
+      parameters:
+        - description: ID of part unit to update
+          in: path
+          name: partUnityId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Model_PartUnity'
+        description: Update data
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_PartUnityResponse'
+                type: object
+          description: Successful operation - Returns changed part unit resource
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Update an existing part unit
+      tags:
+        - PartUnity
+  /SevClient/getAccountantUser:
+    get:
+      description: >-
+        Returns the accountant user assigned to the client. `objects` is `null`
+        if no accountant is assigned. The structure of an assigned accountant
+        user is unverified.
+      operationId: getAccountantUser
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    description: The accountant user or `null`
+                type: object
+          description: Successful operation
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Retrieve the accountant user of the client
+      tags:
+        - SevClient
+  /SevSequence/Factory/getByType:
+    get:
+      description: >-
+        Returns the number sequence (format and next number) that is used for
+        the given object type, e.g. to determine the next part number.
+      operationId: getSevSequenceByType
+      parameters:
+        - description: Object type for which the sequence is requested
+          in: query
+          name: objectType
+          required: true
+          schema:
+            example: Part
+            type: string
+        - description: >-
+            Sub type of the sequence, e.g. `RE` for invoices. Not needed for
+            object types that only have one sequence, like `Part`.
+          in: query
+          name: type
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_SevSequenceResponse'
+                type: object
+          description: Successful operation
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Retrieve the number sequence of an object type
+      tags:
+        - SevSequence
   /SevUser:
     get:
       operationId: getSevUsers
@@ -9153,6 +9632,10 @@ paths:
         - SevUser
   /SevUser/{sevUserId}:
     get:
+      description: >-
+        Returns a single user.<br> Supported `embed` values: `privileges`,
+        `isOriginalClient`, `npsDetail`, `userSettings` and the `property*`
+        fields of the user (e.g. `propertyHideAppBanner`).
       operationId: getSevUserById
       parameters:
         - in: path
@@ -9369,6 +9852,144 @@ paths:
       summary: Update an existing text template
       tags:
         - TextTemplate
+  /Unity:
+    get:
+      description: >-
+        Retrieve all units. This includes the predefined units of sevdesk and
+        the units created by the client.
+      operationId: getUnities
+      parameters:
+        - $ref: '#/components/parameters/countAll'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/embed'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      $ref: '#/components/schemas/Model_UnityResponse'
+                    type: array
+                  total:
+                    type: integer
+                required:
+                  - objects
+                type: object
+          description: Successful operation
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Retrieve units
+      tags:
+        - Unity
+    post:
+      description: Creates a custom unit for the client.
+      operationId: createUnity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Model_Unity'
+        description: Creation data
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_UnityResponse'
+                type: object
+          description: Created - Returns created unit
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Create a new unit
+      tags:
+        - Unity
+  /Unity/{unityId}:
+    delete:
+      operationId: deleteUnity
+      parameters:
+        - description: Id of unit resource to delete
+          in: path
+          name: unityId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    items:
+                      default: null
+                    type: array
+                type: object
+          description: Successful operation - unit deleted
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Deletes a unit
+      tags:
+        - Unity
+    put:
+      description: Update a custom unit of the client.
+      operationId: updateUnity
+      parameters:
+        - description: ID of unit to update
+          in: path
+          name: unityId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Model_Unity'
+        description: Update data
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  objects:
+                    $ref: '#/components/schemas/Model_UnityResponse'
+                type: object
+          description: Successful operation - Returns changed unit resource
+        '400':
+          description: Bad request
+        '401':
+          description: Authentication required
+        '500':
+          description: Server Error
+      security:
+        - api_key: []
+      summary: Update an existing unit
+      tags:
+        - Unity
 components:
   schemas:
     Model_CheckAccountResponse:
@@ -13992,6 +14613,12 @@ components:
           description: "An internal comment for the part.<br>\r\n     Does not appear on invoices and orders."
           type: string
           nullable: true
+        accountingType:
+          description: Unverified, only `null` has been observed
+        propertyReorderNotificationInterval:
+          description: Unverified, only `null` has been observed
+        propertyReorderNotificationLevel:
+          description: Unverified, only `null` has been observed
       type: object
     Model_PartUpdate:
       title: Part model
@@ -14141,6 +14768,12 @@ components:
           description: "An internal comment for the part.<br>\r\n     Does not appear on invoices and orders."
           type: string
           nullable: true
+        accountingType:
+          description: Unverified, only `null` has been observed
+        propertyReorderNotificationInterval:
+          description: Unverified, only `null` has been observed
+        propertyReorderNotificationLevel:
+          description: Unverified, only `null` has been observed
       type: object
     Model_InvoiceResponse:
       title: Invoice model
@@ -19221,6 +19854,139 @@ components:
               enum:
                 - SevClient
           type: object
+    Model_Category:
+      description: Category of an object like a part, contact or task.
+      properties:
+        color:
+          description: Color of the category as hex code
+          example: '#000000'
+          nullable: true
+          type: string
+        name:
+          description: Name of the category
+          example: Hosting
+          type: string
+        objectType:
+          description: >-
+            Type of the objects this category can be assigned to. Observed
+            values: `Part`, `Contact`, `Task`.
+          example: Part
+          type: string
+        postingAccount:
+          description: Unverified, only `null` has been observed
+        priority:
+          description: Priority of the category
+          example: 100
+          type: integer
+      required:
+        - name
+        - objectType
+      title: Category model
+      type: object
+    Model_CategoryResponse:
+      description: >-
+        Category of an object like a part, contact or task. Predefined
+        categories of sevdesk have a `translationCode` and no `sevClient`,
+        categories created by the client have a `sevClient` and no
+        `translationCode`.
+      properties:
+        additionalInformation:
+          nullable: true
+          type: string
+        code:
+          description: >-
+            Short code of some predefined categories, e.g. `K` for customers or
+            `SERVICE` for services
+          nullable: true
+          type: string
+        color:
+          description: Color of the category as hex code
+          example: '#000000'
+          nullable: true
+          type: string
+        create:
+          description: Date of category creation. `null` for some predefined categories.
+          format: date-time
+          nullable: true
+          readOnly: true
+          type: string
+        id:
+          description: The category id
+          nullable: false
+          readOnly: true
+          type: integer
+        name:
+          description: Name of the category
+          example: Hosting
+          type: string
+        objectName:
+          default: Category
+          description: The category object name
+          enum:
+            - Category
+          example: Category
+          nullable: false
+          readOnly: true
+          type: string
+        objectType:
+          description: >-
+            Type of the objects this category can be assigned to. Observed
+            values: `Part`, `Contact`, `Task`.
+          example: Part
+          type: string
+        postingAccount:
+          description: Unverified, only `null` has been observed
+        priority:
+          description: Priority of the category
+          example: 100
+          type: integer
+        sevClient:
+          description: >-
+            Client to which the category belongs. Not set for predefined
+            categories.
+          properties:
+            id:
+              description: Unique identifier of the client
+              type: integer
+            objectName:
+              default: SevClient
+              description: Model name, which is 'SevClient'
+              enum:
+                - SevClient
+              example: SevClient
+              type: string
+          readOnly: true
+          required:
+            - id
+            - objectName
+          type: object
+        translationCode:
+          description: >-
+            Translation code of predefined categories. `null` for custom
+            categories.
+          example: CATEGORY_ARTICLE
+          nullable: true
+          type: string
+        type:
+          description: >-
+            Type of contact categories. `C` for customer categories, `S` for
+            supplier categories. `null` for categories of other object types.
+          example: C
+          nullable: true
+          type: string
+        update:
+          description: Date of last category update. `null` for some predefined categories.
+          format: date-time
+          nullable: true
+          readOnly: true
+          type: string
+      required:
+        - id
+        - name
+        - objectName
+        - objectType
+      title: Category model
+      type: object
     Model_CheckAccountTransactionLogResponse:
       description: >-
         CheckAccountTransaction model. Responsible for the transactions on
@@ -20224,6 +20990,363 @@ components:
           type: string
       title: Invoice model
       type: object
+    Model_PartResponse:
+      description: Part model
+      properties:
+        additionalInformation:
+          nullable: true
+          type: string
+        category:
+          description: >-
+            Category of the part.<br> Only the id and object name are returned,
+            unless `category` is passed to the `embed` parameter. For all
+            categories, send a GET to /Category?objectType=Part
+          oneOf:
+            - $ref: '#/components/schemas/Model_CategoryResponse'
+            - additionalProperties: false
+              properties:
+                id:
+                  description: Unique identifier of the category
+                  type: integer
+                objectName:
+                  default: Category
+                  description: Model name, which is 'Category'
+                  enum:
+                    - Category
+                  example: Category
+                  type: string
+              required:
+                - id
+                - objectName
+              type: object
+        create:
+          description: Date of part creation
+          format: date-time
+          readOnly: true
+          type: string
+        id:
+          description: The part id
+          nullable: false
+          readOnly: true
+          type: integer
+        image:
+          description: Unverified, only `null` has been observed
+        internalComment:
+          description: "An internal comment for the part.<br>\r\n     Does not appear on invoices and orders."
+          nullable: true
+          type: string
+        name:
+          description: Name of the part
+          example: Dragonglass
+          type: string
+        objectName:
+          default: Part
+          description: The part object name
+          enum:
+            - Part
+          example: Part
+          nullable: false
+          readOnly: true
+          type: string
+        partNumber:
+          description: The part number
+          example: Part-1000
+          type: string
+        price:
+          description: >-
+            Net price for which the part is sold. we will change this parameter
+            so that the gross price is calculated automatically, until then the
+            priceGross parameter must be used.
+          example: 100
+          format: float
+          nullable: true
+          type: number
+        priceCustomer:
+          description: Unverified, only `null` has been observed
+        priceGross:
+          description: Gross price for which the part is sold
+          example: 119
+          format: float
+          nullable: true
+          type: number
+        priceNet:
+          description: Net price for which the part is sold
+          example: 100
+          format: float
+          nullable: true
+          type: number
+        pricePartner:
+          description: Unverified, only `null` has been observed
+        pricePurchase:
+          description: Purchase price of the part
+          example: 50
+          format: float
+          nullable: true
+          type: number
+        propertyReorderNotificationInterval:
+          description: >-
+            Only returned when passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
+        propertyReorderNotificationLevel:
+          description: >-
+            Only returned when creating or updating a part, or when passed to
+            the `embed` parameter. Unverified, only `null` has been observed.
+        secondUnityFactor:
+          description: Unverified, only `null` has been observed
+        sevClient:
+          description: Client to which part belongs. Will be filled automatically
+          properties:
+            id:
+              description: Unique identifier of the client
+              type: integer
+            objectName:
+              default: SevClient
+              description: Model name, which is 'SevClient'
+              enum:
+                - SevClient
+              example: SevClient
+              type: string
+          readOnly: true
+          required:
+            - id
+            - objectName
+          type: object
+        status:
+          description: Status of the part. 50 <-> Inactive - 100 <-> Active
+          enum:
+            - 100
+            - 50
+          example: 100
+          nullable: true
+          type: integer
+        stock:
+          description: The stock of the part
+          example: 10000
+          format: float
+          type: number
+        stockEnabled:
+          description: Defines if the stock should be enabled
+          example: 1
+          type: boolean
+        taxRate:
+          description: Tax rate of the part
+          example: 19
+          format: float
+          type: number
+        text:
+          description: A text describing the part
+          nullable: true
+          type: string
+        unity:
+          description: >-
+            The unit in which the part is measured.<br> Only the id and object
+            name are returned, unless `unity` is passed to the `embed`
+            parameter.
+          oneOf:
+            - $ref: '#/components/schemas/Model_UnityResponse'
+            - additionalProperties: false
+              properties:
+                id:
+                  description: Unique identifier of the unit
+                  example: 1
+                  type: integer
+                objectName:
+                  default: Unity
+                  description: Model name, which is 'Unity'
+                  enum:
+                    - Unity
+                  example: Unity
+                  type: string
+              required:
+                - id
+                - objectName
+              type: object
+        update:
+          description: Date of last part update
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+        - name
+        - partNumber
+        - stock
+        - taxRate
+        - unity
+      title: Part model
+      type: object
+    Model_PartUnity:
+      description: >-
+        Alternative unit of a part with its own price and a conversion factor to
+        the base unit of the part.
+      properties:
+        factor:
+          description: >-
+            Amount of the base unit of the part that one of this unit
+            corresponds to
+          example: 6
+          format: float
+          type: number
+        part:
+          description: The part this unit belongs to
+          properties:
+            id:
+              description: Unique identifier of the part
+              type: integer
+            objectName:
+              default: Part
+              description: Model name, which is 'Part'
+              enum:
+                - Part
+              example: Part
+              type: string
+          required:
+            - id
+            - objectName
+          type: object
+        price:
+          description: Price of the part in this unit
+          example: 282.66
+          format: float
+          type: number
+        unity:
+          description: The unit
+          properties:
+            id:
+              description: Unique identifier of the unit
+              type: integer
+            objectName:
+              default: Unity
+              description: Model name, which is 'Unity'
+              enum:
+                - Unity
+              example: Unity
+              type: string
+          required:
+            - id
+            - objectName
+          type: object
+      required:
+        - factor
+        - part
+        - price
+        - unity
+      title: PartUnity model
+      type: object
+    Model_PartUnityResponse:
+      description: >-
+        Alternative unit of a part with its own price and a conversion factor to
+        the base unit of the part.
+      properties:
+        additionalInformation:
+          nullable: true
+          type: string
+        create:
+          description: Date of part unity creation
+          format: date-time
+          readOnly: true
+          type: string
+        factor:
+          description: >-
+            Amount of the base unit of the part that one of this unit
+            corresponds to
+          example: 6
+          format: float
+          type: number
+        id:
+          description: The part unity id
+          nullable: false
+          readOnly: true
+          type: integer
+        objectName:
+          default: PartUnity
+          description: The part unity object name
+          enum:
+            - PartUnity
+          example: PartUnity
+          nullable: false
+          readOnly: true
+          type: string
+        part:
+          description: >-
+            The part this unit belongs to.<br> Only the id and object name are
+            returned, unless `part` is passed to the `embed` parameter.
+          oneOf:
+            - $ref: '#/components/schemas/Model_PartResponse'
+            - additionalProperties: false
+              properties:
+                id:
+                  description: Unique identifier of the part
+                  type: integer
+                objectName:
+                  default: Part
+                  description: Model name, which is 'Part'
+                  enum:
+                    - Part
+                  example: Part
+                  type: string
+              required:
+                - id
+                - objectName
+              type: object
+        price:
+          description: Price of the part in this unit
+          example: 282.66
+          format: float
+          type: number
+        sevClient:
+          description: Client to which the part unity belongs. Will be filled automatically
+          properties:
+            id:
+              description: Unique identifier of the client
+              type: integer
+            objectName:
+              default: SevClient
+              description: Model name, which is 'SevClient'
+              enum:
+                - SevClient
+              example: SevClient
+              type: string
+          readOnly: true
+          required:
+            - id
+            - objectName
+          type: object
+        unity:
+          description: >-
+            The unit.<br> Only the id and object name are returned, unless
+            `unity` is passed to the `embed` parameter.
+          oneOf:
+            - $ref: '#/components/schemas/Model_UnityResponse'
+            - additionalProperties: false
+              properties:
+                id:
+                  description: Unique identifier of the unit
+                  type: integer
+                objectName:
+                  default: Unity
+                  description: Model name, which is 'Unity'
+                  enum:
+                    - Unity
+                  example: Unity
+                  type: string
+              required:
+                - id
+                - objectName
+              type: object
+        update:
+          description: Date of last part unity update
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+        - factor
+        - id
+        - objectName
+        - part
+        - price
+        - unity
+      title: PartUnity model
+      type: object
     Model_PaymentMethodResponse:
       description: The Invoice payment method
       properties:
@@ -20271,6 +21394,103 @@ components:
         - id
         - objectName
       type: object
+    Model_SevSequenceResponse:
+      description: Number sequence used to generate numbers for objects like parts
+      properties:
+        additionalInformation:
+          nullable: true
+          type: string
+        create:
+          description: Date of sequence creation
+          format: date-time
+          readOnly: true
+          type: string
+        format:
+          description: >-
+            Format of the generated numbers. `%NUMBER` is replaced by
+            `nextSequence`.
+          example: A-%NUMBER
+          type: string
+        forObject:
+          description: Object type the sequence is used for
+          example: Part
+          type: string
+        id:
+          description: The sequence id
+          readOnly: true
+          type: integer
+        nextSequence:
+          description: The next number of the sequence
+          example: 1132
+          type: integer
+        objectName:
+          default: SevSequence
+          description: The sequence object name
+          enum:
+            - SevSequence
+          example: SevSequence
+          readOnly: true
+          type: string
+        sevClient:
+          description: Client to which the sequence belongs. Will be filled automatically
+          properties:
+            id:
+              description: Unique identifier of the client
+              type: integer
+            objectName:
+              default: SevClient
+              description: Model name, which is 'SevClient'
+              enum:
+                - SevClient
+              example: SevClient
+              type: string
+          readOnly: true
+          required:
+            - id
+            - objectName
+          type: object
+        type:
+          description: Type of the sequence
+          example: part
+          type: string
+        update:
+          description: Date of last sequence update
+          format: date-time
+          readOnly: true
+          type: string
+      title: SevSequence model
+      type: object
+    Model_SevUserPrivilegeResponse:
+      description: A privilege of a user and whether it is denied
+      properties:
+        denialReason:
+          description: Reason why the privilege is denied. `null` if it is not denied.
+          nullable: true
+          properties:
+            code:
+              example: 196
+              type: integer
+            message:
+              example: Feature not allowed. Add-on not booked.
+              type: string
+          type: object
+        deny:
+          description: Whether the privilege is denied for the user
+          type: boolean
+        id:
+          description: Combination of `privilege` and `resource`, separated by a colon
+          example: addon:dunning_level
+          type: string
+        isIndirect:
+          type: boolean
+        privilege:
+          example: addon
+          type: string
+        resource:
+          example: dunning_level
+          type: string
+      title: SevUser privilege model
+      type: object
     Model_SevUserResponse:
       properties:
         additionalInformation:
@@ -20299,6 +21519,9 @@ components:
           type: boolean
         id:
           type: number
+        isOriginalClient:
+          description: Only returned if passed to the `embed` parameter
+          type: boolean
         languageCode:
           type: string
         lastLogin:
@@ -20313,11 +21536,90 @@ components:
           type: string
         memberCode:
           type: string
+        npsDetail:
+          description: Only returned if passed to the `embed` parameter
+          properties:
+            disabledCES:
+              description: Unverified, only `null` has been observed
+            triggerCES:
+              type: boolean
+            triggerNPS:
+              type: boolean
+          type: object
         objectName:
           default: SevUser
           enum:
             - SevUser
           type: string
+        privileges:
+          description: Only returned if passed to the `embed` parameter
+          items:
+            $ref: '#/components/schemas/Model_SevUserPrivilegeResponse'
+          type: array
+        propertyAutoPayFinalInvoiceModal:
+          description: >-
+            Only returned if passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
+        propertyBaseAccountRenameNoticeSeen:
+          description: Only returned if passed to the `embed` parameter
+          nullable: true
+          type: boolean
+        propertyBwaOptions:
+          description: >-
+            Only returned if passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
+        propertyCumulatedBwaSelected:
+          description: >-
+            Only returned if passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
+        propertyDisableSetContactIbanModal:
+          description: >-
+            Only returned if passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
+        propertyDisplayQuickstart:
+          description: >-
+            Only returned if passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
+        propertyEurDisplayOptions:
+          description: >-
+            Only returned if passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
+        propertyHasDatevSetupConfirmed:
+          description: >-
+            Only returned if passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
+        propertyHasSeenTransactionMatchingNotice:
+          description: >-
+            Only returned if passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
+        propertyHideAppBanner:
+          description: Only returned if passed to the `embed` parameter
+          nullable: true
+          type: boolean
+        propertyHideBaseAccountBookingInfo:
+          description: >-
+            Only returned if passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
+        propertyHideSavePinBanner:
+          description: >-
+            Only returned if passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
+        propertySevDocPreviewExportCounter:
+          description: >-
+            Only returned if passed to the `embed` parameter. JSON encoded
+            counters of the document preview actions.
+          example: >-
+            {"downloadDocument":0,"sendEmail":3,"sendLetter":0,"printDocument":0,"saveDocument":0}
+          nullable: true
+          type: string
+        propertyShowCostCentreInEurAndGuv:
+          description: >-
+            Only returned if passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
+        propertyUpdateMessageSeen:
+          description: >-
+            Only returned if passed to the `embed` parameter. Unverified, only
+            `null` has been observed.
         role:
           enum:
             - Accountant
@@ -20355,8 +21657,71 @@ components:
           type: string
         username:
           type: string
+        userSettings:
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/Model_SevUserSettingResponse'
+            type: array
+          description: >-
+            Only returned if passed to the `embed` parameter. Settings of the
+            user, grouped by their category (e.g. `dashboard-tiles`).
+          type: object
         welcomeScreenSeen:
           type: boolean
+    Model_SevUserSettingResponse:
+      description: A setting of a user, e.g. the visibility of a dashboard tile
+      properties:
+        additionalInformation:
+          nullable: true
+          type: string
+        category:
+          description: Category of the setting
+          example: dashboard-tiles
+          type: string
+        create:
+          format: date-time
+          readOnly: true
+          type: string
+        default:
+          type: boolean
+        element:
+          description: Element the setting belongs to
+          example: profit-and-loss
+          type: string
+        id:
+          readOnly: true
+          type: integer
+        index:
+          type: integer
+        objectName:
+          default: SevUserSetting
+          enum:
+            - SevUserSetting
+          example: SevUserSetting
+          readOnly: true
+          type: string
+        sevUser:
+          properties:
+            id:
+              type: integer
+            objectName:
+              default: SevUser
+              enum:
+                - SevUser
+              example: SevUser
+              type: string
+          required:
+            - id
+            - objectName
+          type: object
+        update:
+          format: date-time
+          readOnly: true
+          type: string
+        visible:
+          type: boolean
+      title: SevUser setting model
+      type: object
     Model_StaticCountryResponse:
       description: Information on the country
       properties:
@@ -20499,6 +21864,101 @@ components:
           format: date-time
           type: string
       title: Text Template Model
+    Model_Unity:
+      description: Unit in which a part or a position is measured.
+      properties:
+        name:
+          description: Name of the unit
+          example: Monat(e)
+          type: string
+        uneceTradeUnitCode:
+          description: UN/ECE Recommendation 20 code of the unit
+          example: MON
+          nullable: true
+          type: string
+      required:
+        - name
+      title: Unity model
+      type: object
+    Model_UnityResponse:
+      description: >-
+        Unit in which a part or a position is measured. Predefined units of
+        sevdesk have a `translationCode` and no `sevClient`, units created by
+        the client have a `sevClient` and no `translationCode`.
+      properties:
+        additionalInformation:
+          nullable: true
+          type: string
+        create:
+          description: Date of unity creation. `null` for predefined units.
+          format: date-time
+          nullable: true
+          readOnly: true
+          type: string
+        id:
+          description: The unity id
+          nullable: false
+          readOnly: true
+          type: integer
+        name:
+          description: Name of the unit
+          example: Stk
+          type: string
+        objectName:
+          default: Unity
+          description: The unity object name
+          enum:
+            - Unity
+          example: Unity
+          nullable: false
+          readOnly: true
+          type: string
+        sevClient:
+          description: Client to which the unit belongs. Not set for predefined units.
+          properties:
+            id:
+              description: Unique identifier of the client
+              type: integer
+            objectName:
+              default: SevClient
+              description: Model name, which is 'SevClient'
+              enum:
+                - SevClient
+              example: SevClient
+              type: string
+          readOnly: true
+          required:
+            - id
+            - objectName
+          type: object
+        translationCode:
+          description: Translation code of predefined units. `null` for custom units.
+          example: UNITY_PIECE
+          nullable: true
+          type: string
+        uneceTradeUnitCode:
+          description: UN/ECE Recommendation 20 code of the unit
+          example: C62
+          nullable: true
+          type: string
+        unitySystem:
+          description: >-
+            Unit system of predefined units, e.g. `general` or `metric`. `null`
+            for custom units.
+          example: general
+          nullable: true
+          type: string
+        update:
+          description: Date of last unity update
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+        - id
+        - name
+        - objectName
+      title: Unity model
+      type: object
   securitySchemes:
     api_key:
       type: apiKey
@@ -20574,5 +22034,10 @@ x-tagGroups:
       - VoucherPos
       - Report
       - Tag
+      - Category
+      - PartUnity
+      - SevClient
+      - SevSequence
+      - Unity
 security:
   - api_key: []
